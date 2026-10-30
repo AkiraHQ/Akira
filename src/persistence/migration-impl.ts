@@ -51,7 +51,7 @@ export function executeMigration(db: any, rawData: string): MigrationResponse {
       .prepare("SELECT MAX(version) as current_version FROM schema_version")
       .get() as { current_version: number } | undefined;
 
-    if (!versionRow || versionRow.current_version !== 1) {
+    if (!versionRow || versionRow.current_version < 1 || versionRow.current_version > 3) {
       throw new Error(
         `Database schema version mismatch. Expected version 1, found: ${versionRow?.current_version}`,
       );

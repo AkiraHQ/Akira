@@ -23,7 +23,13 @@ export const conversationsService = {
  * the contract, never this module.
  */
 export const historicalRecall: HistoricalRecallProvider = {
-  search: (request) => runInServerRuntime(() => querySearchMessages({ data: request })),
+  search: async (request) => {
+    if (typeof window === "undefined") {
+      const { searchRecallViaCapability } = await import("../server");
+      return searchRecallViaCapability(request);
+    }
+    return runInServerRuntime(() => querySearchMessages({ data: request }));
+  },
 };
 
 registerHistoricalRecallProvider(historicalRecall);

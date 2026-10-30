@@ -617,6 +617,49 @@ export const initializeDatabase = (): void => {
       WHERE id NOT IN (SELECT entity_id FROM fts_workspace WHERE entity_type = 'timeline');
   `);
 
+  // --- Migration 003: VAJRA Operational State ---
+  const versionRow = db
+    .prepare("SELECT MAX(version) as current_version FROM schema_version")
+    .get() as { current_version: number } | undefined;
+
+  const currentVersion = versionRow?.current_version ?? 0;
+
+  if (currentVersion < 3) {
+    const migrationPath = path.join(
+      process.cwd(),
+      "src",
+      "persistence",
+      "migrations",
+      "003_vajra_operational_state.sql",
+    );
+
+    if (!fs.existsSync(migrationPath)) {
+      throw new Error(`Critical: VAJRA migration file missing at ${migrationPath}`);
+    }
+
+    const ddlContent = fs.readFileSync(migrationPath, "utf8");
+
+    db.transaction(() => {
+      // 1. Execute DDL for all 7 tables and 19 indexes
+      db.exec(ddlContent);
+
+      // 2. Seed initial singleton operational state row
+      db.prepare(`
+        INSERT OR IGNORE INTO vajra_operational_state (
+          id, current_focus, operational_mode, human_presence, system_health_status, version, updated_at
+        ) VALUES ('singleton', 'Awaiting human directive', 'REQUEST_DRIVEN', 'FOCUSED_ACTIVE', 'NOMINAL', 1, ?)
+      `).run(new Date().toISOString());
+
+      // 3. Increment schema_version to 3
+      db.prepare(`
+        INSERT INTO schema_version (version, applied_at)
+        VALUES (3, ?)
+      `).run(new Date().toISOString());
+    })();
+
+    console.log("SQLite Database migration completed: schema version 3 (VAJRA Operational State).");
+  }
+
   // Mirror the chat archive into the tables. On the first start after this
   // migration that imports the existing archive; on every later start it is
   // a no-op unless the two have drifted, which it repairs.

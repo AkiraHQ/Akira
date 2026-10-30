@@ -137,6 +137,31 @@ describe("reality adapter — translation", () => {
     expect(recorded.events[5].description).toBe("Finished all 3 tasks for today!");
   });
 
+  it("translates an authoritative VAJRA operational mission completed event with real fields", () => {
+    bus.publish(
+      makeEvent(Events.MISSION_COMPLETED, {
+        missionId: "mission-test-42",
+        status: "completed",
+        verificationRecordId: "vr-test-42",
+        outcome: {
+          objective: "Deploy verification bridge",
+          stepsCount: 2,
+          completedAt: new Date().toISOString(),
+        },
+      }),
+    );
+
+    expect(recorded.events).toHaveLength(1);
+    const memory = recorded.events[0];
+    expect(memory.eventType).toBe("mission_completed");
+    expect(memory.title).toBe("Mission Completed: Deploy verification bridge");
+    expect(memory.description).toBe(
+      'Completed operational mission: "Deploy verification bridge". Status: completed.',
+    );
+    expect(memory.description).not.toContain("undefined");
+    expect(memory.description).not.toContain("Daily Tasks");
+  });
+
   it("falls back to the untitled note wording when a note has no title", () => {
     bus.publish(makeEvent(Events.NOTE_CREATED, { id: "n2", projectId: null }));
     expect(recorded.events[0].description).toBe("Captured raw thought");

@@ -4,9 +4,25 @@ import {
   persistUpdateTask,
   persistDeleteTask,
   persistReorderTasks,
+  persistGetTask,
+  persistListTasks,
 } from "../server";
 
 export const tasksService = {
+  async list(): Promise<Task[]> {
+    if (typeof window === "undefined") {
+      const { listTasksViaCapability } = await import("../server");
+      return listTasksViaCapability();
+    }
+    return persistListTasks();
+  },
+  async getById(id: string): Promise<Task | null> {
+    if (typeof window === "undefined") {
+      const { readTaskViaCapability } = await import("../server");
+      return readTaskViaCapability(id);
+    }
+    return persistGetTask({ data: id });
+  },
   async add(input: {
     title: string;
     description?: string;
@@ -18,8 +34,14 @@ export const tasksService = {
     return persistAddTask({ data: input });
   },
   async update(id: string, patch: Partial<Task>): Promise<void> {
+    if (typeof window === "undefined") {
+      const { updateTaskViaCapability } = await import("../server");
+      await updateTaskViaCapability(id, patch);
+      return;
+    }
     await persistUpdateTask({ data: { id, patch } });
   },
+
   async delete(id: string): Promise<void> {
     await persistDeleteTask({ data: id });
   },

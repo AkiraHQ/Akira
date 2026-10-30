@@ -48,9 +48,28 @@ interface TaskCompletedPayload {
   projectId: string | null;
 }
 
-interface MissionCompletedPayload {
+interface LegacyMissionCompletedPayload {
   totalTasks: number;
 }
+
+interface VajraMissionOutcome {
+  objective?: string;
+  stepsCount?: number;
+  verificationOutcome?: string;
+  verifiedEvidenceIds?: readonly string[];
+  completedAt?: string;
+}
+
+interface VajraMissionCompletedPayload {
+  missionId: string;
+  status: string;
+  verificationRecordId?: string;
+  outcome?: VajraMissionOutcome | unknown;
+}
+
+type MissionCompletedPayload =
+  | LegacyMissionCompletedPayload
+  | VajraMissionCompletedPayload;
 
 interface NotePayload {
   id: string;
@@ -155,26 +174,45 @@ const TRANSLATORS: Record<string, (payload: never) => TranslatedEvent> = {
     relatedNoteId: null,
   }),
 
-  [Events.MISSION_COMPLETED]: (payload: MissionCompletedPayload): TranslatedEvent => ({
-    eventType: "mission_completed",
-    // Tasks, because that is what was counted.
-    //
-    // A Mission is a level of its own in the hierarchy -- a unit of purposeful
-    // work inside a project -- and nothing here creates one. `akira-store`
-    // publishes this when every task on the list happens to be done and sends
-    // `totalTasks`, the task count. Calling that count "missions" told the
-    // model the user had completed work at a level above the one they actually
-    // worked at, which is the sort of claim a companion should not invent
-    // about someone.
-    //
-    // The event type keeps its name. It is an internal identifier that the
-    // durability table, the candidate rules and the identity rules all key on,
-    // and renaming it would migrate persisted events to fix a sentence.
-    title: "Daily Tasks Completed",
-    description: `Finished all ${payload.totalTasks} tasks for today!`,
-    relatedProjectId: null,
-    relatedNoteId: null,
-  }),
+  [Events.MISSION_COMPLETED]: (payload: MissionCompletedPayload): TranslatedEvent => {
+    // 1. Authoritative VAJRA Operational Mission Completion (Phase 7 Reality Closure)
+    if (payload && "missionId" in payload && typeof payload.missionId === "string") {
+      const vajraPayload = payload as VajraMissionCompletedPayload;
+      const outcome = (vajraPayload.outcome && typeof vajraPayload.outcome === "object"
+        ? vajraPayload.outcome
+        : undefined) as VajraMissionOutcome | undefined;
+
+      const objective = outcome?.objective?.trim();
+      const title = objective
+        ? `Mission Completed: ${objective}`
+        : `Mission Completed: ${vajraPayload.missionId}`;
+      const description = objective
+        ? `Completed operational mission: "${objective}". Status: ${vajraPayload.status}.`
+        : `Completed operational mission ${vajraPayload.missionId} with status: ${vajraPayload.status}.`;
+
+      return {
+        eventType: "mission_completed",
+        title,
+        description,
+        relatedProjectId: null,
+        relatedNoteId: null,
+      };
+    }
+
+    // 2. Legacy daily task counter published by workspace UI
+    const totalTasks =
+      payload && "totalTasks" in payload && typeof payload.totalTasks === "number"
+        ? payload.totalTasks
+        : 0;
+
+    return {
+      eventType: "mission_completed",
+      title: "Daily Tasks Completed",
+      description: `Finished all ${totalTasks} tasks for today!`,
+      relatedProjectId: null,
+      relatedNoteId: null,
+    };
+  },
 
   [Events.NOTE_CREATED]: (payload: NotePayload): TranslatedEvent => ({
     eventType: "note_created",

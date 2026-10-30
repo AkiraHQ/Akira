@@ -54,14 +54,14 @@ export const getInitialState = createServerFn({ method: "GET" }).handler(async (
     projectRepository,
     noteRepository,
     sessionRepository,
-    taskRepository,
     settingsRepository,
     vaultFileRepository,
     vaultFolderRepository,
   } = await import("./repositories");
+  const { listTasksViaCapability } = await import("../akira-os/tasks/server");
 
   const projects = projectRepository.getAll();
-  const tasks = taskRepository.getAll();
+  const tasks = await listTasksViaCapability();
   const notes = noteRepository.getAll();
   const sessions = sessionRepository.getAll();
   const vaultFiles = vaultFileRepository.getAll();
