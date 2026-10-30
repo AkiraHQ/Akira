@@ -1,7 +1,7 @@
 // vitest.config.ts
 // Global Vitest configuration for the AKIRA project.
 
-import { defineConfig } from "vitest/config";
+import { defineConfig, configDefaults } from "vitest/config";
 import tsconfigPaths from "vite-tsconfig-paths";
 
 export default defineConfig({
@@ -12,4 +12,7 @@ export default defineConfig({
   // runtime `@/...` import dies with "Cannot find package". Reading tsconfig.json
   // keeps the alias defined in exactly one place.
   plugins: [tsconfigPaths()],
+  test: {
+    exclude: [...configDefaults.exclude, "archive/**"],
+  },
 });

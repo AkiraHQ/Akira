@@ -16,3 +16,4 @@
 *.db-shm  binary
 *.sqlite  binary
 *.sqlite3 binary
+graphify-out/graph.json merge=graphify
