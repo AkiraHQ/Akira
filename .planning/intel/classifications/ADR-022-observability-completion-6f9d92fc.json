@@ -1,0 +1,18 @@
+{
+  "source_path": "docs/adr/ADR-022-observability-completion.md",
+  "type": "ADR",
+  "confidence": "high",
+  "manifest_override": false,
+  "title": "ADR-022: Completing the Observability Platform",
+  "summary": "ADR-022: Completing the Observability Platform architectural document.",
+  "scope": [
+    "observability",
+    "completion"
+  ],
+  "cross_refs": [
+    "./ADR-021-observability-platform.md"
+  ],
+  "locked": true,
+  "precedence": null,
+  "notes": ""
+}

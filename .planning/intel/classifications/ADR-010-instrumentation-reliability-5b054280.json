@@ -1,0 +1,16 @@
+{
+  "source_path": "docs/adr/ADR-010-instrumentation-reliability.md",
+  "type": "ADR",
+  "confidence": "high",
+  "manifest_override": false,
+  "title": "ADR-010: Instrumentation Reliability",
+  "summary": "We enforce the following stability and performance principles across the entire Event Subsystem:.",
+  "scope": [
+    "instrumentation",
+    "reliability"
+  ],
+  "cross_refs": [],
+  "locked": true,
+  "precedence": null,
+  "notes": ""
+}

@@ -1,0 +1,16 @@
+{
+  "source_path": "docs/adr/ADR-005-container-layout.md",
+  "type": "ADR",
+  "confidence": "high",
+  "manifest_override": false,
+  "title": "Architecture Decision Record: ADR-005 Container Layout",
+  "summary": "Support two distinct layout modes in the global `Shell` component via the `layoutMode` prop: 1. **Scroll Mode (`layoutMode=\"scroll\"`)**: The container height adjusts to its conten.",
+  "scope": [
+    "container",
+    "layout"
+  ],
+  "cross_refs": [],
+  "locked": true,
+  "precedence": null,
+  "notes": ""
+}

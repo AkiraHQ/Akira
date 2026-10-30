@@ -1,0 +1,16 @@
+{
+  "source_path": "docs/adr/ADR-018-dependency-resolution.md",
+  "type": "ADR",
+  "confidence": "high",
+  "manifest_override": false,
+  "title": "ADR-018: Dependency Resolution Engine",
+  "summary": "We will implement an in-memory **Dependency Resolution Engine** inside the Platform Runtime. Key decisions: 1. **Directed Acyclic Graph (DAG) Representation**: We will represent mo.",
+  "scope": [
+    "dependency",
+    "resolution"
+  ],
+  "cross_refs": [],
+  "locked": true,
+  "precedence": null,
+  "notes": ""
+}

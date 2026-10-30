@@ -1,0 +1,16 @@
+{
+  "source_path": "docs/adr/ADR-019-lifecycle-manager.md",
+  "type": "ADR",
+  "confidence": "high",
+  "manifest_override": false,
+  "title": "ADR-019: Centralized Lifecycle Manager",
+  "summary": "We will introduce a dedicated `LifecycleManager` to execute all module state changes. Key decisions: 1. **Centralized Ownership**: `LifecycleManager` is the single authority respon.",
+  "scope": [
+    "lifecycle",
+    "manager"
+  ],
+  "cross_refs": [],
+  "locked": true,
+  "precedence": null,
+  "notes": ""
+}

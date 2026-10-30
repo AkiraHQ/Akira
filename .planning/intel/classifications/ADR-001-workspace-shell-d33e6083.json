@@ -1,0 +1,16 @@
+{
+  "source_path": "docs/adr/ADR-001-workspace-shell.md",
+  "type": "ADR",
+  "confidence": "high",
+  "manifest_override": false,
+  "title": "Architecture Decision Record: ADR-001 Workspace Canvas Shell",
+  "summary": "Create a global parent canvas shell (`Shell.tsx`) inside the framework layer (`src/app/shell/`). Individual routes mount as nested children inside the shell's `<main>` layout conta.",
+  "scope": [
+    "workspace",
+    "shell"
+  ],
+  "cross_refs": [],
+  "locked": true,
+  "precedence": null,
+  "notes": ""
+}

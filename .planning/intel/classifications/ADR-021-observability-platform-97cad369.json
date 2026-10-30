@@ -1,0 +1,16 @@
+{
+  "source_path": "docs/adr/ADR-021-observability-platform.md",
+  "type": "ADR",
+  "confidence": "high",
+  "manifest_override": false,
+  "title": "ADR-021: Observability Platform Architecture",
+  "summary": "We establish the **AKIRA OS Observability Platform**, a decoupled, passive telemetry engine structured into four distinct horizontal layers: ┌──────────────────────────────────────.",
+  "scope": [
+    "observability",
+    "platform"
+  ],
+  "cross_refs": [],
+  "locked": true,
+  "precedence": null,
+  "notes": ""
+}

@@ -1,0 +1,16 @@
+{
+  "source_path": "docs/GENESIS/architecture/decisions/ADR-010-relationship-engine.md",
+  "type": "ADR",
+  "confidence": "high",
+  "manifest_override": false,
+  "title": "ADR-010: Dedicated Relationship Subsystem",
+  "summary": "We will implement the Relationship Engine as a dedicated architectural subsystem (Alternative C).",
+  "scope": [
+    "relationship",
+    "engine"
+  ],
+  "cross_refs": [],
+  "locked": true,
+  "precedence": null,
+  "notes": ""
+}

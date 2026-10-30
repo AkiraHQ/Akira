@@ -1,0 +1,18 @@
+{
+  "source_path": "docs/GENESIS/architecture/decisions/ADR-014-initiative-engine.md",
+  "type": "ADR",
+  "confidence": "high",
+  "manifest_override": false,
+  "title": "ADR-014: Dedicated Initiative Subsystem and Silence-by-Default Design",
+  "summary": "We will implement the Initiative Engine as a dedicated centralized subsystem with a \"Silence-by-Default\" design (Alternative C).",
+  "scope": [
+    "initiative",
+    "engine"
+  ],
+  "cross_refs": [
+    "file:///C:/Users/lovsh%5CDesktop%5CProject%20Akira%20Master%5CAKIRA%5Cdocs%5Carchitecture%5Ccompanion-core%5C01-companion-philosophy.md"
+  ],
+  "locked": true,
+  "precedence": null,
+  "notes": ""
+}

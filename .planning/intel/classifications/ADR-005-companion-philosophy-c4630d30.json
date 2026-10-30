@@ -1,0 +1,16 @@
+{
+  "source_path": "docs/GENESIS/architecture/decisions/ADR-005-companion-philosophy.md",
+  "type": "ADR",
+  "confidence": "high",
+  "manifest_override": false,
+  "title": "ADR-005: Companion Core Behavioral Model",
+  "summary": "AKIRA will behave as a **trustworthy growth companion** rather than an engagement-driven chatbot. The companion's character, personality, and tone will be strictly governed by the.",
+  "scope": [
+    "companion",
+    "philosophy"
+  ],
+  "cross_refs": [],
+  "locked": true,
+  "precedence": null,
+  "notes": ""
+}

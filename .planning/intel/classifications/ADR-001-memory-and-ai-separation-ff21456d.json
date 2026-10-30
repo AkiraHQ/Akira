@@ -1,0 +1,17 @@
+{
+  "source_path": "docs/GENESIS/architecture/decisions/ADR-001-memory-and-ai-separation.md",
+  "type": "ADR",
+  "confidence": "high",
+  "manifest_override": false,
+  "title": "ADR-001: Separation of Memory and AI Models",
+  "summary": "The **Adaptive Memory Engine** must never communicate directly with AI models. The system must operate through a strictly decoupled, unidirectional cognitive pipeline: [ Adaptive M.",
+  "scope": [
+    "memory",
+    "and",
+    "separation"
+  ],
+  "cross_refs": [],
+  "locked": true,
+  "precedence": null,
+  "notes": ""
+}

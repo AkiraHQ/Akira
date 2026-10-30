@@ -1,0 +1,16 @@
+{
+  "source_path": "docs/GENESIS/architecture/decisions/ADR-004-context-builder.md",
+  "type": "ADR",
+  "confidence": "high",
+  "manifest_override": false,
+  "title": "ADR-004: Decoupled Context Builder",
+  "summary": "All system, user, and memory telemetry must be assembled into a logical, unified **Context Package** by the **Context Builder** before reaching any downstream reasoning model.",
+  "scope": [
+    "context",
+    "builder"
+  ],
+  "cross_refs": [],
+  "locked": true,
+  "precedence": null,
+  "notes": ""
+}

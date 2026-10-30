@@ -1,0 +1,1322 @@
+# Graph Report - AKIRA  (2026-10-03)
+
+## Corpus Check
+- 970 files · ~709,433 words
+- Verdict: corpus is large enough that graph structure adds value.
+- Unclassified: 11 file(s) not represented in the graph (top: (none) 6, .toml 1, .db 1)
+
+## Summary
+- 7022 nodes · 16817 edges · 307 communities (234 shown, 73 thin omitted)
+- Extraction: 95% EXTRACTED · 5% INFERRED · 0% AMBIGUOUS · INFERRED: 855 edges (avg confidence: 0.87)
+- Token cost: 0 input · 0 output
+
+## Graph Freshness
+- Built from commit: `b9959ee4`
+- Run `git rev-parse HEAD` and compare to check if the graph is stale.
+- Run `graphify update .` after code changes (no API cost).
+
+## Community Hubs (Navigation)
+- observability/composition.ts
+- AkiraEvent
+- analytics-service.ts
+- reflection/engine/index.ts
+- reasoning/index.ts
+- metrics/registry.ts
+- analytics.test.ts
+- RuntimeAdapter
+- recall-builder.ts
+- AKIRA Architecture Disposition
+- cn
+- InMemoryIdentityRepository
+- IdentityRepository
+- Stage 1 Controlled Behavioral Evaluation Report
+- routeTree.gen.ts
+- identity/types.ts
+- AKIRA ADR Process
+- AnalyticsEngine.ts
+- relationships/service.ts
+- diagnostics-service.ts
+- retention/policy.ts
+- identityService
+- sidebar.tsx
+- The 9-Stage Execution Workflow
+- TelemetrySeverity
+- habits/service.ts
+- context-resolution/service.ts
+- tests/capability-registry.test.ts
+- getDatabaseConnection
+- capabilities/registry.ts
+- aiProviderManager
+- GoalDecompositionService.ts
+- IModuleInstance
+- PresenceContext
+- IdentityConfidence
+- PlanningService.ts
+- repositories/index.ts
+- PlanningGraph
+- react
+- IdentityVersion
+- project-read.ts
+- run_loop.py
+- dependency-resolver.test.ts
+- understanding/rules.ts
+- context-engine.ts
+- runtime-manager.ts
+- manifest.test.ts
+- story-service.ts
+- relationship-service.ts
+- planningService
+- useAkira
+- Skill Creator
+- planAnalysisService
+- IRuntimeManager
+- Companion Intelligence Layer
+- task-write.ts
+- search/services/index.ts
+- VaultFolder
+- initiative/service.ts
+- Awareness Session
+- package.json
+- SEC-002 Provider API Keys Inlined Into The Client Bundle
+- historical-search-intent.ts
+- Process
+- telemetry.ts
+- TaskRepository
+- resource-sampler.ts
+- compilerOptions
+- server.ts
+- IdentityEvidence
+- lib/utils.ts
+- reflection/service.ts
+- VaultFile
+- IdentityGoal
+- SqliteTimelineRepository
+- SqliteTaskRepository
+- pagination.tsx
+- IdentityHabit
+- IdentityPersonality
+- IdentitySkill
+- akira-os/index.ts
+- Phase 3C Implementation Proposal: First Command Capability & Rule N1 Vertical Slice
+- SqliteVaultTagRepository
+- IdentityValue
+- REL-002 Synchronous Spin-Wait Blocks The Server Event Loop
+- IdentityInterest
+- perf-ab.ts
+- compatibility-manager.ts
+- Append-Only SQLite Event Store
+- generate_review.py
+- genesis/index.ts
+- MilestoneRepository
+- GEN-002 No Cognitive State Survives A Restart
+- Phase 3D — VAJRA Readiness & Orchestration Boundary Analysis
+- SqliteProjectRepository
+- identityContextProvider
+- components.json
+- TimelineSubscriber
+- Failure-Mode Matrix
+- DOC-003 ROADMAP.md Contradicts The Code In Both Directions
+- AKIRA Deep Scan — Chat 4 Findings
+- brain.tsx
+- SqliteSessionRepository
+- BlockerRepository
+- PermissionManager
+- MockService
+- Memory Policy
+- Companion State Engine
+- AnalyticsEngine
+- presence/constants.ts
+- AnalyticsRepository
+- RealityAdapter
+- CapabilityRegistry
+- genesis-chat-intake-cost.bench.ts
+- RendererRegistry.ts
+- eventBus
+- Consolidated Semantic Memory
+- Documentation Accuracy Scorecard
+- Context Builder
+- Companion Core Philosophy
+- Phase A — Build Recovery
+- scripts
+- verify-observability-reachability.ts
+- tools.index.tsx
+- command.tsx
+- IdentityPreference
+- IdentityRelationship
+- genesis-planning.test.ts
+- instrumentation.test.ts
+- RuntimeManager
+- genesis-reviewer Subagent
+- CapabilityRegistry
+- CRIT-007 No Automated Quality Gate Exists
+- Context Builder (Sprint 9)
+- devDependencies
+- __root.tsx
+- AKIRA — Engineering Handoff & Architecture Baseline
+- AKIRA Foundation Contracts
+- form.tsx
+- relationships/constants.ts
+- pipeline.ts
+- 4. GENESIS Disposition
+- createServerFn RPC Layer
+- ADR-021: Observability Platform Architecture
+- search.tsx
+- Phase 3B Implementation Proposal: Capability Foundation Expansion & Tier 2 Activation
+- dependencies
+- LifecycleManager
+- package_skill.py
+- 3. Real-Repository Scenario Results
+- ProjectsCalculator
+- PermissionRequiredError
+- CLAUDE.md Governance Router
+- aggregate_benchmark.py
+- Memory Importance Engine
+- createDefaultStrategyRegistry
+- ContextAssemblyService
+- Grader Agent
+- Severance S4 — Dead Story and Importance Builders
+- reality-adapter.ts
+- SqliteSettingsRepository
+- genesis-production-composition.test.ts
+- Invariant: UI Never Reaches the Database
+- TelemetryService (Core Facade)
+- DAT-002 Vault Dedup Corrupts Siblings On Soft Delete
+- Module State Machine (UNLOADED to RUNNING)
+- Module Manifest System
+- chart.tsx
+- menubar.tsx
+- task-read.ts
+- event-contract.test.ts
+- 20.2 Still OPEN
+- /pre-pr Skill
+- BND-004: Nine GENESIS modules self-initialise at import time
+- telemetry_records Table
+- AKIRA OS v1.1 Final Release Audit
+- LoggerFacade
+- Observability Platform
+- ReasoningEngine
+- Process
+- TelemetryClock
+- AKIRA Deep Scan — Chat 5 Findings
+- SimpleMetricRegistry
+- What Should Not Be Changed
+- Identity Layer
+- DecisionEngine
+- AKIRA Foundation Contracts — Final Consistency Audit
+- check-module-boundaries.mjs
+- AKIRA Foundation Contracts — Consistency Audit (Phase 2.1A)
+- Workspace Shell (Shell.tsx)
+- run_eval.py
+- /bench-genesis Skill
+- fts_workspace FTS5 Virtual Table
+- UI Must Not Import Repositories
+- TelemetryBase
+- RelevanceEngine
+- ContextIntelligenceService
+- DAT-001 Fire-And-Forget Database Writes
+- carousel.tsx
+- TimelineRepository
+- Temporary Database Mocking (temp_e2e_akira.db)
+- contract-auditor Subagent
+- ADR-010: Instrumentation Reliability
+- ContextManager (AsyncLocalStorage)
+- RingBuffer (async boundary)
+- GEN-001 GENESIS Observes No Reality
+- Manifest Validation Rules
+- SessionRepository
+- AKIRA N1 Decision: Internal Command Authority
+- AKIRA N2 Decision: Non-VAJRA Requests and Tier-2 Activation
+- AKIRA N3 Decision: GENESIS Command and Mutation Boundary
+- Failure Isolation Policies
+- BND-001: AKIRA OS to GENESIS event path is severed
+- AuditFacade
+- Dependency Rules Matrix
+- AKIRA Target Architecture — Final Consistency Audit
+- AKIRA Target Architecture
+- Sliding-Window Telemetry Retention
+- Story
+- Session Intent
+- validateMigration.ts
+- error/lovable-error-reporting.ts
+- Recall and Ranking Regression
+- persistAddNote
+- Shell layoutMode prop
+- EventBusObserver
+- Instrumentation Event Bus (globalEventBus)
+- 3.2 Target capabilities
+- identityService (identityFoundationService)
+- AKIRA-N1-DECISION.md
+- TelemetryValidator
+- Audit 02: Architectural Boundary Audit
+- DEP-005: SDK erases all error information
+- state/service.ts
+- verify_boundaries.py
+- JSON Schemas
+- FORGE Developer Interface
+- TITAN Background Processor
+- AKIRA Deep Scan — Chat 6: Production-Readiness Verification
+- navigation-menu.tsx
+- Component Layout Structure
+- select.tsx
+- Directed Acyclic Graph Module Representation
+- Immutable Unified Telemetry Model
+- Unmeasurable Dimensions Are Absent, Never Zero
+- habits/constants.ts
+- Telemetry Performance Budgets
+- Audit 04: AKIRA OS Platform Audit
+- Strategy Crash-Isolation Test Pattern
+- Loop Prevention and Bus Depth Guard
+- Relationship Engine (Companion Intelligence Sprint 5)
+- getDatabasePath
+- class-variance-authority
+- vitest
+- Nine Local GENESIS Subsystem Emitters
+- ReviewHandler
+- sample_repository.ts
+- Note
+- .mcp.json
+- input-otp.tsx
+- telemetry.test.ts
+- state/constants.ts
+- sample_parser.ts
+- rules/graphify.md
+- workflows/graphify.md
+- migrate-runall.ts
+- AKIRA OS Product Overview
+- Daily Mission Control
+- Git Branching Strategy (main/develop/feature)
+- Semantic Commit Message Format
+- src/app/ (Shell, UI Wrapper, Design System)
+- Dormant Projects Identification
+- Focus Sessions Normalization
+- Productivity Score Formula
+- ADR-013: Analytics Query Layer
+- ADR-015: Analytics Reliability & Self-Recovery
+- AnalyticsValidator
+- Event Bus Observability Subscriber
+- Application Entry Points
+- BND-010: Four file-level dependency cycles
+- DEP-013: VaultStorageService name collision (server vs client proxy)
+- GEN-009 Single-User Content Hard-Coded In Cognitive Engines
+- Capability Error Types
+- Manifest Authoring Best Practices
+- Voice Brain Dump Integration (Future)
+
+## God Nodes (most connected - your core abstractions)
+1. `cn()` - 220 edges
+2. `IdentityRepository` - 179 edges
+3. `vitest` - 158 edges
+4. `InMemoryIdentityRepository` - 105 edges
+5. `identityService` - 102 edges
+6. `react` - 100 edges
+7. `AkiraEvent` - 75 edges
+8. `getDatabaseConnection()` - 70 edges
+9. `lucide-react` - 65 edges
+10. `AkiraState` - 63 edges
+
+## Surprising Connections (you probably didn't know these)
+- `New Files to Create:` --references--> `CapabilityDescriptor`  [INFERRED]
+  docs/architecture/PHASE-3A-IMPLEMENTATION-PROPOSAL.md → src/contracts/capabilities/descriptor.ts
+- `New Files Created:` --references--> `createDomainEvent()`  [INFERRED]
+  docs/architecture/PHASE-3C-IMPLEMENTATION-PROPOSAL.md → src/contracts/events/domain-event.ts
+- `8.2 Temporary Bridging Code (Must Be Preserved Until Phase Completion)` --references--> `HistoricalRecallProvider`  [INFERRED]
+  docs/architecture/AKIRA-ENGINEERING-HANDOFF.md → src/contracts/historical-recall.ts
+- `4.5 AI` --references--> `AIProvider`  [INFERRED]
+  docs/architecture/AKIRA-ARCHITECTURE-DISPOSITION.md → src/genesis/context/ai/provider-interface.ts
+- `Area 8 — confidence literals` --references--> `applyUserInitiativeCorrection()`  [INFERRED]
+  deep-scan/chat5_findings.md → src/genesis/context/initiative/rules.ts
+
+## Import Cycles
+- 4-file cycle: `src/components/vault/FileGrid.tsx -> src/components/vault/Thumbnail.tsx -> src/routes/tools.vault.tsx -> src/components/vault/VaultWorkspace.tsx -> src/components/vault/FileGrid.tsx`
+- 4-file cycle: `src/components/vault/FileList.tsx -> src/components/vault/Thumbnail.tsx -> src/routes/tools.vault.tsx -> src/components/vault/VaultWorkspace.tsx -> src/components/vault/FileList.tsx`
+- 4-file cycle: `src/components/vault/PreviewPanel.tsx -> src/hooks/usePreview.ts -> src/routes/tools.vault.tsx -> src/components/vault/VaultWorkspace.tsx -> src/components/vault/PreviewPanel.tsx`
+
+## Hyperedges (group relationships)
+- **Analytics Derivation Pipeline (events to derived tables to DTOs)** — docs_adr_adr_011_analytics_architecture_analyticsengine, docs_adr_adr_011_analytics_architecture_metriccalculator, docs_adr_adr_013_analytics_query_layer_analyticsservice, docs_adr_adr_015_analytics_reliability_rebuildmanager, docs_adr_adr_011_analytics_architecture_daily_metrics [EXTRACTED 1.00]
+- **Session context ownership handover chain** — docs_genesis_architecture_companion_core_01_companion_lifecycle_companion_session, docs_genesis_architecture_companion_core_02_awareness_session_awareness_session, docs_genesis_architecture_companion_core_02_awareness_session_awareness_snapshot, docs_genesis_architecture_companion_intelligence_02_companion_state_engine_companion_state_engine, docs_genesis_architecture_companion_core_01_companion_lifecycle_reflection_stage [EXTRACTED 1.00]
+- **Memory-to-prompt context assembly pipeline** — docs_genesis_architecture_adaptive_memory_engine_08_context_builder_adaptive_memory_engine, docs_genesis_architecture_adaptive_memory_engine_07_memory_retrieval_and_recall_retrieval_and_recall_engine, docs_genesis_architecture_adaptive_memory_engine_08_context_builder_context_builder, docs_genesis_architecture_adaptive_memory_engine_08_context_builder_ai_context_engine, docs_genesis_architecture_adaptive_memory_engine_08_context_builder_reasoning_engine [EXTRACTED 1.00]
+- **GENESIS Context to Decision Cognitive Pipeline** — docs_genesis_architecture_contextintelligence_contextassemblyresult, docs_genesis_architecture_reflectionengine_reflectionresult, docs_genesis_architecture_reasoningengine_reasoningresult, docs_genesis_architecture_decisionengine_decisioncollection [EXTRACTED 1.00]
+- **The Three Independent Breaks In The GENESIS Pipeline** — docs_audits_05_genesis_cognitive_system_gen_001, docs_audits_05_genesis_cognitive_system_gen_002, docs_audits_05_genesis_cognitive_system_gen_003, docs_audits_akira_master_audit_crit_002, docs_audits_akira_master_audit_crit_004 [EXTRACTED 1.00]
+- **The Four Severances Cutting GENESIS Off From Reality** — docs_recovery_event_pipeline_remediation_design_s1_wrong_bus, docs_recovery_event_pipeline_remediation_design_s2_task_completed_constant, docs_recovery_event_pipeline_remediation_design_s3_note_name_drift, docs_recovery_event_pipeline_remediation_design_s4_dead_builder_barrels, docs_recovery_event_pipeline_remediation_design_realityadapter [EXTRACTED 1.00]
+- **The Missing Quality Gate Cascade** — docs_audits_08_testing_audit_tst_001, docs_audits_11_code_quality_qua_001, docs_audits_12_documentation_audit_doc_001, docs_audits_akira_master_audit_crit_007, docs_audits_07_reliability_and_failure_rel_001 [EXTRACTED 1.00]
+- **Platform Runtime Module Boot Chain** — docs_adr_adr_016_platform_runtime_runtimemanager, docs_adr_adr_017_module_manifest_manifest_file, docs_adr_adr_018_dependency_resolution_dfs_topological_sort, docs_adr_adr_019_lifecycle_manager_lifecyclemanager, docs_adr_adr_020_capability_registry_capabilityregistry [EXTRACTED 1.00]
+- **The Severed Event Seam (bus split, registry collision, silent bridge)** — docs_audits_02_architecture_boundaries_bnd_001, docs_audits_02_architecture_boundaries_bnd_002, docs_audits_04_akira_os_platform_plt_005, docs_audits_04_akira_os_platform_plt_007, docs_audits_02_architecture_boundaries_legacy_event_bus_bridge [EXTRACTED 1.00]
+- **Subsystem contexts reconciled into the Resolved Context** — docs_genesis_architecture_companion_intelligence_01_presence_engine_presence_context, docs_genesis_architecture_companion_intelligence_02_companion_state_engine_companion_state, docs_genesis_architecture_companion_intelligence_03_goal_engine_goal_context, docs_genesis_architecture_companion_intelligence_04_knowledge_engine_knowledge_context, docs_genesis_architecture_companion_intelligence_05_relationship_engine_relationship_context, docs_genesis_architecture_companion_intelligence_06_habit_intelligence_habit_context, docs_genesis_architecture_companion_intelligence_00_system_overview_reflection_context, docs_genesis_architecture_companion_intelligence_00_system_overview_context_resolution_engine, docs_genesis_architecture_companion_intelligence_00_system_overview_resolved_context [EXTRACTED 1.00]
+- **Telemetry Asynchronous Offloading Pipeline** — docs_akira_os_architecture_observability_observability_api_telemetryservice, docs_akira_os_architecture_observability_dataflow_ringbuffer, docs_akira_os_architecture_observability_dataflow_asyncprocessor, docs_akira_os_architecture_observability_dataflow_telemetryrepository, docs_akira_os_architecture_observability_storage_strategy_batch_insertion [EXTRACTED 1.00]
+- **Client-to-Database Boundary Chain** — architecture_reactive_client_cache, module_contract_rule_2_3_service_dominance, architecture_rpc_layer, architecture_repository_contract, architecture_sqlite_database, claude_invariant_ui_never_reaches_database [EXTRACTED 1.00]
+- **Companion Intelligence context pipeline: specialized contexts to Resolved Context to Initiative Decision** — docs_genesis_architecture_decisions_adr_008_goal_engine_goal_context, docs_genesis_architecture_decisions_adr_009_knowledge_engine_knowledge_context, docs_genesis_architecture_decisions_adr_010_relationship_engine_relationship_context, docs_genesis_architecture_decisions_adr_011_habit_intelligence_habit_context, docs_genesis_architecture_companion_intelligence_07_reflection_engine_reflection_context, docs_genesis_architecture_companion_intelligence_08_context_resolution_engine_resolved_context, docs_genesis_architecture_companion_intelligence_09_initiative_engine_initiative_decision [EXTRACTED 1.00]
+- **ADR-001 unidirectional memory-to-inference pipeline** — docs_genesis_architecture_decisions_adr_001_memory_and_ai_separation_adaptive_memory_engine, docs_genesis_architecture_decisions_adr_001_memory_and_ai_separation_recall_engine, docs_genesis_architecture_decisions_adr_001_memory_and_ai_separation_context_builder, docs_genesis_architecture_decisions_adr_001_memory_and_ai_separation_ai_context_engine, docs_genesis_architecture_decisions_adr_001_memory_and_ai_separation_reasoning_model [EXTRACTED 1.00]
+- **Pre-PR Verification Gauntlet** — claude_verify_pipeline, contributing_verify_pipeline, _claude_skills_pre_pr_skill_pre_pr, claude_verify_observability, contributing_adr_022, _claude_skills_pre_pr_skill_validate_architecture [EXTRACTED 1.00]
+- **GENESIS Cognitive Pipeline: Event to Prompt** — docs_recovery_phase_b_event_architecture_reconciliation_genesiseventservice, docs_recovery_phase_b_event_architecture_reconciliation_candidateruleengine, docs_shared_sprint_report_memoryvalidationengine, docs_shared_sprint_report_storyengine, docs_shared_sprint_report_memoryimportanceengine, docs_shared_sprint_report_contextbuilder, docs_shared_sprint_report_aicontextengine [INFERRED 0.85]
+- **Verification That Reported Success Without Exercising Anything** — docs_recovery_vault_security_data_integrity_recovery_d0_dead_test_suite, docs_recovery_stage_1b_diagnostics_investigation_subsystem_c_analytics_diagnostics, docs_recovery_phase_b_event_architecture_reconciliation_neverexercised, docs_recovery_stage_1b_clean_install_verification_f1_clone_does_not_build, docs_recovery_event_pipeline_remediation_design_reachability_test_class [INFERRED 0.85]
+- **Memory Significance & Narrative Model** — docs_genesis_architecture_adaptive_memory_engine_02_memory_schema_salience, docs_genesis_architecture_adaptive_memory_engine_02_memory_schema_strength, docs_genesis_architecture_adaptive_memory_engine_04_memory_importance_engine_importance_signals, docs_genesis_architecture_adaptive_memory_engine_05_story_model_story [INFERRED 0.85]
+- **Module Runtime Boot Flow** — docs_runtime_runtimemanager, docs_manifest_discovery_process, docs_dependencies_topological_sort, docs_lifecycle_module_state_machine, docs_capabilities_provider_registration_lifecycle, docs_sdk_sdkcontext [INFERRED 0.85]
+- **Provenance preservation implemented across Reflection, Knowledge, Habit and Identity contexts** — docs_genesis_architecture_companion_intelligence_08_context_resolution_engine_provenance_preservation, docs_genesis_architecture_companion_intelligence_07_reflection_engine_reflection_context, docs_genesis_architecture_decisions_adr_009_knowledge_engine_knowledge_context, docs_genesis_architecture_decisions_adr_011_habit_intelligence_habit_context, docs_genesis_architecture_decisions_adr_003_emergent_identity_traceable_lineage [INFERRED 0.85]
+- **Vault Dedup Lifecycle Data-Loss Defect** — docs_audits_06_data_integrity_dat_002, docs_audits_06_data_integrity_dat_003, docs_audits_akira_master_audit_crit_006, docs_modules_vault_vault_storage_service, docs_audits_08_testing_audit_tst_002 [INFERRED 0.85]
+
+## Communities (307 total, 73 thin omitted)
+
+### Community 0 - "observability/composition.ts"
+Cohesion: 0.03
+Nodes (36): package.json sideEffects allowlist, 12. Observability & Health, initializeObservability(), isObservabilityInitialized(), recordHealthTransition(), shutdownObservability(), ComponentHealth, ComponentHealthOptions (+28 more)
+
+### Community 1 - "AkiraEvent"
+Cohesion: 0.05
+Nodes (27): better-sqlite3, EventBus, EventDelivery, EventDeliveryObserver, globalEventBus, EventRepository, EventService, runEventStoreMigration() (+19 more)
+
+### Community 2 - "analytics-service.ts"
+Cohesion: 0.09
+Nodes (24): DashboardBuilder, DashboardDTO, dashboardService, ActivityWidget, ProductivityWidget, ProjectWidget, SearchWidget, SessionWidget (+16 more)
+
+### Community 3 - "reflection/engine/index.ts"
+Cohesion: 0.05
+Nodes (30): ThresholdSelectionPolicy, ContextAssemblyService, ContextAssemblyResult, SelectedContext, SelectionPolicy, contextProviderRegistry, contextIntelligenceService, CandidateContext (+22 more)
+
+### Community 4 - "reasoning/index.ts"
+Cohesion: 0.08
+Nodes (25): DecisionEngine, DecisionStrategyRegistry, Decision, DecisionCollection, DecisionStrategy, DecisionType, CONFIDENCE_ANALYZE_EVIDENCE, CONFIDENCE_COLLECT_CONTEXTS (+17 more)
+
+### Community 5 - "metrics/registry.ts"
+Cohesion: 0.05
+Nodes (21): ActiveTimer, Counter, Gauge, Histogram, HistogramData, Metric, MetricLabelSet, MetricMetadata (+13 more)
+
+### Community 6 - "analytics.test.ts"
+Cohesion: 0.06
+Nodes (18): DailyMetrics, HistoricalAggregates, ProjectMetrics, AnalyticsRepository, SqliteAnalyticsRepository, CustomCalculator, AnalyticsValidator, DiagnosticIssue (+10 more)
+
+### Community 7 - "RuntimeAdapter"
+Cohesion: 0.08
+Nodes (17): AnalyticsAdapter, MemoryAdapter, NotificationAdapter, SearchAdapter, StorageAdapter, TimelineAdapter, WorkspaceAdapter, buildCompatibilityContext() (+9 more)
+
+### Community 8 - "recall-builder.ts"
+Cohesion: 0.04
+Nodes (36): MemoryImportance, recallBuilder, buildRecallEvaluationContext(), classifyMemory(), computeSemanticRelevance(), getStems(), IGNORE_WORDS, MemoryCategory (+28 more)
+
+### Community 9 - "AKIRA Architecture Disposition"
+Cohesion: 0.05
+Nodes (46): 1. Task reordering is silently discarded, Confirmed bugs, 10. Future Canonical Concepts, 11.1 Principles (PROPOSAL), 11.2 Candidate capability surface, 11.4 Server-function inventory (FACT, 47), 11. MCP Boundary Candidates, 12. Final Disposition Table (+38 more)
+
+### Community 10 - "cn"
+Cohesion: 0.06
+Nodes (54): @radix-ui/react-accordion, @radix-ui/react-avatar, @radix-ui/react-dropdown-menu, @radix-ui/react-tabs, vaul, AccordionContent, AccordionItem, AccordionTrigger (+46 more)
+
+### Community 11 - "InMemoryIdentityRepository"
+Cohesion: 0.05
+Nodes (6): InMemoryIdentityRepository, uid(), uid(), Identity, IdentityEdge, IdentityEdgeType
+
+### Community 12 - "IdentityRepository"
+Cohesion: 0.05
+Nodes (4): IdentityRepository, identityRelationshipService, identityValidationService, IdentityGraph
+
+### Community 13 - "Stage 1 Controlled Behavioral Evaluation Report"
+Cohesion: 0.04
+Nodes (40): NoteCardProps, SessionLog, sessionService, 1. Test Environment, 2. Methodology, 3. Scenario-by-Scenario Evaluation Results, 4. Aggregate Assertion Summary Table, 5. Key Behavioral Differences Identified (+32 more)
+
+### Community 14 - "routeTree.gen.ts"
+Cohesion: 0.05
+Nodes (50): @tanstack/react-query, getRouter(), Route, Route, Route, Route, Route, Route (+42 more)
+
+### Community 15 - "identity/types.ts"
+Cohesion: 0.15
+Nodes (31): DomainEvent, Events, eventService, defaultIdentityRepository, identityConfidenceService, identityEvolutionService, identityGraphService, ConfidenceFactors (+23 more)
+
+### Community 16 - "AKIRA ADR Process"
+Cohesion: 0.05
+Nodes (41): Workspace Canvas Shell (Shell.tsx), Dynamic Tool Registry (toolsRegistry), Archived Reflection Context, Reflection Confidence, Reflection Context, Reflection Engine, AI Context Engine (prompt compiler), Context Relevance Filter (+33 more)
+
+### Community 17 - "AnalyticsEngine.ts"
+Cohesion: 0.05
+Nodes (20): ActivitySummary, DailyActiveProjectsMetricCalculator, DailyFileMetricCalculator, DailyNoteMetricCalculator, DailySearchMetricCalculator, DailySessionMetricCalculator, DailyTaskMetricCalculator, ProductivityCalculator (+12 more)
+
+### Community 18 - "relationships/service.ts"
+Cohesion: 0.18
+Nodes (16): buildRelationshipContext(), listeners, RelationshipCallback, RelationshipEngineEvent, relationshipEvents, RelationshipEventType, applyUserCorrection(), observePerson() (+8 more)
+
+### Community 19 - "diagnostics-service.ts"
+Cohesion: 0.05
+Nodes (28): TelemetryValidator, DiagnosticRegistry, DiagnosticsService, CategoryRegistrationError, DiagnosticRegistrationError, DiagnosticsValidationError, LoggerConfigurationError, LoggerValidationError (+20 more)
+
+### Community 20 - "retention/policy.ts"
+Cohesion: 0.03
+Nodes (58): getWorkspaceProvider(), ACTIVE_PROJECT_REASON, describesDeletedProject(), rankedActive(), STATED_ASPIRATION_REASON, ContextItem, MULTI_FACTOR_RECALL_PREFIX, applyDurableRetention() (+50 more)
+
+### Community 22 - "sidebar.tsx"
+Cohesion: 0.06
+Nodes (43): @radix-ui/react-separator, @radix-ui/react-tooltip, Input, Separator, SheetContent, SheetContentProps, SheetDescription, SheetFooter() (+35 more)
+
+### Community 23 - "The 9-Stage Execution Workflow"
+Cohesion: 0.05
+Nodes (35): 1. Domain Separation Invariant, 2. Structural Layer Invariants, 3. Implementation Boundary Guidelines, Architectural Invariants Reference, Invariant 2.1: UI Isolation, Invariant 2.2: Service Dominance, Invariant 2.3: Server/Persistence Isolation, Invariant 2.4: Single Authority of Truth (+27 more)
+
+### Community 24 - "TelemetrySeverity"
+Cohesion: 0.10
+Nodes (15): TelemetryFactory, TelemetryRecord, ReportedDiagnostic, Logger, TelemetryMetadata, TelemetrySeverity, CRITICAL, DEBUG (+7 more)
+
+### Community 25 - "habits/service.ts"
+Cohesion: 0.13
+Nodes (23): ADR-0011, buildHabitContext(), HabitCallback, HabitEngineEvent, habitEvents, HabitEventType, listeners, addHabitEvidence() (+15 more)
+
+### Community 26 - "context-resolution/service.ts"
+Cohesion: 0.15
+Nodes (14): subscribeToPresence(), buildResolvedContext(), BASELINE_CONFIDENCE_THRESHOLD, ContextResolutionCallback, ContextResolutionEvent, contextResolutionEvents, ContextResolutionEventType, listeners (+6 more)
+
+### Community 27 - "tests/capability-registry.test.ts"
+Cohesion: 0.07
+Nodes (15): ADR-0020, CapabilityBinding, Capability, CapabilityError, CapabilityNotFoundError, CapabilityVersionMismatchError, DuplicateCapabilityRegistrationError, InvalidCapabilityMetadataError (+7 more)
+
+### Community 28 - "getDatabaseConnection"
+Cohesion: 0.02
+Nodes (98): 8. Orchestration Map, assert(), cleanupTestDb(), failures, realisticPayload, runTests(), scanImports(), scanTimelineWrites() (+90 more)
+
+### Community 29 - "capabilities/registry.ts"
+Cohesion: 0.12
+Nodes (20): 1. Objective, zod, recallSearchDescriptor, recallSearchHandler(), RecallSearchInput, recallSearchInputSchema, registerRecallSearchCapability(), ActivationTier (+12 more)
+
+### Community 30 - "aiProviderManager"
+Cohesion: 0.07
+Nodes (28): 11. Model & Provider Integration, initialProvider, AIProvider, aiProviderManager, applyUnedited(), ProviderMetrics, ProviderStatus, useAIProviderManager() (+20 more)
+
+### Community 31 - "GoalDecompositionService.ts"
+Cohesion: 0.10
+Nodes (14): 9.1 Goals (FACT), InMemoryTemplateRepository, TemplateRepository, goalClassifier, GoalCategory, Career, Education, Finance (+6 more)
+
+### Community 32 - "IModuleInstance"
+Cohesion: 0.07
+Nodes (17): LifecycleError, LifecycleHookError, LifecycleTimeoutError, LifecycleTransitionError, RestartError, RollbackError, LifecycleEvents, LifecycleHooks (+9 more)
+
+### Community 33 - "PresenceContext"
+Cohesion: 0.13
+Nodes (13): buildPresenceContext(), calculateContinuityConfidence(), calculatePresenceConfidence(), classifyReturnState(), classifyTimePeriod(), isFirstSessionToday(), isUnusualAccessTime(), presenceService (+5 more)
+
+### Community 35 - "PlanningService.ts"
+Cohesion: 0.15
+Nodes (21): DomainEventName, DependencyRepository, InMemoryDependencyRepository, adaptivePlanningService, dependencyService, uid(), planningGraphBuilder, recommendationService (+13 more)
+
+### Community 36 - "repositories/index.ts"
+Cohesion: 0.03
+Nodes (55): @tanstack/react-start, persistAddProject, persistDeleteProject, persistTouchProject, persistUpdateProject, projectsService, persistEndSession, persistStartSession (+47 more)
+
+### Community 37 - "PlanningGraph"
+Cohesion: 0.18
+Nodes (16): Stage 1C Part A — Repository Integrity, createHealthRuleEngine(), HealthEvaluation, HealthRule, HealthRuleEngine, CompletedRule, DerivedCompletionRule, HealthyRule (+8 more)
+
+### Community 38 - "react"
+Cohesion: 0.06
+Nodes (40): lucide-react, react, getRawFileBase64(), uploadMockFileServer(), ContextMenu(), ContextMenuProps, EmptyState(), EmptyStateProps (+32 more)
+
+### Community 39 - "IdentityVersion"
+Cohesion: 0.09
+Nodes (5): uid(), IdentityChangeType, IdentitySnapshot, IdentityTimeline, IdentityVersion
+
+### Community 40 - "project-read.ts"
+Cohesion: 0.27
+Nodes (9): projectListDescriptor, projectListHandler(), ProjectListInput, projectListInputSchema, projectReadDescriptor, projectReadHandler(), ProjectReadInput, projectReadInputSchema (+1 more)
+
+### Community 41 - "run_loop.py"
+Cohesion: 0.09
+Nodes (9): generate_html(), main(), _call_claude(), improve_description(), main(), main(), run_loop(), split_eval_set() (+1 more)
+
+### Community 42 - "dependency-resolver.test.ts"
+Cohesion: 0.08
+Nodes (13): 5.2 Component analysis, 5. Runtime Disposition, CircularDependencyError, DependencyError, DuplicateDependencyError, InvalidDependencyError, MissingDependencyError, SelfDependencyError (+5 more)
+
+### Community 43 - "understanding/rules.ts"
+Cohesion: 0.05
+Nodes (31): chatDeclarationPromoter, onEvent(), buildUnderstandingGraph(), uid(), Declaration, parseDeclaration(), DECLARATION_IDENTITY_CATEGORY, goalRule (+23 more)
+
+### Community 44 - "context-engine.ts"
+Cohesion: 0.05
+Nodes (56): 2. GENESIS (Cognitive Subsystem), registerWorkspaceProvider(), aiContextEngine, EngineOptions, genesisCovers(), promptBuilder, contextRelevanceSelector, SelectedContext (+48 more)
+
+### Community 45 - "runtime-manager.ts"
+Cohesion: 0.07
+Nodes (22): IModuleEventBus, ModuleContext, ModuleDefinition, ModuleInstance, IModuleLoader, ModuleLoader, isValidTransition(), ModuleState (+14 more)
+
+### Community 46 - "manifest.test.ts"
+Cohesion: 0.08
+Nodes (19): DuplicateCapabilityError, DuplicateModuleError, DuplicateRouteError, InvalidVersionError, ManifestError, ManifestValidationError, MissingFieldError, UnknownPropertyError (+11 more)
+
+### Community 47 - "story-service.ts"
+Cohesion: 0.04
+Nodes (36): dirty, flushAll(), flushers, FlushPhase, isBatching(), markDirty(), PHASE_ORDER, registerFlusher() (+28 more)
+
+### Community 48 - "relationship-service.ts"
+Cohesion: 0.04
+Nodes (44): GENESIS_COGNITIVE_PROCESSORS, GenesisProcessor, initializeGenesisCognition(), departedMemoryIds, dirtyStoryIds, importanceBuilder, ImportanceRule, importanceRules (+36 more)
+
+### Community 49 - "planningService"
+Cohesion: 0.07
+Nodes (10): 4. Legacy Code Audit & Prohibition Matrix, InMemoryPlanRepository, PlanRepository, goalDecompositionService, uid(), planningService, uid(), progressService (+2 more)
+
+### Community 50 - "useAkira"
+Cohesion: 0.13
+Nodes (48): sonner, @tanstack/react-router, AiCore(), DialogContent, DialogDescription, DialogHeader(), DialogOverlay, DialogTitle (+40 more)
+
+### Community 51 - "Skill Creator"
+Cohesion: 0.06
+Nodes (34): Advanced: Blind comparison, Anatomy of a Skill, Capture Intent, Claude.ai-specific instructions, Communicating with the user, Cowork-Specific Instructions, Creating a skill, Description Optimization (+26 more)
+
+### Community 52 - "planAnalysisService"
+Cohesion: 0.27
+Nodes (3): planAnalysisService, PlanAnalysisResult, PlanDiagnostics
+
+### Community 54 - "Companion Intelligence Layer"
+Cohesion: 0.11
+Nodes (22): Consolidation Engine, Future AI Context Engine, Reasoning Engine, Awareness Confidence, Companion Intelligence Layer, Context Resolution Engine, Initiative Engine, Reflection Context (+14 more)
+
+### Community 55 - "task-write.ts"
+Cohesion: 0.16
+Nodes (17): registerTaskWriteCapabilities(), taskCreateDescriptor, taskCreateHandler(), TaskCreateInput, taskCreateInputSchema, TaskCreateOutput, taskUpdateDescriptor, taskUpdateHandler() (+9 more)
+
+### Community 56 - "search/services/index.ts"
+Cohesion: 0.10
+Nodes (14): persistClearSearchHistory, persistDeleteSearchHistory, persistGetSearchHistory, persistRunSearch, CacheEntry, SearchManager, SearchHistoryEntry, SearchHistoryRepository (+6 more)
+
+### Community 57 - "VaultFolder"
+Cohesion: 0.12
+Nodes (12): FileGridProps, FileListProps, FolderNode(), FolderNodeProps, FolderTree(), FolderTreeProps, MetadataPanelProps, VaultSidebar() (+4 more)
+
+### Community 58 - "initiative/service.ts"
+Cohesion: 0.13
+Nodes (19): buildInitiativeDecision(), CONFIDENCE_QUESTION, CONFIDENCE_REMINDER, CONFIDENCE_SILENCE, CONFIDENCE_SUGGESTION, MIN_CONFIDENCE_FOR_PROACTIVE_INITIATIVE, InitiativeCallback, InitiativeEvent (+11 more)
+
+### Community 59 - "Awareness Session"
+Cohesion: 0.08
+Nodes (22): Context Package, Companion Session, Session Outcomes, Awareness Session, Awareness Snapshot, Companion Presence, Constructive Challenge, Conversation Cycle (+14 more)
+
+### Community 60 - "package.json"
+Cohesion: 0.05
+Nodes (36): name, private, sideEffects, type, date-fns, eslint, eslint-config-prettier, @eslint/js (+28 more)
+
+### Community 61 - "SEC-002 Provider API Keys Inlined Into The Client Bundle"
+Cohesion: 0.11
+Nodes (19): REL-010 Invalid External Input Unvalidated At Every RPC Entry, TST-004 No Test Exercises The Wiring, Only The Units, TST-006 Excessive Mocking Hides The Defect It Should Catch, Security Posture Summary, Prototype Pollution Probe (Not Exploitable), SEC-001 Unsandboxed Module Loading And startup Path Escape, SEC-002 Provider API Keys Inlined Into The Client Bundle, SEC-003 resolveSafePath Prefix Check Permits Sibling Escape (+11 more)
+
+### Community 62 - "historical-search-intent.ts"
+Cohesion: 0.08
+Nodes (32): 4.1 Operational decisions currently embedded in cognition or UI, 4.2 Splitting the AI context engine, 4. Responsibilities Leaving GENESIS, persistSaveConversations, querySearchMessages, conversationsService, historicalRecall, getHistoricalRecallProvider() (+24 more)
+
+### Community 63 - "Process"
+Cohesion: 0.07
+Nodes (27): Analyzing Benchmark Results, Categories for Suggestions, Guidelines, Guidelines, Inputs, Inputs, Output Format, Post-hoc Analyzer Agent (+19 more)
+
+### Community 64 - "telemetry.ts"
+Cohesion: 0.10
+Nodes (26): ADR-0022, TelemetryContext, TelemetryIdGenerator, TelemetryProvider, TelemetryCorrelation, deepFreeze(), TelemetryMetadataArray, TelemetryMetadataValue (+18 more)
+
+### Community 65 - "TaskRepository"
+Cohesion: 0.13
+Nodes (6): InMemoryTaskRepository, TaskRepository, nextActionService, taskService, uid(), Task
+
+### Community 66 - "resource-sampler.ts"
+Cohesion: 0.29
+Nodes (8): ApplicationPressure, browserHeap(), describeResourceAvailability(), isFiniteNumber(), NodeMemoryUsage, ResourceAvailability, ResourceSample, resourceSampler
+
+### Community 67 - "compilerOptions"
+Cohesion: 0.11
+Nodes (18): compilerOptions, allowImportingTsExtensions, jsx, lib, module, moduleResolution, noEmit, noFallthroughCasesInSwitch (+10 more)
+
+### Community 68 - "server.ts"
+Cohesion: 0.18
+Nodes (11): 2.1 Runtime topology (FACT), 2.2 Snapshot facts, 2.3 Size (FACT), 2. Current Architecture Snapshot, consumeLastCapturedError(), renderErrorPage(), fetch(), getServerEntry() (+3 more)
+
+### Community 69 - "IdentityEvidence"
+Cohesion: 0.12
+Nodes (5): identityEvidenceService, uid(), EvidenceMetadata, EvidenceSourceType, IdentityEvidence
+
+### Community 70 - "lib/utils.ts"
+Cohesion: 0.07
+Nodes (20): clsx, @radix-ui/react-checkbox, @radix-ui/react-hover-card, @radix-ui/react-popover, @radix-ui/react-progress, @radix-ui/react-radio-group, @radix-ui/react-slider, @radix-ui/react-switch (+12 more)
+
+### Community 71 - "reflection/service.ts"
+Cohesion: 0.17
+Nodes (17): 4.4 Context, Appendix B — Defects Found (Documented, Not Fixed), buildReflectionContext(), listeners, ReflectionCallback, ReflectionEngineEvent, reflectionEvents, ReflectionEventType (+9 more)
+
+### Community 72 - "VaultFile"
+Cohesion: 0.08
+Nodes (10): FavoritesBarProps, TagEditorProps, ThumbnailProps, TrashViewProps, VaultFileRepository, SqliteVaultFileRepository, VaultFileLinkRow, VaultFileRow (+2 more)
+
+### Community 73 - "IdentityGoal"
+Cohesion: 0.11
+Nodes (5): identityGoalService, uid(), GoalCategory, GoalPriority, IdentityGoal
+
+### Community 74 - "SqliteTimelineRepository"
+Cohesion: 0.22
+Nodes (3): isDuplicateIdError(), isTransientDbError(), SqliteTimelineRepository
+
+### Community 75 - "SqliteTaskRepository"
+Cohesion: 0.21
+Nodes (3): TaskRepository, SqliteTaskRepository, Task
+
+### Community 76 - "pagination.tsx"
+Cohesion: 0.12
+Nodes (23): @radix-ui/react-alert-dialog, react-day-picker, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter(), AlertDialogHeader() (+15 more)
+
+### Community 77 - "IdentityHabit"
+Cohesion: 0.12
+Nodes (4): identityHabitService, uid(), HabitFrequency, IdentityHabit
+
+### Community 78 - "IdentityPersonality"
+Cohesion: 0.12
+Nodes (4): identityPersonalityService, uid(), IdentityPersonality, PersonalityTrait
+
+### Community 79 - "IdentitySkill"
+Cohesion: 0.12
+Nodes (4): identitySkillService, uid(), IdentitySkill, SkillCategory
+
+### Community 80 - "akira-os/index.ts"
+Cohesion: 0.12
+Nodes (25): ADR-0022, BlockToken, CodeBlock(), CodeLine, highlightCodeLine(), MarkdownRenderer(), parseMarkdown(), renderInlineText() (+17 more)
+
+### Community 81 - "Phase 3C Implementation Proposal: First Command Capability & Rule N1 Vertical Slice"
+Cohesion: 0.10
+Nodes (20): 10. Exact Files Expected to Change, 11. Protected Files & Subsystems, 12. Required Tests, 13. Acceptance Criteria, 14. Rollback Strategy, 15. Unresolved Architectural Decisions (O-Questions Checklist), 16. Why Other Candidate Directions Should Wait, 2. Evaluation of Candidate Architectural Directions (+12 more)
+
+### Community 82 - "SqliteVaultTagRepository"
+Cohesion: 0.19
+Nodes (3): VaultTagRepository, SqliteVaultTagRepository, VaultTag
+
+### Community 83 - "IdentityValue"
+Cohesion: 0.12
+Nodes (4): identityValueService, uid(), IdentityValue, ValueCategory
+
+### Community 84 - "REL-002 Synchronous Spin-Wait Blocks The Server Event Loop"
+Cohesion: 0.09
+Nodes (21): GEN-007 Context Filtering Keyed On Rendered Display Strings, DAT-006 Search-Cache Invalidation By Regex Over SQL Text, DAT-007 No Schema Evolution Path; Two Vault Schema Sources, DAT-011 Test Artefacts And Scratch Databases Committed, REL-002 Synchronous Spin-Wait Blocks The Server Event Loop, REL-009 Resource Leaks: Seven Intervals, Inconsistent Teardown, REL-013 Cascading-Failure Surface Is Small By Accident, TST-005 Fragile Order-Dependent Test Isolation (+13 more)
+
+### Community 85 - "IdentityInterest"
+Cohesion: 0.11
+Nodes (4): identityInterestService, uid(), IdentityInterest, InterestCategory
+
+### Community 86 - "perf-ab.ts"
+Cohesion: 0.24
+Nodes (11): ABResult, at(), DEFAULT_SAMPLES, DEFAULT_WARMUP, interleavedAB(), MIN_TRUSTWORTHY_MS, NOISE_FLOOR_MS, Stats (+3 more)
+
+### Community 87 - "compatibility-manager.ts"
+Cohesion: 0.17
+Nodes (9): CompatibilityContext, CompatibilityError, MissingAdapterError, RuntimeCompatibilityError, UnsupportedRuntimeError, VersionMismatchError, CompatibilityManager, COMPATIBILITY_SDK_VERSION (+1 more)
+
+### Community 88 - "Append-Only SQLite Event Store"
+Cohesion: 0.11
+Nodes (17): DAT-005 Event Store And Timeline Diverge Silently, DAT-010 Analytics Watermark Advances Past Unprocessed Events, TST-010 A Benchmark Masquerading As A Test, Event Store Ingest Throughput Benchmark, PERF-002 ConsistencyChecker Materialises The Whole Event Store, AnalyticsRepository And Derived Metric Tables, analytics_state Rebuild Watermark Table, ConsistencyChecker Invariant Verification (+9 more)
+
+### Community 89 - "generate_review.py"
+Cohesion: 0.14
+Nodes (9): build_run(), embed_file(), find_runs(), _find_runs_recursive(), generate_html(), get_mime_type(), _kill_port(), load_previous_iteration() (+1 more)
+
+### Community 90 - "genesis/index.ts"
+Cohesion: 0.03
+Nodes (37): CandidateReason, MemoryCandidate, CandidateRule, rules, candidateHistory, CandidateListener, candidateService, listeners (+29 more)
+
+### Community 91 - "MilestoneRepository"
+Cohesion: 0.10
+Nodes (6): InMemoryMilestoneRepository, MilestoneRepository, milestoneService, uid(), planningValidationService, Milestone
+
+### Community 92 - "GEN-002 No Cognitive State Survives A Restart"
+Cohesion: 0.15
+Nodes (16): GEN-002 No Cognitive State Survives A Restart, GEN-003 GENESIS Records Its Own Lifecycle As User Reality, GEN-004 No Duplicate Detection In The Promote Path, GEN-005 Collection Getters Return The Live Internal Array, GEN-006 Prompt Assembly Has No Token Budget, GEN-008 Insight Recency Filter Triggered By Substrings, GEN-010 Companion State Snapshot Discards Three Fields, GEN-011 Quadratic Understanding Graph Rebuild (+8 more)
+
+### Community 93 - "Phase 3D — VAJRA Readiness & Orchestration Boundary Analysis"
+Cohesion: 0.10
+Nodes (19): 10. Explicit Recommendation: Should VAJRA Implementation Begin After Phase 3D?, 1. Executive Summary, 2. Current → Target Mapping, 3. VAJRA Responsibility Matrix, 5. Defensive Guardrails: Preventing VAJRA Anti-Patterns, 6. Recommended Smallest Implementation Slice (Phase 3D), 7. Expected File Changes & Protected Components, 8. Required Tests & Acceptance Criteria (+11 more)
+
+### Community 94 - "SqliteProjectRepository"
+Cohesion: 0.07
+Nodes (29): 10. RPC Transport, 1. Frontend / Backend Boundary, 2.2 Subsystem Breakdown & Actual Behavior, 3. Memory System, 4. Identity System, 6. Goals & Missions, 7. Projects & Tasks, 8. Event Systems (+21 more)
+
+### Community 95 - "identityContextProvider"
+Cohesion: 0.11
+Nodes (4): identityContextProvider, IdentityCompleteness, IdentityHealth, IdentitySummary
+
+### Community 96 - "components.json"
+Cohesion: 0.11
+Nodes (18): aliases, components, hooks, lib, ui, utils, iconLibrary, registries (+10 more)
+
+### Community 97 - "TimelineSubscriber"
+Cohesion: 0.13
+Nodes (14): ADR-008: Event-Driven Timeline, Instrumentation Event Bus, TimelineRepository, TimelineSubscriber, persistPublishEvent RPC bridge, publish() unified API, ADR-011: Analytics Architecture, AnalyticsSubscriber (+6 more)
+
+### Community 98 - "Failure-Mode Matrix"
+Cohesion: 0.13
+Nodes (18): DAT-004 Timeline Fallback Queue Is A Permanent Data Sink, DAT-008 initializeDatabase Failure Logged And Ignored, Failure-Mode Matrix, REL-005 Errors Swallowed At Every Subscriber Boundary, REL-006 publish() Throws Inside A State Reducer, REL-007 Database Initialisation Failure Does Not Stop The Server, REL-011 Corrupted Persisted Data Handled Inconsistently, REL-012 Provider Failure Falls Back To A Silent Mock (+10 more)
+
+### Community 99 - "DOC-003 ROADMAP.md Contradicts The Code In Both Directions"
+Cohesion: 0.25
+Nodes (8): DOC-003 ROADMAP.md Contradicts The Code In Both Directions, Two Parallel Canons For TITAN And FORGE, Platform Runtime (Manifest, Resolver, Registry, Lifecycle), Readiness: TITAN (Blocked On A Decision), AnalyticsService Public Gateway, Analytics Subsystem, Analytics DTO Layer, AnalyticsQueryOptions And Timezone Resolution
+
+### Community 100 - "AKIRA Deep Scan — Chat 4 Findings"
+Cohesion: 0.13
+Nodes (14): 1. Derived context-engine state is discarded on restart while its source data survives, AKIRA Deep Scan — Chat 4 Findings, Boot-order dependency in `companionStateService.bootstrap()`, Confirmed bugs, Dead / duplicate / orphaned infrastructure, Final infrastructure inventory, Healthy infrastructure verified, Seven services initialize against an empty workspace at boot (+6 more)
+
+### Community 101 - "brain.tsx"
+Cohesion: 0.06
+Nodes (28): 5. Current Architecture Map & Subsystem Classification, PageHeader(), Shell(), Sidebar(), IconButton(), Topbar(), EmptyState(), RendererRegistry (+20 more)
+
+### Community 102 - "SqliteSessionRepository"
+Cohesion: 0.16
+Nodes (11): C6-03 — Session history retention (decision: preserve 30 days), C6-04 — Boot-fabricated habit — fixed `f26e50b`, Fixed, Found while implementing, HARDENING — Chat 6, Held, Model, Probes (+3 more)
+
+### Community 103 - "BlockerRepository"
+Cohesion: 0.13
+Nodes (4): BlockerRepository, InMemoryBlockerRepository, blockerAnalysisService, Blocker
+
+### Community 104 - "PermissionManager"
+Cohesion: 0.17
+Nodes (8): PermissionCatalog, PermissionDeniedError, PermissionNotFoundError, PermissionManager, PermissionDescriptor, PermissionGroup, PermissionScope, RiskLevel
+
+### Community 105 - "MockService"
+Cohesion: 0.17
+Nodes (3): createMockContext(), MockPermissionManager, MockService
+
+### Community 106 - "Memory Policy"
+Cohesion: 0.13
+Nodes (11): Active Memory, Historical Memory, Memory Candidate, Memory Reinforcement, Validated Memory, Reflection Stage, Memory Policy, Memory Proposal (+3 more)
+
+### Community 107 - "Companion State Engine"
+Cohesion: 0.17
+Nodes (10): Closure Stage, The Brain, Continuity Window, Session Continuity, Continuity Confidence, Presence Confidence, Presence Context, Presence Engine (+2 more)
+
+### Community 109 - "presence/constants.ts"
+Cohesion: 0.17
+Nodes (11): AFTERNOON_START_HOUR, CONTINUITY_MAX_DECAY_GAP, CONVERSATION_CONTINUITY_THRESHOLD, EVENING_START_HOUR, MORNING_START_HOUR, NEXT_DAY_GAP_THRESHOLD, NIGHT_START_HOUR, PRESENCE_MAX_IDLE_GAP (+3 more)
+
+### Community 110 - "AnalyticsRepository"
+Cohesion: 0.13
+Nodes (14): AnalyticsEngine, AnalyticsRepository, daily_metrics table, EventRepository.findBetween(), MetricCalculator contract, project_metrics table, ADR-012: Core Metrics Framework, AnalyticsService facade (+6 more)
+
+### Community 111 - "RealityAdapter"
+Cohesion: 0.14
+Nodes (9): Idempotency Keyed on AkiraEvent.id, RealityAdapter, RealityAdapterMetrics, AkiraEvent Envelope, Event Store, GENESIS MemoryEvent Stream (eventService), MemoryEvent, PersistenceSubscriber (+1 more)
+
+### Community 112 - "CapabilityRegistry"
+Cohesion: 0.13
+Nodes (10): 3. Target Contract Mapping, 6. Lifecycle Implications, 3. Target Contract Mapping, 8. Exact Files Expected to Change, Existing Files Modified:, New Files Created:, 9. Lifecycle Implications, CapabilityRegistry (+2 more)
+
+### Community 113 - "genesis-chat-intake-cost.bench.ts"
+Cohesion: 0.33
+Nodes (8): build(), chatMessage(), completeTask(), freshWorkspace(), isChat(), realImportance, realRecall, scored()
+
+### Community 114 - "RendererRegistry.ts"
+Cohesion: 0.11
+Nodes (22): getTimelineEvents, timelineService, TimelineCursor, TimelineEvent, DetailDrawerProps, RendererRegistryClass, GenericEventCard(), GenericEventDetail() (+14 more)
+
+### Community 115 - "eventBus"
+Cohesion: 0.12
+Nodes (11): eventBus, TanStack File-Based Routing, GENESIS AI Context & Memory Flow, Reactive Client Cache (akira-store), Read-Only WorkspaceProvider, Naming Conventions, src/shared/ (Event Bus & Utilities), Capability Registry Event Bus Integration (+3 more)
+
+### Community 116 - "Consolidated Semantic Memory"
+Cohesion: 0.15
+Nodes (12): Background Pruning Scheduler, Sliding-Window Retention Policy, Adaptive Memory Engine, Consolidated Semantic Memory, Exponential Memory Decay Algorithm, Memory Event, recallCount, strength (reinforcement state) (+4 more)
+
+### Community 117 - "Documentation Accuracy Scorecard"
+Cohesion: 0.15
+Nodes (14): GEN-013 Boot-Order Race Against Un-Hydrated Reality, GEN-014 Bootstrap Throw Path Leaves System Half-Initialised, REL-008 One Boot Failure Silently Disables Seven Subsystems, QUA-005 God Files (brain.tsx, chat.tsx, akira-store.ts), Documentation Accuracy Scorecard, DOC-002 Changelog Claims Seven Test Suites That Do Not Exist, DOC-005 DIRECTORY_STRUCTURE.md Omits Eleven Source Directories, DOC-007 ARCHITECTURE.md GENESIS Data Flow Is Not Implemented (+6 more)
+
+### Community 118 - "Context Builder"
+Cohesion: 0.13
+Nodes (11): Memory Lifecycle, Story Model, Contextual Recall, Memory Importance Engine, Passive Recall, Recall Signals, Retrieval and Recall Engine, Adaptive Memory Engine (+3 more)
+
+### Community 120 - "Phase A — Build Recovery"
+Cohesion: 0.09
+Nodes (18): P0 Production Build Failure, Phase A — Baseline (pre-repair), Phase A — Build Recovery, Stage 1B — Clean Installation Verification, E1 — Clean Clone of Committed HEAD, E2 — Clean Copy of the Recovered Working Tree, F1 — Clean Clone of main Does Not Build, Undeclared Toolchain Expectations (+10 more)
+
+### Community 121 - "scripts"
+Cohesion: 0.17
+Nodes (12): scripts, build, build:dev, dev, format, lint, preview, test (+4 more)
+
+### Community 122 - "verify-observability-reachability.ts"
+Cohesion: 0.09
+Nodes (21): files, FORMATTABLE, insideProject(), payload, PRETTIER_BIN, res, ROOT, abort() (+13 more)
+
+### Community 123 - "tools.index.tsx"
+Cohesion: 0.24
+Nodes (10): getEnabledTools(), getTools(), getToolsByCategory(), getVisibleTools(), Tool, toolsRegistry, getDevVisibleTools(), CATEGORIES (+2 more)
+
+### Community 124 - "command.tsx"
+Cohesion: 0.18
+Nodes (11): cmdk, @radix-ui/react-dialog, Command, CommandDialog(), CommandEmpty, CommandGroup, CommandInput, CommandItem (+3 more)
+
+### Community 125 - "IdentityPreference"
+Cohesion: 0.12
+Nodes (4): identityPreferenceService, uid(), IdentityPreference, PreferenceCategory
+
+### Community 126 - "IdentityRelationship"
+Cohesion: 0.15
+Nodes (3): uid(), IdentityRelationship, RelationshipType
+
+### Community 127 - "genesis-planning.test.ts"
+Cohesion: 0.11
+Nodes (3): RecommendationRule, recommendationRuleEngine, Recommendation
+
+### Community 128 - "instrumentation.test.ts"
+Cohesion: 0.15
+Nodes (12): isSerializable(), isValidTimestamp(), composeMiddleware(), correlationIdGenerator(), defaultMiddlewarePipeline, eventIdGenerator(), generateUUID(), Middleware (+4 more)
+
+### Community 129 - "RuntimeManager"
+Cohesion: 0.17
+Nodes (5): 16.1 Approach, 16.2 How the stages relate to the P0 phases, 16.3 Gate, 16. Migration Strategy, RuntimeManager
+
+### Community 130 - "genesis-reviewer Subagent"
+Cohesion: 0.25
+Nodes (8): genesis-reviewer Subagent, src/akira-os/ (OS Core Feature Modules), src/contracts/ (Pure Interface Contracts), src/genesis/ (AI Companion Engine), src/persistence/ (SQLite Connector & Repositories), src/routes/ (Routing Controllers), AKIRA OS (Reality Layer), GENESIS (Interpretation Layer)
+
+### Community 131 - "CapabilityRegistry"
+Cohesion: 0.17
+Nodes (11): ADR-016: Platform Runtime Module Core, ADR-017: Module Manifest System, manifest.yaml / manifest.json declaration, ADR-018: Dependency Resolution Engine, ADR-019: Centralized Lifecycle Manager, ADR-020: Capability Registry, CapabilityRegistry, BND-007: The Platform Runtime is wired to nothing (+3 more)
+
+### Community 132 - "CRIT-007 No Automated Quality Gate Exists"
+Cohesion: 0.17
+Nodes (14): GEN-012 Planning Subsystem Does Not Typecheck, REL-001 Application Cannot Start And No Gate Caught It, TST-001 No Automated Quality Gate Of Any Kind, TST-003 Largest GENESIS Suite Executes Zero Tests, TST-009 Coverage Tooling Installed And Unreachable, GENESIS Barrel Import Graph Cost, QUA-001 Lint Gate Detects Nothing But Formatting, QUA-007 371 Uses Of any At The System Seams (+6 more)
+
+### Community 133 - "Context Builder (Sprint 9)"
+Cohesion: 0.13
+Nodes (11): F2 — Production Artefact Is Not Self-Hostable, AI Context Engine (Sprint 10), Context Builder (Sprint 9), Memory Importance Engine (Sprint 7), Recall and Retrieval Engine (Sprint 8), Confidence Engine, Evidence Engine, IdentityEvidence (+3 more)
+
+### Community 134 - "devDependencies"
+Cohesion: 0.10
+Nodes (21): devDependencies, eslint, eslint-config-prettier, @eslint/js, eslint-plugin-prettier, eslint-plugin-react-hooks, eslint-plugin-react-refresh, globals (+13 more)
+
+### Community 135 - "__root.tsx"
+Cohesion: 0.06
+Nodes (28): Global Command Palette Overlay, Shell Responsive Breakpoint Behavior, Workspace Shell, Developer Mode Visibility Gating, getVisibleTools, Tool Registry, Tool Interface, Tool Categories (+20 more)
+
+### Community 136 - "AKIRA — Engineering Handoff & Architecture Baseline"
+Cohesion: 0.09
+Nodes (22): 10. Recommended Phase 3 Starting Point, 11. Evidence & Tests Supporting the Current State, 12. WHAT I WOULD NOT TOUCH, 1. Executive Summary, 2.1 Application & Runtime Topology, 2. Current System Understanding, 3. Major Work Already Completed, 6.1 Subsystem Ownership & Boundaries (+14 more)
+
+### Community 137 - "AKIRA Foundation Contracts"
+Cohesion: 0.05
+Nodes (42): 10. AKIRA OS Contract (K14), 11. Ownership Matrix, 12. Persistence Contract (K15), 13. Lifecycle Contract (K16), 14. Authority Contract (K17), 15. Failure Contract (K18), 17. Interaction Semantics (K20), 18. MCP Boundary (K21) (+34 more)
+
+### Community 138 - "form.tsx"
+Cohesion: 0.10
+Nodes (22): @radix-ui/react-label, @radix-ui/react-slot, react-hook-form, Breadcrumb, BreadcrumbEllipsis(), BreadcrumbItem, BreadcrumbLink, BreadcrumbList (+14 more)
+
+### Community 139 - "relationships/constants.ts"
+Cohesion: 0.22
+Nodes (8): CONFIDENCE_PERSON_OBSERVED, CONFIDENCE_RELATIONSHIP_ARCHIVED, CONFIDENCE_RELATIONSHIP_EVOLVED, CONFIDENCE_RELATIONSHIP_IDENTIFIED, CONFIDENCE_RELATIONSHIP_REFINED, CONFIDENCE_RELATIONSHIP_UNDERSTOOD, CONFIDENCE_RELATIONSHIP_VERIFIED, INITIAL_RELATIONSHIP_SIGNIFICANCE
+
+### Community 140 - "pipeline.ts"
+Cohesion: 0.08
+Nodes (8): TelemetryPipeline, TelemetryPipelineStage, TelemetrySerializer, TelemetrySink, TelemetrySerializationError, TelemetryPipelineImpl, jsonTelemetrySerializer, TelemetryServiceImpl
+
+### Community 141 - "4. GENESIS Disposition"
+Cohesion: 0.29
+Nodes (7): 4.1 Memory, 4.2 Understanding, 4.3 Identity, 4.5 AI, 4.6 Initiative / Reflection, 4.7 Planning / Reasoning / Decision, 4. GENESIS Disposition
+
+### Community 142 - "createServerFn RPC Layer"
+Cohesion: 0.20
+Nodes (9): ADR-003: SSR & RPC Serialization, createServerFn RPC Layer, ADR-004: Repository Pattern, ADR-006: Module Contract, RebuildManager, Strict Zod Manifest Schema, PLT-001: Validation Framework absent at the RPC boundary (1 of 41), PLT-002: Repository Pattern bypassed by analytics validation (+1 more)
+
+### Community 143 - "ADR-021: Observability Platform Architecture"
+Cohesion: 0.15
+Nodes (13): ADR-021: Observability Platform Architecture, Four-Layer Observability Stack, ADR-022: Completing the Observability Platform, Null-Sink Defect (TelemetryPipelineImpl with zero stages), Audit 01: Repository Map, GENESIS Subsystem Inventory, Suspected Legacy / Abandoned Areas, src/ Scale Inventory (601 files, 64,224 LOC) (+5 more)
+
+### Community 144 - "search.tsx"
+Cohesion: 0.16
+Nodes (14): searchHistoryService, searchService, CommandPalette(), ResultPreview(), Drawer(), DrawerContent, ScrollArea, ScrollBar (+6 more)
+
+### Community 145 - "Phase 3B Implementation Proposal: Capability Foundation Expansion & Tier 2 Activation"
+Cohesion: 0.11
+Nodes (18): 10. Test Plan, 11. Acceptance Criteria, 12. Rollback Strategy, 13. Unresolved Architectural Decisions (O-Questions Checklist), 1. Objective, 2.1 Registry Sufficiency vs. Separate Lifecycle Mechanism (Inspection Point 6), 2.2 Rule N2 Execution Mechanics (Inspection Point 7), 2.3 Necessity of VAJRA (Inspection Point 8) (+10 more)
+
+### Community 146 - "dependencies"
+Cohesion: 0.04
+Nodes (55): dependencies, better-sqlite3, class-variance-authority, clsx, cmdk, date-fns, embla-carousel-react, @hookform/resolvers (+47 more)
+
+### Community 147 - "LifecycleManager"
+Cohesion: 0.17
+Nodes (10): ModuleContext dependency injection, ModuleInstance, RuntimeManager, Pluggable Failure Policies (StrictPolicy / ContinueOnFailurePolicy), LifecycleManager, LifecycleTransitionError, DEP-009: IModuleInstance does not declare definition, DEP-010: Per-module lifecycle timeouts unreachable by design (+2 more)
+
+### Community 148 - "package_skill.py"
+Cohesion: 0.14
+Nodes (4): main(), package_skill(), should_exclude(), validate_skill()
+
+### Community 149 - "3. Real-Repository Scenario Results"
+Cohesion: 0.07
+Nodes (28): 1. Pre-Flight Repository Integrity & Isolation Verification, 2. Methodology & Comparison Setup, 3. Real-Repository Scenario Results, 4. Summary Table of Stage 2 Real-Repository Results, 5. Architectural Verification Check, 6. Final Evaluation Verdict & Classification, **A. READY FOR AKIRA IMPLEMENTATION**, Assertion Outcomes (Scenario 1) (+20 more)
+
+### Community 151 - "PermissionRequiredError"
+Cohesion: 0.06
+Nodes (26): 5.1 Reachability (FACT), AnalyticsAPI, AkiraSDK, AnalyticsService, EventBus, MemoryService, NotificationService, PermissionManager (+18 more)
+
+### Community 152 - "CLAUDE.md Governance Router"
+Cohesion: 0.18
+Nodes (10): AKIRA Mission, AKIRA Tech Stack, AKIRA OS Platform Architecture, CLAUDE.md Governance Router, TypeScript Conventions, Documentation Maintenance Rules, Pull Request Workflow (400-line cap, squash merge), AKIRA OS Developer Guide (+2 more)
+
+### Community 153 - "aggregate_benchmark.py"
+Cohesion: 0.16
+Nodes (6): aggregate_results(), calculate_stats(), generate_benchmark(), generate_markdown(), load_run_results(), main()
+
+### Community 154 - "Memory Importance Engine"
+Cohesion: 0.17
+Nodes (8): MemoryRelationship (future graph edges), salience, AI Judgment Signal, Importance Signals, Memory Lifecycle Categories (Permanent/Growing/Dynamic/Temporary), Memory Importance Engine, Relationships Signal, User Intent Signal (dominant override)
+
+### Community 155 - "createDefaultStrategyRegistry"
+Cohesion: 0.24
+Nodes (11): Automatic Story Evolution, createDefaultStrategyRegistry(), DeductiveReasoningStrategy, ImplicationReasoningStrategy, ReasoningStrategy (Interface), ReasoningStrategyRegistry, SynthesisReasoningStrategy, ContradictionReflectionStrategy (+3 more)
+
+### Community 156 - "ContextAssemblyService"
+Cohesion: 0.18
+Nodes (11): ContextAssemblyResult, ContextAssemblyService, ScoredContextCollection, SelectionPolicy (Interface), ThresholdSelectionPolicy, Reflection, ReflectionAssemblyService, ReflectionCollection (+3 more)
+
+### Community 157 - "Grader Agent"
+Cohesion: 0.12
+Nodes (16): Field Descriptions, Grader Agent, Grading Criteria, Guidelines, Inputs, Output Format, Process, Role (+8 more)
+
+### Community 158 - "Severance S4 — Dead Story and Importance Builders"
+Cohesion: 0.12
+Nodes (14): initializeGenesis Explicit Registration, Reachability Test Class, Candidate Rule Engine, AKIRA Changelog, Keep a Changelog, Semantic Versioning, v2.0.0-architecture Release, Brain Inspector and Debugger (/brain) (+6 more)
+
+### Community 159 - "reality-adapter.ts"
+Cohesion: 0.10
+Nodes (12): DeletionPayload, MissionCompletedPayload, NotePayload, ProjectPayload, SUPPORTED_PLATFORM_EVENT_TYPES, TaskCompletedPayload, TranslatedEvent, translatePlatformEvent() (+4 more)
+
+### Community 161 - "genesis-production-composition.test.ts"
+Cohesion: 0.21
+Nodes (11): ENTRY, GENESIS_DIR, genesisSourceFiles(), reachableFromEntry(), relative(), REPO_ROOT, resolveSpecifier(), SelfInitialising (+3 more)
+
+### Community 163 - "TelemetryService (Core Facade)"
+Cohesion: 0.18
+Nodes (9): Health Check Flow, HealthRuleRegistry, TelemetryServiceImpl, DiagnosticsFacade, HealthFacade, ResourceFacade, Span, TelemetryService (Core Facade) (+1 more)
+
+### Community 164 - "DAT-002 Vault Dedup Corrupts Siblings On Soft Delete"
+Cohesion: 0.25
+Nodes (10): SHA-256 Content Hashing And Dedup Index, Crash-Recovery Matrix, DAT-002 Vault Dedup Corrupts Siblings On Soft Delete, DAT-003 Filesystem Operations Inside SQLite Transactions, CRIT-006 Vault Dedup Lifecycle Loses User Files, VaultFolderService Circular Move Prevention, VaultHashService SHA-256 Stream Hashing, Secure File Vault Module (+2 more)
+
+### Community 165 - "Module State Machine (UNLOADED to RUNNING)"
+Cohesion: 0.20
+Nodes (10): Provider Registration Lifecycle, LifecycleManager, Module State Machine (UNLOADED to RUNNING), Restart Sequence, Manifest Discovery Process, ModuleInstance, ModuleLoader, ModuleState (+2 more)
+
+### Community 166 - "Module Manifest System"
+Cohesion: 0.20
+Nodes (7): Cycle Detection (Temporary/Permanent Marks), DependencyNode, Dependency Resolver, Module Manifest System, Platform Module Runtime, AKIRA Platform SDK, Shared Components (Joint Ownership)
+
+### Community 168 - "chart.tsx"
+Cohesion: 0.24
+Nodes (11): recharts, ChartConfig, ChartContainer, ChartContext, ChartContextProps, ChartLegendContent, ChartStyle(), ChartTooltipContent (+3 more)
+
+### Community 169 - "menubar.tsx"
+Cohesion: 0.11
+Nodes (12): @radix-ui/react-menubar, Menubar, MenubarCheckboxItem, MenubarContent, MenubarItem, MenubarLabel, MenubarRadioItem, MenubarSeparator (+4 more)
+
+### Community 170 - "task-read.ts"
+Cohesion: 0.27
+Nodes (9): registerTaskCapabilities(), taskListDescriptor, taskListHandler(), TaskListInput, taskListInputSchema, taskReadDescriptor, taskReadHandler(), TaskReadInput (+1 more)
+
+### Community 171 - "event-contract.test.ts"
+Cohesion: 0.27
+Nodes (10): declarationsInSource(), publishedConstants(), publishedLiterals(), publishedValues(), PUBLISHER_FILES, read(), REGISTRY, REPO_ROOT (+2 more)
+
+### Community 172 - "20.2 Still OPEN"
+Cohesion: 0.15
+Nodes (13): 20.2 Still OPEN, O10. Capability Registry implementation location, MCP implementation, MCP stage, O12. External-boundary authentication and authorization, O1. Where is the one authoritative live runtime placed?, O2. Is the server or backend authoritative for workspace writes, with browser state as a cache?, O3. What are the Goal schema, its states, and its relationship to Project and Task?, O4. Identity: what is durable, what is derived, and do the two current stores merge?, O5. Closed (+5 more)
+
+### Community 173 - "/pre-pr Skill"
+Cohesion: 0.27
+Nodes (4): /pre-pr Skill, npm run verify Pipeline, ADR-022 (Observability Tree-Shaken Out of Bundle), Local Verification Pipeline
+
+### Community 174 - "BND-004: Nine GENESIS modules self-initialise at import time"
+Cohesion: 0.20
+Nodes (9): BND-004: Nine GENESIS modules self-initialise at import time, BND-005: persistence and akira-os bidirectional 19-file cycle, BND-006: contracts and shared depend upward, BND-008: GENESIS couples to AKIRA OS internals, BND-009: GENESIS persists config in the platform settings store, Boundary Compliance Scorecard, WorkspaceProvider read-only seam, DEP-003: Global mutable singletons with silent-null fallbacks (+1 more)
+
+### Community 175 - "telemetry_records Table"
+Cohesion: 0.20
+Nodes (7): AsyncProcessor (batch worker), ObservabilityQueryFacade, TelemetryRepository (SQLite), SQLiteTelemetryRepository, SQLCipher Encrypted Storage (Roadmap), Telemetry Indexing Strategy, telemetry_records Table
+
+### Community 176 - "AKIRA OS v1.1 Final Release Audit"
+Cohesion: 0.20
+Nodes (5): AKIRA OS Releases & Audits, v1.1.0 SQLite Foundation Target, AKIRA OS v1.1 Final Release Audit, Persistence Audit (SQLite-only runtime persistence), Technical Debt & Production Readiness Scores
+
+### Community 177 - "LoggerFacade"
+Cohesion: 0.20
+Nodes (9): OTelExporter, LoggerFacade, TelemetryExporter contract, Sensitive Data Scrubbing (PII Masking), OTLP Cloud Export Sync, TelemetryPipeline, TelemetryPipelineStage, TelemetrySerializer (JsonTelemetrySerializer) (+1 more)
+
+### Community 178 - "Observability Platform"
+Cohesion: 0.20
+Nodes (7): Collection Layer, Instrumentation Layer, Observability Platform, Presentation Layer, Storage Layer, AKIRA OS Architecture Documentation, AKIRA OS Development Roadmap
+
+### Community 179 - "ReasoningEngine"
+Cohesion: 0.20
+Nodes (7): Reasoning, ReasoningAssemblyService, ReasoningCollection, ReasoningEngine, ReasoningResult (Public Output Contract), ReasoningType, ReflectionResult
+
+### Community 180 - "Process"
+Cohesion: 0.13
+Nodes (14): Blind Comparator Agent, Field Descriptions, Guidelines, Inputs, Output Format, Process, Role, Step 1: Read Both Outputs (+6 more)
+
+### Community 182 - "AKIRA Deep Scan — Chat 5 Findings"
+Cohesion: 0.05
+Nodes (36): AKIRA Deep Scan — Chat 5 Findings, Area 4 — restart reconstruction, Area 7 — currentPriorities / currentFocus, Area 8 — confidence literals, C5-01 — A deleted project is still described to the model as actively being built, C5-02 — `Understanding.status` is computed on every rebuild and read by nobody, C5-03 — A finished session's summary silently loses items as the user keeps working, C5-04 — GENESIS observes 9 of 98 platform events; ordinary user activity is invisible to cognition (+28 more)
+
+### Community 183 - "SimpleMetricRegistry"
+Cohesion: 0.22
+Nodes (8): Counter (CounterImpl), Gauge (GaugeImpl), Histogram (HistogramImpl), SimpleMetricRegistry, MetricSnapshot (Immutable), Timer (TimerImpl), MetricsFacade, MetricRecord
+
+### Community 185 - "Identity Layer"
+Cohesion: 0.22
+Nodes (5): Identity Confidence and Evidence, Identity Dimensions, Identity Layer, Identity Reflection, Memory Confidence
+
+### Community 186 - "DecisionEngine"
+Cohesion: 0.22
+Nodes (6): Decision, DecisionCollection, DecisionEngine, DecisionStrategy (Interface), DecisionStrategyRegistry, DecisionType
+
+### Community 187 - "AKIRA Foundation Contracts — Final Consistency Audit"
+Cohesion: 0.14
+Nodes (13): 10. Summary, 1. Verdict, 2. Checks Requested, 3. Recent Changes Verified, 4. §22.3 Held-Open Items vs N1–N3, 5. GENESIS Command-Freedom (N3), 6. N2 Scope (Tier 2, Rule N2), 7. Ownership Matrix vs Contracts (+5 more)
+
+### Community 188 - "check-module-boundaries.mjs"
+Cohesion: 0.22
+Nodes (6): files, FORBIDDEN, payload, report, UI_SURFACE, violations
+
+### Community 189 - "AKIRA Foundation Contracts — Consistency Audit (Phase 2.1A)"
+Cohesion: 0.11
+Nodes (19): 16. Correlation and Traceability (K19), 7.1 What may be asked of GENESIS, 7.2 Interaction, 7.3 What GENESIS sends and receives, 7. GENESIS Contract (K11), 1. Audit Scope, 2. Verdict, 3. Summary (+11 more)
+
+### Community 190 - "Workspace Shell (Shell.tsx)"
+Cohesion: 0.18
+Nodes (8): Feature Priority Order, Workspace Shell (Shell.tsx), Coding Standards (UI Declarative Separation, No Magic Strings), ESLint no-restricted-properties process.exit Rule, validateMigration CLI Delegation, Integrated Command Palette, Implemented Subsystems (Current Foundation), Migration Hub Client (Planned)
+
+### Community 191 - "run_eval.py"
+Cohesion: 0.23
+Nodes (4): find_project_root(), main(), run_eval(), run_single_query()
+
+### Community 192 - "/bench-genesis Skill"
+Cohesion: 0.29
+Nodes (4): /bench-genesis Skill, interleavedAB / describeAB, MIN_TRUSTWORTHY_MS Reportability Threshold, perf-ab.ts Paired A/B Harness
+
+### Community 193 - "fts_workspace FTS5 Virtual Table"
+Cohesion: 0.25
+Nodes (8): fts_workspace FTS5 Virtual Table, Domain Repository Contract, RPC Layer (createServerFn), SQLite Database (akira.db, WAL), Sqlite Repository Implementation, timeline_events Audit Table, Universal Workspace Search (FTS5), Testing RPC Server Functions
+
+### Community 194 - "UI Must Not Import Repositories"
+Cohesion: 0.29
+Nodes (7): God Modules by Fan-Out, BND-003: GENESIS compiled into the browser bundle, vite importProtection disabled, DEP-011: genesis/index.ts re-exports colliding names, DEP-012: PlanningService references five undeclared types, DEP-014: Fan-out hotspots, PLT-004: Module boundaries are not enforceable
+
+### Community 195 - "TelemetryBase"
+Cohesion: 0.25
+Nodes (7): DiagnosticRecord, HealthRecord, LogRecord, ResourceRecord, TelemetryBase, TelemetrySeverity, TraceRecord (SpanRecord)
+
+### Community 196 - "RelevanceEngine"
+Cohesion: 0.25
+Nodes (7): Importance-Ranked Memory Retrieval, AverageScoreAggregator, DefaultRelevanceStrategy, RelevanceEngine, RelevanceStrategy (Interface), RelevanceStrategyRegistry, ScoreAggregator (Interface)
+
+### Community 197 - "ContextIntelligenceService"
+Cohesion: 0.25
+Nodes (7): CandidateContext, Context Intelligence Subsystem, ContextCollection, ContextIntelligenceService, ContextProvider (Interface), ContextProviderRegistry, ContextRequest
+
+### Community 198 - "DAT-001 Fire-And-Forget Database Writes"
+Cohesion: 0.12
+Nodes (16): DAT-001 Fire-And-Forget Database Writes, DAT-009 RPC Id Passthrough Works Only Because Validation Is Absent, REL-003 Every Workspace Write Failure Is Invisible, CRIT-005 Workspace Writes Are Fire-And-Forget, Notes And Brain Dump Module, notes SQLite Table, Projects Management Module, projects SQLite Table (+8 more)
+
+### Community 199 - "carousel.tsx"
+Cohesion: 0.17
+Nodes (14): embla-carousel-react, Carousel, CarouselApi, CarouselContent, CarouselContext, CarouselContextProps, CarouselItem, CarouselNext (+6 more)
+
+### Community 200 - "TimelineRepository"
+Cohesion: 0.09
+Nodes (14): AKIRA Deep Scan — Chat 3 Findings, Dead / duplicate / orphaned architecture, Final inventory, Healthy systems explicitly verified, Scan coverage, Stale or weak tests and validators, Suspected bugs requiring later investigation, Timeline development seeding may reach a packaged desktop build (+6 more)
+
+### Community 201 - "Temporary Database Mocking (temp_e2e_akira.db)"
+Cohesion: 0.29
+Nodes (4): Testing Requirements & Coverage Rules, Logical File Vault (SHA-256 dedup, MIME magic bytes), AKIRA_DATABASE_PATH Environment Redirection, Temporary Database Mocking (temp_e2e_akira.db)
+
+### Community 202 - "contract-auditor Subagent"
+Cohesion: 0.15
+Nodes (6): contract-auditor Subagent, Sidebar Tool Registry (toolsRegistry), Capability Model Interface, Capability Registry, SDK Extension Guidelines, Dynamic Analytics Dashboard (Planned)
+
+### Community 203 - "ADR-010: Instrumentation Reliability"
+Cohesion: 0.33
+Nodes (6): ADR-010: Instrumentation Reliability, 10,000 events/sec Throughput Target, analytics_state table, PLT-006: Event ordering is not deterministic in the Event Store, PLT-015: Incremental rebuild permanently skips same-millisecond events, PLT-018: rebuildAll wipes derived tables outside the rebuild transaction
+
+### Community 204 - "ContextManager (AsyncLocalStorage)"
+Cohesion: 0.29
+Nodes (7): ContextManager (AsyncLocalStorage), Log Recording Flow, Trace Recording Flow, Telemetry Record Lifecycle, TelemetryContext (AsyncTelemetryContext), TelemetryCorrelation, telemetryFactory
+
+### Community 205 - "RingBuffer (async boundary)"
+Cohesion: 0.29
+Nodes (4): Metric Recording Flow, MetricAggregator (collection stage), RingBuffer (async boundary), MetricAggregator
+
+### Community 206 - "GEN-001 GENESIS Observes No Reality"
+Cohesion: 0.15
+Nodes (13): GEN-001 GENESIS Observes No Reality, REL-004 Self-Sustaining Presence Event Amplification Loop, PERF-006 Missing Index On vault_file_tags.tag_id, QUA-009 Naming Inconsistencies Hiding Real Ambiguity, CRIT-002 The Two Event Buses Are Not Connected, CRIT-003 Duplicate Keys In The Central Event Registry, timeline_events SQLite Table, Timeline Logs Module (+5 more)
+
+### Community 207 - "Manifest Validation Rules"
+Cohesion: 0.29
+Nodes (3): AkiraSDK, SDK Error Types, PermissionManager
+
+### Community 209 - "AKIRA N1 Decision: Internal Command Authority"
+Cohesion: 0.17
+Nodes (12): 10. Decision Status, 1. Question, 2. Relevant Existing Decisions, 3. Model A — Direct Single-Owner Commands, 4. Model B — All Commands Through VAJRA, 5. Comparison, 6. Proposed Resolution, 7. Boundary Conditions (+4 more)
+
+### Community 211 - "AKIRA N2 Decision: Non-VAJRA Requests and Tier-2 Activation"
+Cohesion: 0.17
+Nodes (12): 10. Decision Status, 11. Relationship to the Earlier Proposal, 1. Question, 2. Relevant Existing Decisions, 3. Model A — The request is a requirement, 4. Model B (B′) — The request is not a requirement, 5. Comparison, 6. Resolution (+4 more)
+
+### Community 212 - "AKIRA N3 Decision: GENESIS Command and Mutation Boundary"
+Cohesion: 0.18
+Nodes (11): 10. Decision Status, 1. Question, 2. Relevant Existing Decisions, 3. Model A — GENESIS accepts owner-local Commands, 4. Model A′ — Commands to GENESIS from VAJRA only, 5. Model B — GENESIS accepts no Commands, 6. Resolution, 7. Boundary Conditions (+3 more)
+
+### Community 214 - "BND-001: AKIRA OS to GENESIS event path is severed"
+Cohesion: 0.40
+Nodes (5): ADR-009: Module Event Integration, BND-001: AKIRA OS to GENESIS event path is severed, Legacy-to-Instrumentation Event Bus Bridge, PLT-005: Two event systems with a one-way lossy silent bridge, PLT-011: correlationId auto-generated per event, making correlation inert
+
+### Community 215 - "AuditFacade"
+Cohesion: 0.33
+Nodes (5): Audit Event Flow, AuditCryptoManager, AuditFacade, AuditLogger (HMAC-SHA256 append-only file), AuditRecord
+
+### Community 216 - "Dependency Rules Matrix"
+Cohesion: 0.33
+Nodes (3): Dependency Rules Matrix, src/observability Package Tree, Telemetry Access Control Matrix
+
+### Community 217 - "AKIRA Target Architecture — Final Consistency Audit"
+Cohesion: 0.20
+Nodes (9): 1. Audit Scope, 2. Method, 3. Findings, 4. Decision Consistency Matrix, 5. Terminology Consistency, 7. Final Verdict, AKIRA Target Architecture — Final Consistency Audit, Checked and not findings (NONE) (+1 more)
+
+### Community 218 - "AKIRA Target Architecture"
+Cohesion: 0.04
+Nodes (50): 10.1 Responsibility, 10.2 Planes and contents (TARGET), 10.3 Model transport, 10.4 The store, 10. AKIRA OS, 11. HANDS, 14.1 The facts that constrain the decision, 14.2 Options (+42 more)
+
+### Community 220 - "Sliding-Window Telemetry Retention"
+Cohesion: 0.40
+Nodes (3): Sliding-Window Telemetry Retention, TelemetrySink seam, TelemetryStore (bounded ring buffer)
+
+### Community 221 - "Story"
+Cohesion: 0.40
+Nodes (4): Story Influence on Importance, Story, Story-Based Recommendations, Story Types (vocation/growth/education/life_event)
+
+### Community 222 - "Session Intent"
+Cohesion: 0.40
+Nodes (3): Session Intent, Dynamic Awareness, Intent Discovery
+
+### Community 224 - "error/lovable-error-reporting.ts"
+Cohesion: 0.40
+Nodes (3): LovableErrorOptions, LovableEvents, Window
+
+### Community 226 - "persistAddNote"
+Cohesion: 0.50
+Nodes (4): persistAddNote, NoteRepository contract, SqliteNoteRepository, PLT-003: schema_version is decorative; no migration ladder
+
+### Community 227 - "Shell layoutMode prop"
+Cohesion: 0.50
+Nodes (4): ADR-005: Container Layout, Fit Mode, Shell layoutMode prop, Scroll Mode
+
+### Community 228 - "EventBusObserver"
+Cohesion: 0.50
+Nodes (3): EventBusObserver, HealthRegistry, PerformanceMonitor
+
+### Community 229 - "Instrumentation Event Bus (globalEventBus)"
+Cohesion: 0.09
+Nodes (16): Event Pipeline Remediation Design, AnalyticsSubscriber (never registered), Instrumentation Event Bus (globalEventBus), Legacy-to-Instrumentation Bridge, Legacy Event Bus (SimpleEventBus), Event Middleware Pipeline, Five-Phase Event Migration Proposal, Phase B — Event Architecture Reconciliation (+8 more)
+
+### Community 230 - "3.2 Target capabilities"
+Cohesion: 0.22
+Nodes (9): 3.1 Responsibility, 3.2 Target capabilities, 3. GENESIS Target Boundary, Cognitive Context, Identity System, Insights, Memory System, Reflection (+1 more)
+
+### Community 231 - "identityService (identityFoundationService)"
+Cohesion: 0.50
+Nodes (4): getIdentityHealth, IdentityProfile, identityService (identityFoundationService), validateIdentity
+
+### Community 233 - "AKIRA-N1-DECISION.md"
+Cohesion: 0.22
+Nodes (9): 1. Ambiguity, 3. Interpretation A — VAJRA is one valid requirement source, 4. Interpretation B — VAJRA is the exclusive Tier 2 trigger, 5. Determination, 6. Minimal Clarification, 7. Impact, 8. Preservation, AKIRA Tier-2 Activation Clarification (+1 more)
+
+### Community 235 - "Audit 02: Architectural Boundary Audit"
+Cohesion: 0.67
+Nodes (3): Measured Cross-Directory Import Directions, Audit 02: Architectural Boundary Audit, Audit 03: Dependency & Coupling Audit
+
+### Community 236 - "DEP-005: SDK erases all error information"
+Cohesion: 1.00
+Nodes (3): DEP-005: SDK erases all error information, DEP-006: The SDK has no type contracts, Platform SDK Assessment
+
+### Community 237 - "state/service.ts"
+Cohesion: 0.12
+Nodes (24): 9.4 Events, 13.1 Lifecycle table, 13.2 New Chat (DECISION), 13. Lifecycle Ownership, buildCompanionState(), CompanionStateEvent, listeners, StateCallback (+16 more)
+
+### Community 238 - "verify_boundaries.py"
+Cohesion: 0.31
+Nodes (4): check_file_invariants(), is_ui_file(), main(), run_verification()
+
+### Community 239 - "JSON Schemas"
+Cohesion: 0.20
+Nodes (9): analysis.json, benchmark.json, comparison.json, evals.json, grading.json, history.json, JSON Schemas, metrics.json (+1 more)
+
+### Community 245 - "AKIRA Deep Scan — Chat 6: Production-Readiness Verification"
+Cohesion: 0.20
+Nodes (10): AKIRA Deep Scan — Chat 6: Production-Readiness Verification, C6-01 — Deleting a project during a running session wedges session persistence (P0, data loss), C6-02 — Companion State never retracts a present-tense claim (P1, fabrication), C6-03 — A deleted project's past sessions: kept in the store, cascaded away on disk (P2, loss on restart), C6-04 — Every boot fabricates one habit; no real habit survives restart (P3), Closed since Chats 3–5, Confirmed failures, Healthy, re-confirmed (+2 more)
+
+### Community 247 - "navigation-menu.tsx"
+Cohesion: 0.28
+Nodes (8): @radix-ui/react-navigation-menu, NavigationMenu, NavigationMenuContent, NavigationMenuIndicator, NavigationMenuList, NavigationMenuTrigger, navigationMenuTriggerStyle, NavigationMenuViewport
+
+### Community 249 - "select.tsx"
+Cohesion: 0.28
+Nodes (8): @radix-ui/react-select, SelectContent, SelectItem, SelectLabel, SelectScrollDownButton, SelectScrollUpButton, SelectSeparator, SelectTrigger
+
+### Community 254 - "habits/constants.ts"
+Cohesion: 0.22
+Nodes (8): CONFIDENCE_BEHAVIOR_OBSERVED, CONFIDENCE_HABIT_ARCHIVED, CONFIDENCE_HABIT_ESTABLISHED, CONFIDENCE_HABIT_EVOLVES, CONFIDENCE_HABIT_VERIFIED, CONFIDENCE_HABIT_WEAKENS, CONFIDENCE_PATTERN_DETECTED, CONFIDENCE_REPEATED_EVIDENCE
+
+### Community 263 - "getDatabasePath"
+Cohesion: 0.11
+Nodes (14): CF-5 — No Boundary Violation in Any Diagnostics Implementation, CF-9 — A Fresh Install Writes to Live User Data by Default, Stage 1C — Summary, getDatabasePath, check_real_db.ts Resolver Bypass, Stage 1C Part B — Test Database Safety, VaultHashService, Vault Security and Data Integrity Recovery (+6 more)
+
+### Community 264 - "class-variance-authority"
+Cohesion: 0.14
+Nodes (15): class-variance-authority, @radix-ui/react-toggle, @radix-ui/react-toggle-group, Alert, AlertDescription, AlertTitle, alertVariants, Badge() (+7 more)
+
+### Community 265 - "vitest"
+Cohesion: 0.02
+Nodes (50): vitest, importanceCache, ImportanceListener, listeners, emit(), listeners, pendingPersistence, pendingPersistenceCount() (+42 more)
+
+### Community 266 - "Nine Local GENESIS Subsystem Emitters"
+Cohesion: 0.18
+Nodes (11): Nine Local GENESIS Subsystem Emitters, Event Contract Drift and Orphan Constants, Goal Engine (Companion Intelligence Sprint 3), Habit Intelligence (Companion Intelligence Sprint 6), Knowledge Engine (Companion Intelligence Sprint 4), Evolution Engine, IdentityEdge, Identity Event Flow (+3 more)
+
+### Community 269 - "sample_repository.ts"
+Cohesion: 0.33
+Nodes (3): ProjectRecord, ProjectRepository, sqliteProjectRepository
+
+### Community 270 - "Note"
+Cohesion: 0.14
+Nodes (9): AddNoteInput, persistAddNote, persistDeleteNote, persistUpdateNote, AddNoteInput, notesService, NoteRepository, SqliteNoteRepository (+1 more)
+
+### Community 272 - "input-otp.tsx"
+Cohesion: 0.33
+Nodes (5): input-otp, InputOTP, InputOTPGroup, InputOTPSeparator, InputOTPSlot
+
+### Community 276 - "state/constants.ts"
+Cohesion: 0.25
+Nodes (7): AMBIGUITY_CONFIDENCE_RECOVERY, CONFLICTING_EVIDENCE_CONFIDENCE, INITIAL_SNAPSHOT_CONFIDENCE, INSUFFICIENT_CONTEXT_CONFIDENCE, TOPIC_SHIFT_CONFIDENCE_DECAY, VERIFIED_EVIDENCE_CONFIDENCE, WORKSPACE_MATCH_CONFIDENCE
+
+### Community 291 - "migrate-runall.ts"
+Cohesion: 0.83
+Nodes (3): cleanContent(), collectFiles(), main()
+
+## Ambiguous Edges - Review These
+- `Event Contract Drift and Orphan Constants` → `Identity Event Flow`  [AMBIGUOUS]
+  src/genesis/identity/README.md · relation: conceptually_related_to
+- `DAT-007 No Schema Evolution Path; Two Vault Schema Sources` → `DAT-011 Test Artefacts And Scratch Databases Committed`  [AMBIGUOUS]
+  docs/audits/06-data-integrity.md · relation: conceptually_related_to
+
+## Knowledge Gaps
+- **1372 isolated node(s):** `context7`, `MemoryEntity`, `ProjectRecord`, `sqliteProjectRepository`, `sessionService` (+1367 more)
+  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 2462 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
+- **73 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+
+## Suggested Questions
+_Questions this graph is uniquely positioned to answer:_
+
+- **What is the exact relationship between `Event Contract Drift and Orphan Constants` and `Identity Event Flow`?**
+  _Edge tagged AMBIGUOUS (relation: conceptually_related_to) - confidence is low._
+- **What is the exact relationship between `DAT-007 No Schema Evolution Path; Two Vault Schema Sources` and `DAT-011 Test Artefacts And Scratch Databases Committed`?**
+  _Edge tagged AMBIGUOUS (relation: conceptually_related_to) - confidence is low._
+- **Why does `vitest` connect `vitest` to `instrumentation.test.ts`, `AkiraEvent`, `observability/composition.ts`, `reflection/engine/index.ts`, `reasoning/index.ts`, `analytics.test.ts`, `recall-builder.ts`, `pipeline.ts`, `routeTree.gen.ts`, `telemetry.test.ts`, `retention/policy.ts`, `tests/capability-registry.test.ts`, `getDatabaseConnection`, `capabilities/registry.ts`, `aiProviderManager`, `IModuleInstance`, `PresenceContext`, `genesis-production-composition.test.ts`, `repositories/index.ts`, `react`, `genesis-identity.test.ts`, `project-read.ts`, `task-read.ts`, `dependency-resolver.test.ts`, `context-engine.ts`, `event-contract.test.ts`, `understanding/rules.ts`, `story-service.ts`, `relationship-service.ts`, `manifest.test.ts`, `AKIRA Deep Scan — Chat 5 Findings`, `task-write.ts`, `package.json`, `historical-search-intent.ts`, `genesis/index.ts`, `MockService`, `genesis-chat-intake-cost.bench.ts`, `RendererRegistry.ts`, `tools.index.tsx`, `genesis-planning.test.ts`?**
+  _High betweenness centrality (0.233) - this node is a cross-community bridge._
+- **Why does `react` connect `react` to `__root.tsx`, `class-variance-authority`, `vitest`, `cn`, `form.tsx`, `Stage 1 Controlled Behavioral Evaluation Report`, `search.tsx`, `input-otp.tsx`, `sidebar.tsx`, `aiProviderManager`, `chart.tsx`, `menubar.tsx`, `useAkira`, `VaultFolder`, `package.json`, `lib/utils.ts`, `carousel.tsx`, `pagination.tsx`, `akira-os/index.ts`, `brain.tsx`, `RendererRegistry.ts`, `navigation-menu.tsx`, `select.tsx`, `tools.index.tsx`, `command.tsx`?**
+  _High betweenness centrality (0.054) - this node is a cross-community bridge._
+- **Why does `AkiraEvent` connect `AkiraEvent` to `instrumentation.test.ts`, `analytics-service.ts`, `genesis/index.ts`, `analytics.test.ts`, `AKIRA Architecture Disposition`, `vitest`, `AnalyticsEngine`, `state/service.ts`, `AnalyticsEngine.ts`, `ProjectsCalculator`, `context-resolution/service.ts`, `getDatabaseConnection`, `reality-adapter.ts`?**
+  _High betweenness centrality (0.035) - this node is a cross-community bridge._
+- **Are the 2 inferred relationships involving `InMemoryIdentityRepository` (e.g. with `4.3 Identity` and `4. Identity System`) actually correct?**
+  _`InMemoryIdentityRepository` has 2 INFERRED edges - model-reasoned connections that need verification._
+- **What connects `context7`, `MemoryEntity`, `ProjectRecord` to the rest of the system?**
+  _1372 weakly-connected nodes found - possible documentation gaps or missing edges._

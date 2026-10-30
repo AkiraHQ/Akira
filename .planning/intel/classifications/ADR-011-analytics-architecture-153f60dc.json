@@ -1,0 +1,16 @@
+{
+  "source_path": "docs/adr/ADR-011-analytics-architecture.md",
+  "type": "ADR",
+  "confidence": "high",
+  "manifest_override": false,
+  "title": "ADR-011: Analytics Architecture",
+  "summary": "We enforce the following architectural patterns and constraints for the Analytics subsystem:.",
+  "scope": [
+    "analytics",
+    "architecture"
+  ],
+  "cross_refs": [],
+  "locked": true,
+  "precedence": null,
+  "notes": ""
+}

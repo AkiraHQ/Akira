@@ -1,0 +1,16 @@
+{
+  "source_path": "docs/adr/ADR-003-rpc-architecture.md",
+  "type": "ADR",
+  "confidence": "high",
+  "manifest_override": false,
+  "title": "Architecture Decision Record: ADR-003 SSR & RPC Serialization",
+  "summary": "Use TanStack Start's `createServerFn` to build a serialization layer. All database mutations and queries run as server functions. The browser client calls these functions as standa.",
+  "scope": [
+    "rpc",
+    "architecture"
+  ],
+  "cross_refs": [],
+  "locked": true,
+  "precedence": null,
+  "notes": ""
+}

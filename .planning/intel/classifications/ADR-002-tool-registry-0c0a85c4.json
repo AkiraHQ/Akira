@@ -1,0 +1,16 @@
+{
+  "source_path": "docs/adr/ADR-002-tool-registry.md",
+  "type": "ADR",
+  "confidence": "high",
+  "manifest_override": false,
+  "title": "Architecture Decision Record: ADR-002 Dynamic Tool Registry",
+  "summary": "Implement a centralized `toolsRegistry` in `src/akira-os/tools/registry.ts`. All tools register a schema mapping their paths, categories, ready states, and visibility restrictions.",
+  "scope": [
+    "tool",
+    "registry"
+  ],
+  "cross_refs": [],
+  "locked": true,
+  "precedence": null,
+  "notes": ""
+}

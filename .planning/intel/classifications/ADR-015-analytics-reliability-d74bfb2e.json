@@ -1,0 +1,16 @@
+{
+  "source_path": "docs/adr/ADR-015-analytics-reliability.md",
+  "type": "ADR",
+  "confidence": "high",
+  "manifest_override": false,
+  "title": "ADR-015: Analytics Subsystem Reliability & Self-Recovery",
+  "summary": "We implement a three-tiered Reliability Framework inside `src/analytics/validation/`: 1. **Historical Rebuild Manager (`RebuildManager`)**: 2. **Consistency Checker (`Consistency.",
+  "scope": [
+    "analytics",
+    "reliability"
+  ],
+  "cross_refs": [],
+  "locked": true,
+  "precedence": null,
+  "notes": ""
+}

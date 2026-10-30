@@ -1,0 +1,15 @@
+{
+  "source_path": "docs/AKIRA-OS/architecture/observability/SECURITY_SPEC.md",
+  "type": "SPEC",
+  "confidence": "high",
+  "manifest_override": false,
+  "title": "AKIRA OS Observability Security Specification",
+  "summary": "AKIRA OS Observability Security Specification architectural document.",
+  "scope": [
+    "security"
+  ],
+  "cross_refs": [],
+  "locked": false,
+  "precedence": null,
+  "notes": ""
+}

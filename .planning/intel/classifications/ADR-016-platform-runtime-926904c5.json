@@ -1,0 +1,16 @@
+{
+  "source_path": "docs/adr/ADR-016-platform-runtime.md",
+  "type": "ADR",
+  "confidence": "high",
+  "manifest_override": false,
+  "title": "ADR-016: Platform Runtime Module Core",
+  "summary": "We will establish a centralized **Platform Runtime Core** to orchestrate module execution. Key decisions: 1. **Modules as Managed Runtime Objects**: Every module is represented at.",
+  "scope": [
+    "platform",
+    "runtime"
+  ],
+  "cross_refs": [],
+  "locked": true,
+  "precedence": null,
+  "notes": ""
+}

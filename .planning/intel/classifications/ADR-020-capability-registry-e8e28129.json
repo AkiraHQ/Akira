@@ -1,0 +1,16 @@
+{
+  "source_path": "docs/adr/ADR-020-capability-registry.md",
+  "type": "ADR",
+  "confidence": "high",
+  "manifest_override": false,
+  "title": "ADR 020 – Capability Registry",
+  "summary": "Introduce a **Capability Registry** service that: 1. Stores capability metadata extracted from module manifests. 2. Allows modules to register/unregister capabilities on lifecycle.",
+  "scope": [
+    "capability",
+    "registry"
+  ],
+  "cross_refs": [],
+  "locked": true,
+  "precedence": null,
+  "notes": ""
+}

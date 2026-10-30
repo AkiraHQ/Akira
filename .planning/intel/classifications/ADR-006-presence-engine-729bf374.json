@@ -1,0 +1,16 @@
+{
+  "source_path": "docs/GENESIS/architecture/decisions/ADR-006-presence-engine.md",
+  "type": "ADR",
+  "confidence": "high",
+  "manifest_override": false,
+  "title": "ADR-006: Deterministic Presence Subsystem",
+  "summary": "We will construct the Presence Engine as a deterministic rules-based subsystem, executing local mathematical and calendar-based checks, and completely bypass runtime cognitive infe.",
+  "scope": [
+    "presence",
+    "engine"
+  ],
+  "cross_refs": [],
+  "locked": true,
+  "precedence": null,
+  "notes": ""
+}

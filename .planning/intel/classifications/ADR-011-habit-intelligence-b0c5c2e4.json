@@ -1,0 +1,18 @@
+{
+  "source_path": "docs/GENESIS/architecture/decisions/ADR-011-habit-intelligence.md",
+  "type": "ADR",
+  "confidence": "high",
+  "manifest_override": false,
+  "title": "ADR-011: Evidence-Based Habit Subsystem",
+  "summary": "We will implement the Habit Intelligence Engine as a dedicated, evidence-based pattern observation subsystem (Alternative C).",
+  "scope": [
+    "habit",
+    "intelligence"
+  ],
+  "cross_refs": [
+    "file:///C:/Users/lovsh/Desktop/Project%20Akira%20Master/AKIRA/docs/architecture/companion-core/01-companion-philosophy.md"
+  ],
+  "locked": true,
+  "precedence": null,
+  "notes": ""
+}
