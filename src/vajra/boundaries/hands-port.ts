@@ -19,9 +19,14 @@ export interface IHandsPort {
 }
 
 /**
- * Stub adapter enforcing that HANDS cannot be called or directly controlled in Phase 2.
+ * Production adapter explicitly enforcing that HANDS sandbox execution is unavailable.
+ *
+ * Invariants:
+ * 1. isAvailable() returns false unconditionally.
+ * 2. executeSandbox() returns a strict failure Result (never simulates execution, never produces success-shaped evidence).
+ * 3. Physical side effects and child processes are disallowed.
  */
-export class StubHandsAdapter implements IHandsPort {
+export class UnavailableHandsAdapter implements IHandsPort {
   isAvailable(): boolean {
     return false;
   }
@@ -33,8 +38,13 @@ export class StubHandsAdapter implements IHandsPort {
     _timeoutMs?: number,
   ): Promise<Result<T, string>> {
     return Result.failure(
-      "HANDS execution engine is not active in Phase 2. Physical execution is disallowed.",
+      "HANDS execution engine is not active in Phase 2 (unavailable in Phase 8A). Physical sandbox execution is disallowed; all actions must be mediated through AKIRA OS capabilities.",
       correlation,
     );
   }
 }
+
+/**
+ * Backwards-compatible alias for UnavailableHandsAdapter.
+ */
+export class StubHandsAdapter extends UnavailableHandsAdapter {}

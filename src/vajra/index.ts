@@ -15,3 +15,5 @@ export * from "./mission";
 export * from "./observation";
 export * from "./verification";
 export * from "./closure";
+export * from "./composition";
+export * from "./ingress";

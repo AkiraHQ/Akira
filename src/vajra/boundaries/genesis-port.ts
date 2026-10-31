@@ -38,9 +38,7 @@ export interface IGenesisPort {
     correlation: CorrelationMetadata,
   ): Promise<Result<HistoricalMemoryResult, string>>;
 
-  getIdentityTraits(
-    correlation: CorrelationMetadata,
-  ): Promise<Result<UserIdentityTraits, string>>;
+  getIdentityTraits(correlation: CorrelationMetadata): Promise<Result<UserIdentityTraits, string>>;
 
   subscribeToCognitiveDiscoveries(listener: (event: unknown) => void): () => void;
 }
@@ -99,10 +97,12 @@ export class InMemoryGenesisAdapter implements IGenesisPort {
  */
 export class LiveGenesisAdapter implements IGenesisPort {
   private discoveryListeners: Set<(event: unknown) => void> = new Set();
+  private insightUnsub: (() => void) | null = null;
 
   constructor(
     private memoryService?: { search?: (q: string) => Promise<any[]> },
     private identityService?: { getTraits?: () => Promise<any> },
+    private insightSubscriber?: (listener: (insights: any[]) => void) => () => void,
   ) {}
 
   async recallMemories(
@@ -121,7 +121,10 @@ export class LiveGenesisAdapter implements IGenesisPort {
       }
       return Result.success({ memories: Object.freeze([]) }, correlation);
     } catch (err: any) {
-      return Result.failure(`Failed to recall memories from GENESIS: ${err?.message ?? String(err)}`, correlation);
+      return Result.failure(
+        `Failed to recall memories from GENESIS: ${err?.message ?? String(err)}`,
+        correlation,
+      );
     }
   }
 
@@ -147,14 +150,37 @@ export class LiveGenesisAdapter implements IGenesisPort {
         correlation,
       );
     } catch (err: any) {
-      return Result.failure(`Failed to fetch identity traits from GENESIS: ${err?.message ?? String(err)}`, correlation);
+      return Result.failure(
+        `Failed to fetch identity traits from GENESIS: ${err?.message ?? String(err)}`,
+        correlation,
+      );
     }
   }
 
   subscribeToCognitiveDiscoveries(listener: (event: unknown) => void): () => void {
     this.discoveryListeners.add(listener);
+
+    // If real insightSubscriber provided and this is first listener, attach
+    if (this.insightSubscriber && !this.insightUnsub) {
+      this.insightUnsub = this.insightSubscriber((insights) => {
+        for (const ins of insights) {
+          for (const l of this.discoveryListeners) {
+            try {
+              l({ pattern: ins.canonicalKey ?? ins.id, insight: ins });
+            } catch (err) {
+              console.error("[LiveGenesisAdapter] Error in discovery listener:", err);
+            }
+          }
+        }
+      });
+    }
+
     return () => {
       this.discoveryListeners.delete(listener);
+      if (this.discoveryListeners.size === 0 && this.insightUnsub) {
+        this.insightUnsub();
+        this.insightUnsub = null;
+      }
     };
   }
 }

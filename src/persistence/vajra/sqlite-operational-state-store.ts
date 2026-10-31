@@ -1,9 +1,6 @@
 import Database from "better-sqlite3";
 import { getDatabaseConnection } from "../connection";
-import {
-  IOperationalStateStore,
-  InterruptedRecoveryState,
-} from "../../vajra/ports/state-store";
+import { IOperationalStateStore, InterruptedRecoveryState } from "../../vajra/ports/state-store";
 import {
   OperationalContext,
   createInitialOperationalContext,
@@ -15,10 +12,7 @@ import {
   VajraStepRecord,
   MissionLifecycleState,
 } from "../../vajra/types/mission-record";
-import {
-  VajraEscalationRecord,
-  EscalationStatus,
-} from "../../vajra/types/escalation-record";
+import { VajraEscalationRecord, EscalationStatus } from "../../vajra/types/escalation-record";
 import { VajraVerificationRecord } from "../../vajra/types/verification-record";
 import { ProvenanceRecord } from "../../vajra/types/provenance";
 import {
@@ -99,19 +93,23 @@ export class SqliteOperationalStateStore implements IOperationalStateStore {
 
       if (!existing) {
         // Insert initial row
-        this.db.prepare(`
+        this.db
+          .prepare(
+            `
           INSERT INTO vajra_operational_state (
             id, current_focus, operational_mode, active_mission_id, human_presence, system_health_status, version, updated_at
           ) VALUES ('singleton', ?, ?, ?, ?, ?, ?, ?)
-        `).run(
-          row.current_focus,
-          row.operational_mode,
-          row.active_mission_id,
-          row.human_presence,
-          row.system_health_status,
-          row.version,
-          row.updated_at,
-        );
+        `,
+          )
+          .run(
+            row.current_focus,
+            row.operational_mode,
+            row.active_mission_id,
+            row.human_presence,
+            row.system_health_status,
+            row.version,
+            row.updated_at,
+          );
         return;
       }
 
@@ -169,9 +167,8 @@ export class SqliteOperationalStateStore implements IOperationalStateStore {
   }
 
   async getBelief(id: string): Promise<EpistemicBelief | null> {
-    const row = this.db
-      .prepare("SELECT * FROM vajra_beliefs WHERE id = ?")
-      .get(id) as BeliefRow | undefined;
+    const row = this.db.prepare("SELECT * FROM vajra_beliefs WHERE id = ?").get(id) as
+      BeliefRow | undefined;
 
     return row ? mapRowToBelief(row) : null;
   }
@@ -219,9 +216,13 @@ export class SqliteOperationalStateStore implements IOperationalStateStore {
     return rows.map(mapRowToTrace);
   }
 
-  async queryAuditTracesByCorrelation(correlationId: string): Promise<readonly DeliberationTrace[]> {
+  async queryAuditTracesByCorrelation(
+    correlationId: string,
+  ): Promise<readonly DeliberationTrace[]> {
     const rows = this.db
-      .prepare("SELECT * FROM vajra_deliberation_traces WHERE correlation_id = ? ORDER BY created_at ASC")
+      .prepare(
+        "SELECT * FROM vajra_deliberation_traces WHERE correlation_id = ? ORDER BY created_at ASC",
+      )
       .all(correlationId) as DeliberationTraceRow[];
 
     return rows.map(mapRowToTrace);
@@ -229,7 +230,9 @@ export class SqliteOperationalStateStore implements IOperationalStateStore {
 
   async queryAuditTracesByStimulus(stimulusId: string): Promise<readonly DeliberationTrace[]> {
     const rows = this.db
-      .prepare("SELECT * FROM vajra_deliberation_traces WHERE stimulus_id = ? ORDER BY created_at ASC")
+      .prepare(
+        "SELECT * FROM vajra_deliberation_traces WHERE stimulus_id = ? ORDER BY created_at ASC",
+      )
       .all(stimulusId) as DeliberationTraceRow[];
 
     return rows.map(mapRowToTrace);
@@ -305,31 +308,36 @@ export class SqliteOperationalStateStore implements IOperationalStateStore {
 
       // 3. If RUNNING, update active_mission_id in operational state
       if (mission.lifecycleState === "RUNNING") {
-        this.db.prepare(`
+        this.db
+          .prepare(
+            `
           UPDATE vajra_operational_state
           SET active_mission_id = ?, updated_at = ?
           WHERE id = 'singleton'
-        `).run(mission.id, new Date().toISOString());
+        `,
+          )
+          .run(mission.id, new Date().toISOString());
       }
     })();
   }
 
   async getMission(id: string): Promise<VajraMissionRecord | null> {
-    const row = this.db
-      .prepare("SELECT * FROM vajra_missions WHERE id = ?")
-      .get(id) as MissionRow | undefined;
+    const row = this.db.prepare("SELECT * FROM vajra_missions WHERE id = ?").get(id) as
+      MissionRow | undefined;
 
     return row ? mapRowToMission(row) : null;
   }
 
   async getActiveMission(): Promise<VajraMissionRecord | null> {
     const row = this.db
-      .prepare(`
+      .prepare(
+        `
         SELECT m.*
         FROM vajra_missions m
         JOIN vajra_operational_state s ON s.active_mission_id = m.id
         WHERE s.id = 'singleton'
-      `)
+      `,
+      )
       .get() as MissionRow | undefined;
 
     if (row) {
@@ -352,31 +360,45 @@ export class SqliteOperationalStateStore implements IOperationalStateStore {
     const now = new Date().toISOString();
 
     this.db.transaction(() => {
-      this.db.prepare(`
+      this.db
+        .prepare(
+          `
         UPDATE vajra_missions
         SET lifecycle_state = ?,
             updated_at = ?,
             completed_at = COALESCE(?, completed_at)
         WHERE id = ?
-      `).run(lifecycleState, now, completedAt ?? null, id);
+      `,
+        )
+        .run(lifecycleState, now, completedAt ?? null, id);
 
       if (lifecycleState === "RUNNING") {
-        this.db.prepare(`
+        this.db
+          .prepare(
+            `
           UPDATE vajra_operational_state
           SET active_mission_id = ?, updated_at = ?
           WHERE id = 'singleton'
-        `).run(id, now);
+        `,
+          )
+          .run(id, now);
       } else if (
         lifecycleState === "COMPLETED" ||
         lifecycleState === "FAILED" ||
-        lifecycleState === "CANCELLED"
+        lifecycleState === "CANCELLED" ||
+        lifecycleState === "PAUSED_RECOVERY" ||
+        lifecycleState === "PAUSED_APPROVAL"
       ) {
         // Clear active_mission_id if it was this mission
-        this.db.prepare(`
+        this.db
+          .prepare(
+            `
           UPDATE vajra_operational_state
           SET active_mission_id = NULL, updated_at = ?
           WHERE id = 'singleton' AND active_mission_id = ?
-        `).run(now, id);
+        `,
+          )
+          .run(now, id);
       }
     })();
   }
@@ -386,9 +408,8 @@ export class SqliteOperationalStateStore implements IOperationalStateStore {
   // ==========================================================================
 
   async getStep(id: string): Promise<VajraStepRecord | null> {
-    const row = this.db
-      .prepare("SELECT * FROM vajra_mission_steps WHERE id = ?")
-      .get(id) as MissionStepRow | undefined;
+    const row = this.db.prepare("SELECT * FROM vajra_mission_steps WHERE id = ?").get(id) as
+      MissionStepRow | undefined;
 
     return row ? mapRowToStep(row) : null;
   }
@@ -456,11 +477,7 @@ export class SqliteOperationalStateStore implements IOperationalStateStore {
    * Phase 3 (Failure path) of Two-Phase Dispatch:
    * Marks step as FAILED and records the execution error JSON.
    */
-  async failStep(
-    stepId: string,
-    error: unknown,
-    executedAt?: string,
-  ): Promise<void> {
+  async failStep(stepId: string, error: unknown, executedAt?: string): Promise<void> {
     const timestamp = executedAt ?? new Date().toISOString();
     const errorJson = JSON.stringify(error ?? { message: "Unknown error" });
 
@@ -485,32 +502,41 @@ export class SqliteOperationalStateStore implements IOperationalStateStore {
   async createEscalation(escalation: VajraEscalationRecord): Promise<void> {
     const row = mapEscalationToRow(escalation);
 
-    this.db.prepare(`
+    this.db
+      .prepare(
+        `
       INSERT INTO vajra_escalations (
         id, mission_id, step_id, status, action_proposed,
         impact_class, risk_explanation, resolution_comment,
         request_id, correlation_id, created_at, resolved_at
       ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-    `).run(
-      row.id,
-      row.mission_id,
-      row.step_id,
-      row.status,
-      row.action_proposed,
-      row.impact_class,
-      row.risk_explanation,
-      row.resolution_comment,
-      row.request_id,
-      row.correlation_id,
-      row.created_at,
-      row.resolved_at,
-    );
+      ON CONFLICT(id) DO UPDATE SET
+        action_proposed = excluded.action_proposed,
+        impact_class = excluded.impact_class,
+        risk_explanation = excluded.risk_explanation,
+        request_id = excluded.request_id,
+        correlation_id = excluded.correlation_id
+    `,
+      )
+      .run(
+        row.id,
+        row.mission_id,
+        row.step_id,
+        row.status,
+        row.action_proposed,
+        row.impact_class,
+        row.risk_explanation,
+        row.resolution_comment,
+        row.request_id,
+        row.correlation_id,
+        row.created_at,
+        row.resolved_at,
+      );
   }
 
   async getEscalation(id: string): Promise<VajraEscalationRecord | null> {
-    const row = this.db
-      .prepare("SELECT * FROM vajra_escalations WHERE id = ?")
-      .get(id) as EscalationRow | undefined;
+    const row = this.db.prepare("SELECT * FROM vajra_escalations WHERE id = ?").get(id) as
+      EscalationRow | undefined;
 
     return row ? mapRowToEscalation(row) : null;
   }
@@ -539,7 +565,9 @@ export class SqliteOperationalStateStore implements IOperationalStateStore {
 
   async getPendingEscalations(): Promise<readonly VajraEscalationRecord[]> {
     const rows = this.db
-      .prepare("SELECT * FROM vajra_escalations WHERE status = 'PENDING_APPROVAL' ORDER BY created_at ASC")
+      .prepare(
+        "SELECT * FROM vajra_escalations WHERE status = 'PENDING_APPROVAL' ORDER BY created_at ASC, rowid ASC",
+      )
       .all() as EscalationRow[];
 
     return rows.map(mapRowToEscalation);
@@ -553,30 +581,38 @@ export class SqliteOperationalStateStore implements IOperationalStateStore {
     const row = mapVerificationToRow(verification);
 
     this.db.transaction(() => {
-      this.db.prepare(`
+      this.db
+        .prepare(
+          `
         INSERT INTO vajra_verifications (
           id, mission_id, step_id, outcome, evidence_ids_json,
           evaluator_notes, correlation_id, invocation_id, recorded_at
         ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-      `).run(
-        row.id,
-        row.mission_id,
-        row.step_id,
-        row.outcome,
-        row.evidence_ids_json,
-        row.evaluator_notes,
-        row.correlation_id,
-        row.invocation_id,
-        row.recorded_at,
-      );
+      `,
+        )
+        .run(
+          row.id,
+          row.mission_id,
+          row.step_id,
+          row.outcome,
+          row.evidence_ids_json,
+          row.evaluator_notes,
+          row.correlation_id,
+          row.invocation_id,
+          row.recorded_at,
+        );
 
       if (verification.outcome === "criteria_satisfied") {
-        this.db.prepare(`
+        this.db
+          .prepare(
+            `
           UPDATE vajra_mission_steps
           SET dispatch_state = 'VERIFIED',
               verified_at = ?
           WHERE id = ?
-        `).run(row.recorded_at, row.step_id);
+        `,
+          )
+          .run(row.recorded_at, row.step_id);
       }
     })();
   }
@@ -620,13 +656,15 @@ export class SqliteOperationalStateStore implements IOperationalStateStore {
       ORDER BY timestamp ASC;
     `;
 
-    const rows = this.db.prepare(query).all(
-      correlationId,
-      correlationId,
-      correlationId,
-      correlationId,
-      correlationId,
-    ) as ProvenanceRow[];
+    const rows = this.db
+      .prepare(query)
+      .all(
+        correlationId,
+        correlationId,
+        correlationId,
+        correlationId,
+        correlationId,
+      ) as ProvenanceRow[];
 
     return rows.map(mapRowToProvenance);
   }
@@ -641,11 +679,13 @@ export class SqliteOperationalStateStore implements IOperationalStateStore {
    */
   async detectInterruptedMissions(): Promise<readonly InterruptedRecoveryState[]> {
     const activeMissions = this.db
-      .prepare(`
+      .prepare(
+        `
         SELECT * FROM vajra_missions
         WHERE lifecycle_state IN ('RUNNING', 'PAUSED_RECOVERY', 'PAUSED_APPROVAL')
         ORDER BY updated_at DESC
-      `)
+      `,
+      )
       .all() as MissionRow[];
 
     const results: InterruptedRecoveryState[] = [];
@@ -655,22 +695,26 @@ export class SqliteOperationalStateStore implements IOperationalStateStore {
 
       // Detect steps left in DISPATCHED without execution result
       const stepRows = this.db
-        .prepare(`
+        .prepare(
+          `
           SELECT * FROM vajra_mission_steps
           WHERE mission_id = ? AND dispatch_state = 'DISPATCHED' AND execution_result_id IS NULL
           ORDER BY step_order ASC
-        `)
+        `,
+        )
         .all(mission.id) as MissionStepRow[];
 
       const interruptedSteps = stepRows.map(mapRowToStep);
 
       // Detect pending escalations
       const escRows = this.db
-        .prepare(`
+        .prepare(
+          `
           SELECT * FROM vajra_escalations
           WHERE mission_id = ? AND status = 'PENDING_APPROVAL'
           ORDER BY created_at ASC
-        `)
+        `,
+        )
         .all(mission.id) as EscalationRow[];
 
       const pendingEscalations = escRows.map(mapRowToEscalation);

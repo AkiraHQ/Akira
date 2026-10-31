@@ -1,6 +1,7 @@
 import { AkiraEvent, EventInput } from "./event-types";
 import { EventBus, globalEventBus } from "./event-bus";
 import { defaultMiddlewarePipeline } from "./middleware";
+import { capabilityExecutionContext } from "../contracts/capabilities/execution-context";
 
 // Dynamically reference the server function on the client
 let persistPublishEventRpc: any = null;
@@ -20,6 +21,21 @@ export class Publisher {
   ) {}
 
   publish(event: EventInput): AkiraEvent {
+    // 0. Enforce trusted execution provenance from active CapabilityExecutionContext
+    const execContext = capabilityExecutionContext.getStore();
+
+    if (execContext?.isVajra === true) {
+      event.metadata = {
+        ...(event.metadata || {}),
+        isVajra: true,
+      };
+    } else if (event.metadata && "isVajra" in event.metadata) {
+      // Untrusted caller without VAJRA execution context attempted to supply isVajra: strip it
+      const sanitized = { ...event.metadata };
+      delete (sanitized as any).isVajra;
+      event.metadata = sanitized;
+    }
+
     // 1. Run raw event inputs through our composable middleware pipeline
     const processedEvent = this.middleware(event) as AkiraEvent;
 

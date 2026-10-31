@@ -1130,9 +1130,11 @@ async function runTests() {
     // to presence through: the bus has no topic channel, so three services were
     // each subscribing to everything and filtering for PRESENCE_UPDATED
     // themselves, which is what put domain code on an infrastructure module.
+    // `platform-event-adapter` is the platform -> VAJRA bridge (Phase 8A stimulus ingress).
     const BUS_ADAPTERS = new Set([
       path.join(srcDir, "genesis", "events", "reality-adapter.ts"),
       path.join(srcDir, "contracts", "presence-channel.ts"),
+      path.join(srcDir, "vajra", "ingress", "adapters", "platform-event-adapter.ts"),
     ]);
 
     scanImports(srcDir);

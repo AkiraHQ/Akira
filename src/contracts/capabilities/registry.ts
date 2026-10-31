@@ -1,5 +1,6 @@
 import { CapabilityDescriptor } from "./descriptor";
 import { Result, CorrelationMetadata, CapabilityFailure } from "../results/result";
+import { capabilityExecutionContext } from "./execution-context";
 
 /**
  * Capability Execution Handler Function.
@@ -66,10 +67,7 @@ export class CapabilityRegistry {
     }
 
     // Rule N3 Enforcement: GENESIS exposes ONLY Query capabilities (no Commands to GENESIS or from GENESIS)
-    if (
-      descriptor.owner.toLowerCase().includes("genesis") &&
-      descriptor.kind === "Command"
-    ) {
+    if (descriptor.owner.toLowerCase().includes("genesis") && descriptor.kind === "Command") {
       throw new Error(
         `Rule N3 Violation: GENESIS capability '${descriptor.name}' cannot be a Command capability. GENESIS exposes only Queries.`,
       );
@@ -286,20 +284,27 @@ export class CapabilityRegistry {
       );
     }
 
-    // 6. Execute Capability Handler
-    try {
-      const output = await entry.handler(parseResult.data, correlation);
-      return Result.success<TOutput>(output, correlation);
-    } catch (err: any) {
-      return Result.failure<CapabilityFailure>(
-        {
-          category: "execution_failure",
-          message: err?.message || `Execution error in capability '${name}'.`,
-          details: err,
-        },
-        correlation,
-      );
-    }
+    // 6. Execute Capability Handler inside scoped capabilityExecutionContext
+    const execContext = {
+      isVajra: ctx.isVajra === true,
+      invocationId: correlation.invocationId,
+      capabilityName: name,
+    };
+
+    return capabilityExecutionContext.run(execContext, async () => {
+      try {
+        const output = await entry.handler(parseResult.data, correlation);
+        return Result.success<TOutput>(output, correlation);
+      } catch (err: any) {
+        return Result.failure<CapabilityFailure>(
+          {
+            category: "execution_failure",
+            message: err?.message || `Execution error in capability '${name}'.`,
+            details: err,
+          },
+          correlation,
+        );
+      }
+    });
   }
 }
-
