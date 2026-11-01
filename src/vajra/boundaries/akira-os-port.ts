@@ -18,6 +18,7 @@ export interface IAkiraOSPort {
     name: string,
     input: TInput,
     correlation: CorrelationMetadata,
+    context?: { isVajra?: boolean; idempotencyKey?: string },
   ): Promise<Result<TOutput, CapabilityFailure>>;
 }
 
@@ -39,14 +40,13 @@ export class LiveAkiraOSAdapter implements IAkiraOSPort {
     name: string,
     input: TInput,
     correlation: CorrelationMetadata,
+    context?: { isVajra?: boolean; idempotencyKey?: string },
   ): Promise<Result<TOutput, CapabilityFailure>> {
     // Invariant: VAJRA always explicitly declares isVajra: true in caller context
-    return this.registry.invoke<TInput, TOutput>(
-      name,
-      input,
-      correlation,
-      { isVajra: true },
-    );
+    return this.registry.invoke<TInput, TOutput>(name, input, correlation, {
+      isVajra: context?.isVajra ?? true,
+      idempotencyKey: context?.idempotencyKey,
+    });
   }
 }
 
@@ -72,12 +72,11 @@ export class InMemoryAkiraOSAdapter implements IAkiraOSPort {
     name: string,
     input: TInput,
     correlation: CorrelationMetadata,
+    context?: { isVajra?: boolean; idempotencyKey?: string },
   ): Promise<Result<TOutput, CapabilityFailure>> {
-    return this.registry.invoke<TInput, TOutput>(
-      name,
-      input,
-      correlation,
-      { isVajra: true },
-    );
+    return this.registry.invoke<TInput, TOutput>(name, input, correlation, {
+      isVajra: context?.isVajra ?? true,
+      idempotencyKey: context?.idempotencyKey,
+    });
   }
 }

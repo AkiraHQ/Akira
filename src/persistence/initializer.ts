@@ -618,11 +618,11 @@ export const initializeDatabase = (): void => {
   `);
 
   // --- Migration 003: VAJRA Operational State ---
-  const versionRow = db
+  let versionRow = db
     .prepare("SELECT MAX(version) as current_version FROM schema_version")
     .get() as { current_version: number } | undefined;
 
-  const currentVersion = versionRow?.current_version ?? 0;
+  let currentVersion = versionRow?.current_version ?? 0;
 
   if (currentVersion < 3) {
     const migrationPath = path.join(
@@ -644,20 +644,73 @@ export const initializeDatabase = (): void => {
       db.exec(ddlContent);
 
       // 2. Seed initial singleton operational state row
-      db.prepare(`
+      db.prepare(
+        `
         INSERT OR IGNORE INTO vajra_operational_state (
           id, current_focus, operational_mode, human_presence, system_health_status, version, updated_at
         ) VALUES ('singleton', 'Awaiting human directive', 'REQUEST_DRIVEN', 'FOCUSED_ACTIVE', 'NOMINAL', 1, ?)
-      `).run(new Date().toISOString());
+      `,
+      ).run(new Date().toISOString());
 
       // 3. Increment schema_version to 3
-      db.prepare(`
+      db.prepare(
+        `
         INSERT INTO schema_version (version, applied_at)
         VALUES (3, ?)
-      `).run(new Date().toISOString());
+      `,
+      ).run(new Date().toISOString());
     })();
 
     console.log("SQLite Database migration completed: schema version 3 (VAJRA Operational State).");
+  }
+
+  // --- Migration 004: VAJRA Evidence Hash & Recovery Safety ---
+  versionRow = db.prepare("SELECT MAX(version) as current_version FROM schema_version").get() as
+    { current_version: number } | undefined;
+  currentVersion = versionRow?.current_version ?? 0;
+
+  if (currentVersion < 4) {
+    const migrationPath = path.join(
+      process.cwd(),
+      "src",
+      "persistence",
+      "migrations",
+      "004_vajra_evidence_and_recovery_safety.sql",
+    );
+
+    if (fs.existsSync(migrationPath)) {
+      const ddlContent = fs.readFileSync(migrationPath, "utf8");
+      db.transaction(() => {
+        // Idempotent column check in case table already has columns
+        const stepColumns = db.prepare("PRAGMA table_info(vajra_mission_steps)").all() as {
+          name: string;
+        }[];
+        const hasEvidenceHash = stepColumns.some((c) => c.name === "evidence_hash");
+        const hasRecoveryClassification = stepColumns.some(
+          (c) => c.name === "recovery_classification",
+        );
+
+        if (!hasEvidenceHash) {
+          db.exec("ALTER TABLE vajra_mission_steps ADD COLUMN evidence_hash TEXT;");
+        }
+        if (!hasRecoveryClassification) {
+          db.exec("ALTER TABLE vajra_mission_steps ADD COLUMN recovery_classification TEXT;");
+        }
+        db.exec(
+          "CREATE INDEX IF NOT EXISTS idx_vajra_steps_recovery_classification ON vajra_mission_steps (recovery_classification);",
+        );
+
+        db.prepare(
+          `
+          INSERT INTO schema_version (version, applied_at)
+          VALUES (4, ?)
+        `,
+        ).run(new Date().toISOString());
+      })();
+      console.log(
+        "SQLite Database migration completed: schema version 4 (VAJRA Evidence Hash & Recovery Safety).",
+      );
+    }
   }
 
   // Mirror the chat archive into the tables. On the first start after this

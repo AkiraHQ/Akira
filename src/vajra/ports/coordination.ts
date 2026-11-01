@@ -10,5 +10,6 @@ export interface ICoordinationDispatcher {
   dispatchStep<TInput = unknown, TOutput = unknown>(
     step: MissionStep<TInput>,
     correlation: CorrelationMetadata,
+    options?: { idempotencyKey?: string },
   ): Promise<Result<TOutput, CapabilityFailure>>;
 }

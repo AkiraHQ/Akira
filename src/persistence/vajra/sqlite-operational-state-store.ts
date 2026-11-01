@@ -11,6 +11,7 @@ import {
   VajraMissionRecord,
   VajraStepRecord,
   MissionLifecycleState,
+  StepRecoveryClassification,
 } from "../../vajra/types/mission-record";
 import { VajraEscalationRecord, EscalationStatus } from "../../vajra/types/escalation-record";
 import { VajraVerificationRecord } from "../../vajra/types/verification-record";
@@ -54,6 +55,32 @@ export class SqliteOperationalStateStore implements IOperationalStateStore {
 
   constructor(dbConnection?: Database.Database) {
     this.db = dbConnection ?? getDatabaseConnection();
+    this.ensureSchemaCompatibility();
+  }
+
+  private ensureSchemaCompatibility(): void {
+    try {
+      const tableCheck = this.db
+        .prepare("SELECT name FROM sqlite_master WHERE type='table' AND name='vajra_mission_steps'")
+        .get();
+      if (tableCheck) {
+        const columns = this.db.prepare("PRAGMA table_info(vajra_mission_steps)").all() as {
+          name: string;
+        }[];
+        const colNames = new Set(columns.map((c) => c.name));
+        if (!colNames.has("evidence_hash")) {
+          this.db.exec("ALTER TABLE vajra_mission_steps ADD COLUMN evidence_hash TEXT;");
+        }
+        if (!colNames.has("recovery_classification")) {
+          this.db.exec("ALTER TABLE vajra_mission_steps ADD COLUMN recovery_classification TEXT;");
+          this.db.exec(
+            "CREATE INDEX IF NOT EXISTS idx_vajra_steps_recovery_classification ON vajra_mission_steps (recovery_classification);",
+          );
+        }
+      }
+    } catch {
+      // Invariant: Do not throw during constructor compatibility check if db is not ready
+    }
   }
 
   // ==========================================================================
@@ -282,8 +309,8 @@ export class SqliteOperationalStateStore implements IOperationalStateStore {
           id, mission_id, step_order, description, target_capability,
           input_json, expected_evidence, dispatch_state, idempotency_key,
           correlation_id, execution_result_id, execution_error_json,
-          dispatched_at, executed_at, verified_at
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+          dispatched_at, executed_at, verified_at, evidence_hash, recovery_classification
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
       `);
 
       for (const stepRow of stepRows) {
@@ -303,6 +330,8 @@ export class SqliteOperationalStateStore implements IOperationalStateStore {
           stepRow.dispatched_at,
           stepRow.executed_at,
           stepRow.verified_at,
+          stepRow.evidence_hash ?? null,
+          stepRow.recovery_classification ?? null,
         );
       }
 
@@ -403,6 +432,74 @@ export class SqliteOperationalStateStore implements IOperationalStateStore {
     })();
   }
 
+  /**
+   * Atomically finalizes mission reality closure:
+   * - Persists reconciled epistemic beliefs
+   * - Clears active_mission_id if matching this missionId
+   * - Updates mission lifecycle state and completed_at
+   * All executed within a single database transaction.
+   */
+  async completeMissionRealityClosure(
+    missionId: string,
+    targetLifecycle: MissionLifecycleState,
+    completedAt: string | null,
+    updatedBeliefs: readonly EpistemicBelief[] = [],
+  ): Promise<void> {
+    const now = new Date().toISOString();
+
+    this.db.transaction(() => {
+      // 1. Persist updated beliefs
+      for (const belief of updatedBeliefs) {
+        const row = mapBeliefToRow(belief);
+        this.db
+          .prepare(
+            `
+          INSERT OR REPLACE INTO vajra_beliefs (
+            id, proposition, confidence, verification_state,
+            supporting_evidence_ids_json, contradicting_evidence_ids_json,
+            last_evaluated_at, ttl_ms, created_at
+          ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+        `,
+          )
+          .run(
+            row.id,
+            row.proposition,
+            row.confidence,
+            row.verification_state,
+            row.supporting_evidence_ids_json,
+            row.contradicting_evidence_ids_json,
+            row.last_evaluated_at,
+            row.ttl_ms,
+            row.created_at,
+          );
+      }
+
+      // 2. Clear active_mission_id if it was this mission
+      this.db
+        .prepare(
+          `
+        UPDATE vajra_operational_state
+        SET active_mission_id = NULL, updated_at = ?
+        WHERE id = 'singleton' AND active_mission_id = ?
+      `,
+        )
+        .run(now, missionId);
+
+      // 3. Update mission lifecycle state
+      this.db
+        .prepare(
+          `
+        UPDATE vajra_missions
+        SET lifecycle_state = ?,
+            updated_at = ?,
+            completed_at = COALESCE(?, completed_at)
+        WHERE id = ?
+      `,
+        )
+        .run(targetLifecycle, now, completedAt ?? null, missionId);
+    })();
+  }
+
   // ==========================================================================
   // Mission Steps & Two-Phase Dispatch
   // ==========================================================================
@@ -450,12 +547,13 @@ export class SqliteOperationalStateStore implements IOperationalStateStore {
 
   /**
    * Phase 3 of Two-Phase Dispatch:
-   * Marks step as EXECUTED and records the capability execution result ID.
+   * Marks step as EXECUTED and records the capability execution result ID, timestamp, and optional evidence hash.
    */
   async recordStepExecution(
     stepId: string,
     executionResultId: string,
     executedAt?: string,
+    evidenceHash?: string,
   ): Promise<void> {
     const timestamp = executedAt ?? new Date().toISOString();
 
@@ -463,13 +561,33 @@ export class SqliteOperationalStateStore implements IOperationalStateStore {
       UPDATE vajra_mission_steps
       SET dispatch_state = 'EXECUTED',
           execution_result_id = ?,
-          executed_at = ?
+          executed_at = ?,
+          evidence_hash = COALESCE(?, evidence_hash)
       WHERE id = ?
     `);
 
-    const res = update.run(executionResultId, timestamp, stepId);
+    const res = update.run(executionResultId, timestamp, evidenceHash ?? null, stepId);
     if (res.changes === 0) {
       throw new Error(`Step '${stepId}' not found for execution recording.`);
+    }
+  }
+
+  /**
+   * Updates the durable recovery classification for an interrupted step (Phase 8B Part 1).
+   */
+  async updateStepRecoveryClassification(
+    stepId: string,
+    classification: StepRecoveryClassification,
+  ): Promise<void> {
+    const update = this.db.prepare(`
+      UPDATE vajra_mission_steps
+      SET recovery_classification = ?
+      WHERE id = ?
+    `);
+
+    const res = update.run(classification, stepId);
+    if (res.changes === 0) {
+      throw new Error(`Step '${stepId}' not found for recovery classification update.`);
     }
   }
 

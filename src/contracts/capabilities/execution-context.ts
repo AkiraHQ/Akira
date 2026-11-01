@@ -10,6 +10,7 @@ export interface CapabilityExecutionContext {
   readonly isVajra: boolean;
   readonly invocationId?: string;
   readonly capabilityName?: string;
+  readonly idempotencyKey?: string;
 }
 
 export const capabilityExecutionContext = new AsyncLocalStorage<CapabilityExecutionContext>();

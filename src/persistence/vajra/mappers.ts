@@ -5,15 +5,8 @@ import {
   HumanPresence,
   SystemHealthStatus,
 } from "../../vajra/types/operational-context";
-import {
-  EpistemicBelief,
-  VerificationState,
-  createBelief,
-} from "../../vajra/types/belief";
-import {
-  DeliberationTrace,
-  createDeliberationTrace,
-} from "../../vajra/types/trace";
+import { EpistemicBelief, VerificationState, createBelief } from "../../vajra/types/belief";
+import { DeliberationTrace, createDeliberationTrace } from "../../vajra/types/trace";
 import {
   VajraMissionRecord,
   VajraStepRecord,
@@ -83,6 +76,8 @@ export interface MissionStepRow {
   dispatched_at: string | null;
   executed_at: string | null;
   verified_at: string | null;
+  evidence_hash?: string | null;
+  recovery_classification?: string | null;
 }
 
 export interface BeliefRow {
@@ -270,6 +265,8 @@ export function mapRowToStep(row: MissionStepRow): VajraStepRecord {
     dispatchedAt: row.dispatched_at,
     executedAt: row.executed_at,
     verifiedAt: row.verified_at,
+    evidenceHash: row.evidence_hash ?? null,
+    recoveryClassification: (row.recovery_classification as any) ?? null,
   });
 }
 
@@ -290,6 +287,8 @@ export function mapStepToRow(step: VajraStepRecord): MissionStepRow {
     dispatched_at: step.dispatchedAt ?? null,
     executed_at: step.executedAt ?? null,
     verified_at: step.verifiedAt ?? null,
+    evidence_hash: step.evidenceHash ?? null,
+    recovery_classification: step.recoveryClassification ?? null,
   };
 }
 

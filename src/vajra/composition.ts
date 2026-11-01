@@ -34,7 +34,7 @@ import { ObservationReceiver } from "./observation/receiver";
 import { VerificationEvaluator } from "./verification/evaluator";
 import { MissionClosureManager } from "./closure/closure-manager";
 import { MissionRuntime } from "./mission/runtime";
-import { MissionRecoveryManager } from "./mission/recovery";
+import { MissionRecoveryManager, ProductionEvidenceProbe } from "./mission/recovery";
 import { ExecutiveController, VajraLifecycleState } from "./executive/controller";
 import { CorrelationMetadata, Result } from "../contracts/results/result";
 import { healthRegistry } from "../observability/health/health-registry";
@@ -345,8 +345,13 @@ export async function initializeVajraRuntime(
       closureManager,
     );
 
-    // 8. Construct Phase 6 Recovery Manager
-    const recoveryManager = new MissionRecoveryManager(stateStore, capabilityRegistry);
+    // 8. Construct Phase 8B Recovery Manager with production fail-closed evidence probe and reality closure
+    const recoveryManager = new MissionRecoveryManager(
+      stateStore,
+      capabilityRegistry,
+      new ProductionEvidenceProbe(),
+      closureManager,
+    );
 
     // 9. Construct ExecutiveController with full Phase 2–7 dependency graph
     const controller = new ExecutiveController({

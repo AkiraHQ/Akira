@@ -2,14 +2,24 @@ import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
 import Database from "better-sqlite3";
 import fs from "fs";
 import path from "path";
-import { MissionRuntime } from "../../../src/vajra/mission/runtime";
+import {
+  MissionRuntime,
+  UnauthorizedResumeError,
+  ResumeAuthorization,
+} from "../../../src/vajra/mission/runtime";
 import { SqliteOperationalStateStore } from "../../../src/persistence/vajra/sqlite-operational-state-store";
 import { ICoordinationDispatcher } from "../../../src/vajra/ports/coordination";
 import { IObservationReceiver } from "../../../src/vajra/ports/observation";
 import { IVerificationEvaluator } from "../../../src/vajra/ports/verification";
-import { createMissionDefinition, createMissionStep } from "../../../src/contracts/mission/mission-definition";
+import {
+  createMissionDefinition,
+  createMissionStep,
+} from "../../../src/contracts/mission/mission-definition";
 import { createMissionState } from "../../../src/contracts/mission/mission-state";
-import { createVajraMissionRecord, createVajraStepRecord } from "../../../src/vajra/types/mission-record";
+import {
+  createVajraMissionRecord,
+  createVajraStepRecord,
+} from "../../../src/vajra/types/mission-record";
 import { CorrelationMetadata, Result } from "../../../src/contracts/results/result";
 import { Observation } from "../../../src/contracts/events/observation";
 import { VerificationRecord } from "../../../src/contracts/capabilities/verification";
@@ -48,6 +58,28 @@ describe("MissionRuntime (Phase 6 Orchestration, Lifecycle & Verification)", () 
     );
 
     stateStore = new SqliteOperationalStateStore(db);
+  });
+
+  const createMockVerificationEvaluator = (
+    outcome:
+      "criteria_satisfied" | "criteria_not_satisfied" | "inconclusive" = "criteria_satisfied",
+  ): IVerificationEvaluator => ({
+    evaluateStep: vi.fn((stepId, missionId, obs) => ({
+      id: `vr-${stepId}`,
+      missionId,
+      stepId,
+      executionResultIds: [],
+      observationIds: obs.map((o) => o.id),
+      outcome,
+      verifiedAt: new Date().toISOString(),
+      correlation,
+    })),
+  });
+
+  const createMockObservationReceiver = (): IObservationReceiver => ({
+    ingestObservation: vi.fn(),
+    getObservationsForMission: vi.fn(() => []),
+    getObservationsForStep: vi.fn(() => []),
   });
 
   afterEach(() => {
@@ -123,7 +155,12 @@ describe("MissionRuntime (Phase 6 Orchestration, Lifecycle & Verification)", () 
       }),
     };
 
-    const runtime = new MissionRuntime(stateStore, mockCoordinator);
+    const runtime = new MissionRuntime(
+      stateStore,
+      mockCoordinator,
+      createMockObservationReceiver(),
+      createMockVerificationEvaluator(),
+    );
     const events: MissionRuntimeEvent[] = [];
     runtime.onEvent((evt) => events.push(evt));
 
@@ -158,7 +195,12 @@ describe("MissionRuntime (Phase 6 Orchestration, Lifecycle & Verification)", () 
     const mockCoordinator: ICoordinationDispatcher = {
       dispatchStep: vi.fn(async () => Result.success({}, correlation)),
     };
-    const runtime = new MissionRuntime(stateStore, mockCoordinator);
+    const runtime = new MissionRuntime(
+      stateStore,
+      mockCoordinator,
+      createMockObservationReceiver(),
+      createMockVerificationEvaluator(),
+    );
 
     // Attempting to run second mission concurrently triggers SQLite unique index constraint
     await expect(runtime.executeMission(def2.id)).rejects.toThrow();
@@ -196,7 +238,12 @@ describe("MissionRuntime (Phase 6 Orchestration, Lifecycle & Verification)", () 
       }),
     };
 
-    const runtime = new MissionRuntime(stateStore, mockCoordinator, mockObsReceiver, mockVerification);
+    const runtime = new MissionRuntime(
+      stateStore,
+      mockCoordinator,
+      mockObsReceiver,
+      mockVerification,
+    );
     const result = await runtime.executeMission(def.id);
 
     expect(result.lifecycleState).toBe("COMPLETED");
@@ -239,7 +286,12 @@ describe("MissionRuntime (Phase 6 Orchestration, Lifecycle & Verification)", () 
       })),
     };
 
-    const runtime = new MissionRuntime(stateStore, mockCoordinator, mockObsReceiver, mockVerification);
+    const runtime = new MissionRuntime(
+      stateStore,
+      mockCoordinator,
+      mockObsReceiver,
+      mockVerification,
+    );
     const result = await runtime.executeMission(def.id);
 
     expect(result.lifecycleState).toBe("COMPLETED");
@@ -273,7 +325,12 @@ describe("MissionRuntime (Phase 6 Orchestration, Lifecycle & Verification)", () 
       })),
     };
 
-    const runtime = new MissionRuntime(stateStore, mockCoordinator, mockObsReceiver, mockVerification);
+    const runtime = new MissionRuntime(
+      stateStore,
+      mockCoordinator,
+      mockObsReceiver,
+      mockVerification,
+    );
     const result = await runtime.executeMission(def.id);
 
     expect(result.lifecycleState).toBe("FAILED");
@@ -286,7 +343,12 @@ describe("MissionRuntime (Phase 6 Orchestration, Lifecycle & Verification)", () 
       dispatchStep: vi.fn(async () => Result.success({}, correlation)),
     };
 
-    const runtime = new MissionRuntime(stateStore, mockCoordinator);
+    const runtime = new MissionRuntime(
+      stateStore,
+      mockCoordinator,
+      createMockObservationReceiver(),
+      createMockVerificationEvaluator(),
+    );
     const result = await runtime.executeMission(def.id);
 
     // Pauses before executing step 2
@@ -304,7 +366,12 @@ describe("MissionRuntime (Phase 6 Orchestration, Lifecycle & Verification)", () 
       dispatchStep: vi.fn(async () => Result.success({}, correlation)),
     };
 
-    const runtime = new MissionRuntime(stateStore, mockCoordinator);
+    const runtime = new MissionRuntime(
+      stateStore,
+      mockCoordinator,
+      createMockObservationReceiver(),
+      createMockVerificationEvaluator(),
+    );
 
     // Pause mission
     await runtime.pauseMission(def.id, "User requested pause");
@@ -320,5 +387,245 @@ describe("MissionRuntime (Phase 6 Orchestration, Lifecycle & Verification)", () 
     const resAfterCancel = await runtime.executeMission(def.id);
     expect(resAfterCancel.lifecycleState).toBe("CANCELLED");
     expect(mockCoordinator.dispatchStep).not.toHaveBeenCalled();
+  });
+
+  // =========================================================================
+  // Phase 8B Part 1: Explicit Resume Authorization Boundary & Idempotency Key Propagation
+  // =========================================================================
+  describe("Phase 8B Part 1: Explicit Resume Authorization Boundary & Idempotency Key Propagation", () => {
+    it("rejects executeMission() on PAUSED_RECOVERY mission without explicit authorization", async () => {
+      const { def } = await setupMission("m-paused-rec", 1);
+      await stateStore.updateMissionLifecycle(def.id, "PAUSED_RECOVERY");
+
+      const mockCoordinator: ICoordinationDispatcher = {
+        dispatchStep: vi.fn(async () => Result.success({}, correlation)),
+      };
+
+      const runtime = new MissionRuntime(
+        stateStore,
+        mockCoordinator,
+        createMockObservationReceiver(),
+        createMockVerificationEvaluator(),
+      );
+
+      await expect(runtime.executeMission(def.id)).rejects.toThrow(UnauthorizedResumeError);
+      expect(mockCoordinator.dispatchStep).not.toHaveBeenCalled();
+
+      // Mission remains PAUSED_RECOVERY
+      const mission = await stateStore.getMission(def.id);
+      expect(mission?.lifecycleState).toBe("PAUSED_RECOVERY");
+    });
+
+    it("rejects resumeMission() with missing or malformed ResumeAuthorization (fails closed)", async () => {
+      const { def } = await setupMission("m-paused-rec-malformed", 1);
+      await stateStore.updateMissionLifecycle(def.id, "PAUSED_RECOVERY");
+
+      const mockCoordinator: ICoordinationDispatcher = {
+        dispatchStep: vi.fn(async () => Result.success({}, correlation)),
+      };
+      const runtime = new MissionRuntime(
+        stateStore,
+        mockCoordinator,
+        createMockObservationReceiver(),
+        createMockVerificationEvaluator(),
+      );
+
+      // Null/undefined authorization
+      await expect(runtime.resumeMission(def.id, null as any)).rejects.toThrow(
+        UnauthorizedResumeError,
+      );
+      await expect(runtime.resumeMission(def.id, undefined as any)).rejects.toThrow(
+        UnauthorizedResumeError,
+      );
+
+      // Missing or empty authorizedBy
+      await expect(
+        runtime.resumeMission(def.id, { authorizedBy: "", reason: "valid reason" } as any),
+      ).rejects.toThrow(UnauthorizedResumeError);
+      await expect(
+        runtime.resumeMission(def.id, { authorizedBy: "   ", reason: "valid reason" } as any),
+      ).rejects.toThrow(UnauthorizedResumeError);
+
+      // Missing or empty reason
+      await expect(
+        runtime.resumeMission(def.id, { authorizedBy: "operator", reason: "" } as any),
+      ).rejects.toThrow(UnauthorizedResumeError);
+      await expect(
+        runtime.resumeMission(def.id, { authorizedBy: "operator", reason: "   " } as any),
+      ).rejects.toThrow(UnauthorizedResumeError);
+
+      expect(mockCoordinator.dispatchStep).not.toHaveBeenCalled();
+    });
+
+    it("resumeMission() dispatches VERIFIED_NEVER_STARTED step with persisted idempotencyKey", async () => {
+      const { def } = await setupMission("m-resume-never-started", 1);
+      const stepId = `step-m-resume-never-started-1`;
+      await stateStore.preDispatchStep(stepId, `idemp-step-${stepId}`);
+      await stateStore.updateStepRecoveryClassification(stepId, "VERIFIED_NEVER_STARTED");
+      await stateStore.updateMissionLifecycle(def.id, "PAUSED_RECOVERY");
+
+      let receivedIdempotencyKey: string | undefined;
+      const mockCoordinator: ICoordinationDispatcher = {
+        dispatchStep: vi.fn(async (_step, _corr, opts) => {
+          receivedIdempotencyKey = opts?.idempotencyKey;
+          return Result.success({ ok: true }, correlation);
+        }),
+      };
+
+      const runtime = new MissionRuntime(
+        stateStore,
+        mockCoordinator,
+        createMockObservationReceiver(),
+        createMockVerificationEvaluator(),
+      );
+      const auth: ResumeAuthorization = {
+        authorizedBy: "user_directive",
+        reason: "User explicitly resumed verified never-started step",
+      };
+
+      const result = await runtime.resumeMission(def.id, auth);
+      expect(result.lifecycleState).toBe("COMPLETED");
+      expect(mockCoordinator.dispatchStep).toHaveBeenCalledTimes(1);
+      expect(receivedIdempotencyKey).toBe(`idemp-step-${stepId}`);
+    });
+
+    it("resumeMission() dispatches REPLAY_PERMITTED step with persisted idempotencyKey", async () => {
+      const { def } = await setupMission("m-resume-replay-ok", 1);
+      const stepId = `step-m-resume-replay-ok-1`;
+      await stateStore.preDispatchStep(stepId, `idemp-step-${stepId}`);
+      await stateStore.updateStepRecoveryClassification(stepId, "REPLAY_PERMITTED");
+      await stateStore.updateMissionLifecycle(def.id, "PAUSED_RECOVERY");
+
+      let receivedIdempotencyKey: string | undefined;
+      const mockCoordinator: ICoordinationDispatcher = {
+        dispatchStep: vi.fn(async (_step, _corr, opts) => {
+          receivedIdempotencyKey = opts?.idempotencyKey;
+          return Result.success({ ok: true }, correlation);
+        }),
+      };
+
+      const runtime = new MissionRuntime(
+        stateStore,
+        mockCoordinator,
+        createMockObservationReceiver(),
+        createMockVerificationEvaluator(),
+      );
+      const auth: ResumeAuthorization = {
+        authorizedBy: "operator_override",
+        reason: "Operator explicitly authorized safe replay",
+      };
+
+      const result = await runtime.resumeMission(def.id, auth);
+      expect(result.lifecycleState).toBe("COMPLETED");
+      expect(mockCoordinator.dispatchStep).toHaveBeenCalledTimes(1);
+      expect(receivedIdempotencyKey).toBe(`idemp-step-${stepId}`);
+    });
+
+    it("resumeMission() halts and refuses to dispatch an unresolved BLOCKED_UNRESOLVED step", async () => {
+      const { def } = await setupMission("m-resume-blocked", 1);
+      const stepId = `step-m-resume-blocked-1`;
+      await stateStore.preDispatchStep(stepId, `idemp-step-${stepId}`);
+      await stateStore.updateStepRecoveryClassification(stepId, "BLOCKED_UNRESOLVED");
+      await stateStore.updateMissionLifecycle(def.id, "PAUSED_RECOVERY");
+
+      const mockCoordinator: ICoordinationDispatcher = {
+        dispatchStep: vi.fn(async () => Result.success({}, correlation)),
+      };
+
+      const runtime = new MissionRuntime(
+        stateStore,
+        mockCoordinator,
+        createMockObservationReceiver(),
+        createMockVerificationEvaluator(),
+      );
+      const auth: ResumeAuthorization = {
+        authorizedBy: "user_directive",
+        reason: "User attempted to resume unresolved step",
+      };
+
+      const result = await runtime.resumeMission(def.id, auth);
+
+      // Must HALT and remain PAUSED_RECOVERY without calling dispatchStep
+      expect(result.lifecycleState).toBe("PAUSED_RECOVERY");
+      expect(mockCoordinator.dispatchStep).not.toHaveBeenCalled();
+
+      const step = (await stateStore.getStepsForMission(def.id))[0];
+      expect(step.dispatchState).toBe("DISPATCHED");
+    });
+
+    it("propagates step idempotencyKey down to ICoordinationDispatcher during normal execution", async () => {
+      const { def } = await setupMission("m-idemp-prop", 1);
+      const stepId = `step-m-idemp-prop-1`;
+
+      let passedKey: string | undefined;
+      const mockCoordinator: ICoordinationDispatcher = {
+        dispatchStep: vi.fn(async (_step, _corr, opts) => {
+          passedKey = opts?.idempotencyKey;
+          return Result.success({ echoed: true }, correlation);
+        }),
+      };
+
+      const runtime = new MissionRuntime(
+        stateStore,
+        mockCoordinator,
+        createMockObservationReceiver(),
+        createMockVerificationEvaluator(),
+      );
+      const result = await runtime.executeMission(def.id);
+
+      expect(result.lifecycleState).toBe("COMPLETED");
+      expect(mockCoordinator.dispatchStep).toHaveBeenCalledTimes(1);
+      expect(passedKey).toBe(`idemp-step-${stepId}`);
+    });
+  });
+
+  describe("Phase 8B Part 2: Unverified Completion Prevention & Terminal Verification Guard", () => {
+    it("halts in PAUSED_RECOVERY when terminal verification is missing", async () => {
+      const { def } = await setupMission("m-no-verif", 1);
+
+      const mockCoordinator: ICoordinationDispatcher = {
+        dispatchStep: vi.fn(async () => Result.success({ echoed: true }, correlation)),
+      };
+
+      // Runtime without verification evaluator or observation receiver
+      const runtime = new MissionRuntime(stateStore, mockCoordinator);
+      const events: MissionRuntimeEvent[] = [];
+      runtime.onEvent((evt) => events.push(evt));
+
+      const result = await runtime.executeMission(def.id);
+
+      expect(result.lifecycleState).toBe("PAUSED_RECOVERY");
+      expect(events.some((e) => e.type === "MISSION_PAUSED_RECOVERY")).toBe(true);
+      expect(events.some((e) => e.type === "MISSION_COMPLETED")).toBe(false);
+
+      const dbMission = await stateStore.getMission(def.id);
+      expect(dbMission?.lifecycleState).toBe("PAUSED_RECOVERY");
+    });
+
+    it("halts in PAUSED_RECOVERY when terminal verification outcome is inconclusive", async () => {
+      const { def } = await setupMission("m-inconclusive", 1);
+
+      const mockCoordinator: ICoordinationDispatcher = {
+        dispatchStep: vi.fn(async () => Result.success({ payload: "test" }, correlation)),
+      };
+
+      const runtime = new MissionRuntime(
+        stateStore,
+        mockCoordinator,
+        createMockObservationReceiver(),
+        createMockVerificationEvaluator("inconclusive"),
+      );
+      const events: MissionRuntimeEvent[] = [];
+      runtime.onEvent((evt) => events.push(evt));
+
+      const result = await runtime.executeMission(def.id);
+
+      expect(result.lifecycleState).toBe("PAUSED_RECOVERY");
+      expect(events.some((e) => e.type === "MISSION_PAUSED_RECOVERY")).toBe(true);
+      expect(events.some((e) => e.type === "MISSION_COMPLETED")).toBe(false);
+
+      const dbMission = await stateStore.getMission(def.id);
+      expect(dbMission?.lifecycleState).toBe("PAUSED_RECOVERY");
+    });
   });
 });

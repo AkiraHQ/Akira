@@ -18,6 +18,7 @@ export class CoordinationDispatcher implements ICoordinationDispatcher {
   async dispatchStep<TInput = unknown, TOutput = unknown>(
     step: MissionStep<TInput>,
     correlation: CorrelationMetadata,
+    options?: { idempotencyKey?: string },
   ): Promise<Result<TOutput, CapabilityFailure>> {
     const stepCorrelation: CorrelationMetadata = {
       ...correlation,
@@ -28,6 +29,7 @@ export class CoordinationDispatcher implements ICoordinationDispatcher {
       step.targetCapability,
       step.input,
       stepCorrelation,
+      { isVajra: true, idempotencyKey: options?.idempotencyKey },
     );
   }
 }

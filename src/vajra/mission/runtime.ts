@@ -4,13 +4,42 @@ import { IObservationReceiver } from "../ports/observation";
 import { IVerificationEvaluator } from "../ports/verification";
 import { createObservation, Observation } from "../../contracts/events/observation";
 import { VerificationRecord, MissionResult } from "../../contracts/capabilities/verification";
+import { CorrelationMetadata } from "../../contracts/results/result";
 import { MissionClosureManager } from "../closure/closure-manager";
 import { MissionRuntimeEvent } from "./types";
 import { VajraMissionRecord, VajraStepRecord } from "../types/mission-record";
 import { VajraVerificationRecord } from "../types/verification-record";
 
+/**
+ * Authorization contract required to resume an interrupted mission in PAUSED_RECOVERY.
+ *
+ * TRUST BOUNDARY INVARIANT (Phase 8B Part 1):
+ * - ResumeAuthorization is supplied by a trusted internal caller (e.g. human operator directive
+ *   or explicit supervisor escalation resolution).
+ * - The runtime currently validates its presence and the structural validity of required fields
+ *   (non-empty string `authorizedBy` and non-empty string `reason`), but does NOT authenticate the
+ *   caller's identity against an external identity store, cryptographic key, or role-based access control (RBAC).
+ * - Missing, null, undefined, or malformed authorization payloads strictly fail closed by throwing
+ *   UnauthorizedResumeError.
+ * - This provides an architectural boundary ensuring that boot-time recovery, background event loops,
+ *   or ordinary executeMission() calls cannot blindly or automatically redispatch paused recovery work.
+ */
+export interface ResumeAuthorization {
+  readonly authorizedBy: string;
+  readonly reason: string;
+  readonly correlation?: CorrelationMetadata;
+}
+
+export class UnauthorizedResumeError extends Error {
+  constructor(missionId: string, reason: string) {
+    super(`Unauthorized attempt to resume mission '${missionId}' in PAUSED_RECOVERY: ${reason}`);
+    this.name = "UnauthorizedResumeError";
+  }
+}
+
 export interface IMissionRuntime {
   executeMission(missionId: string): Promise<VajraMissionRecord>;
+  resumeMission(missionId: string, authorization: ResumeAuthorization): Promise<VajraMissionRecord>;
   pauseMission(missionId: string, reason: string): Promise<void>;
   cancelMission(missionId: string, reason: string): Promise<void>;
   getLastMissionResult?(missionId?: string): MissionResult | undefined;
@@ -62,7 +91,52 @@ export class MissionRuntime implements IMissionRuntime {
       throw new Error(`Mission '${missionId}' not found in state store.`);
     }
 
-    if (mission.lifecycleState === "COMPLETED" || mission.lifecycleState === "FAILED" || mission.lifecycleState === "CANCELLED") {
+    if (mission.lifecycleState === "PAUSED_RECOVERY") {
+      throw new UnauthorizedResumeError(
+        missionId,
+        "Cannot automatically resume mission in PAUSED_RECOVERY via executeMission(). Explicit resumeMission() with ResumeAuthorization is strictly required.",
+      );
+    }
+
+    return this.runMissionLoop(mission);
+  }
+
+  async resumeMission(
+    missionId: string,
+    authorization: ResumeAuthorization,
+  ): Promise<VajraMissionRecord> {
+    if (
+      !authorization ||
+      typeof authorization !== "object" ||
+      typeof authorization.authorizedBy !== "string" ||
+      authorization.authorizedBy.trim() === "" ||
+      typeof authorization.reason !== "string" ||
+      authorization.reason.trim() === ""
+    ) {
+      throw new UnauthorizedResumeError(
+        missionId,
+        "Missing or malformed ResumeAuthorization: non-empty 'authorizedBy' and 'reason' are required.",
+      );
+    }
+
+    const mission = await this.stateStore.getMission(missionId);
+    if (!mission) {
+      throw new Error(`Mission '${missionId}' not found in state store.`);
+    }
+
+    return this.runMissionLoop(mission, authorization);
+  }
+
+  private async runMissionLoop(
+    mission: VajraMissionRecord,
+    _authorization?: ResumeAuthorization,
+  ): Promise<VajraMissionRecord> {
+    const missionId = mission.id;
+    if (
+      mission.lifecycleState === "COMPLETED" ||
+      mission.lifecycleState === "FAILED" ||
+      mission.lifecycleState === "CANCELLED"
+    ) {
       return mission;
     }
 
@@ -112,7 +186,11 @@ export class MissionRuntime implements IMissionRuntime {
             mission.definition.completionCriteria,
           );
           if (verification.outcome !== "criteria_satisfied") {
-            await this.stateStore.updateMissionLifecycle(mission.id, "FAILED", new Date().toISOString());
+            await this.stateStore.updateMissionLifecycle(
+              mission.id,
+              "FAILED",
+              new Date().toISOString(),
+            );
             this.emit({
               missionId: mission.id,
               type: "MISSION_FAILED",
@@ -139,8 +217,32 @@ export class MissionRuntime implements IMissionRuntime {
         return (await this.stateStore.getMission(missionId))!;
       }
 
+      // Guard against blind redispatch of unresolved DISPATCHED steps (Phase 8B Part 1)
+      if (step.dispatchState === "DISPATCHED") {
+        if (
+          step.recoveryClassification !== "VERIFIED_NEVER_STARTED" &&
+          step.recoveryClassification !== "REPLAY_PERMITTED"
+        ) {
+          // Unresolved DISPATCHED step (BLOCKED_UNRESOLVED or unclassified)
+          // Halt execution loop immediately. Do NOT call dispatcher!
+          await this.stateStore.updateMissionLifecycle(mission.id, "PAUSED_RECOVERY");
+          this.emit({
+            missionId: mission.id,
+            type: "MISSION_PAUSED_RECOVERY",
+            stepOrder: step.stepOrder,
+            stepId: step.id,
+            timestamp: new Date().toISOString(),
+          });
+          return (await this.stateStore.getMission(missionId))!;
+        }
+      }
+
       // Mid-mission confirmation gate check
-      if (mission.definition.constraints.confirmationRequired && step.stepOrder > 1 && step.dispatchState === "PENDING") {
+      if (
+        mission.definition.constraints.confirmationRequired &&
+        step.stepOrder > 1 &&
+        step.dispatchState === "PENDING"
+      ) {
         await this.stateStore.updateMissionLifecycle(missionId, "PAUSED_APPROVAL");
         this.emit({
           missionId,
@@ -165,16 +267,25 @@ export class MissionRuntime implements IMissionRuntime {
       executedVerifications[executedVerifications.length - 1] ??
       (await this.getTerminalVerificationFromStore(missionId, mission));
 
-    if (terminalVerification) {
-      const closureResult = await this.closureManager.closeMission({
+    if (!terminalVerification || terminalVerification.outcome !== "criteria_satisfied") {
+      // Invariant: No mission can transition to COMPLETED without a valid criteria_satisfied verification record.
+      const targetState =
+        terminalVerification?.outcome === "criteria_not_satisfied" ? "FAILED" : "PAUSED_RECOVERY";
+      await this.stateStore.updateMissionLifecycle(missionId, targetState);
+      this.emit({
         missionId,
-        terminalVerificationRecord: terminalVerification,
+        type: targetState === "FAILED" ? "MISSION_FAILED" : "MISSION_PAUSED_RECOVERY",
+        stepOrder: mission.currentStepOrder,
+        timestamp: new Date().toISOString(),
       });
-      this.lastMissionResult = closureResult.missionResult;
-    } else {
-      const completedAt = new Date().toISOString();
-      await this.stateStore.updateMissionLifecycle(missionId, "COMPLETED", completedAt);
+      return (await this.stateStore.getMission(missionId))!;
     }
+
+    const closureResult = await this.closureManager.closeMission({
+      missionId,
+      terminalVerificationRecord: terminalVerification,
+    });
+    this.lastMissionResult = closureResult.missionResult;
 
     this.emit({
       missionId,
@@ -228,7 +339,9 @@ export class MissionRuntime implements IMissionRuntime {
       expectedEvidence: step.expectedEvidence,
     };
 
-    const executionResult = await this.coordinator.dispatchStep(missionStep, correlation);
+    const executionResult = await this.coordinator.dispatchStep(missionStep, correlation, {
+      idempotencyKey: step.idempotencyKey,
+    });
     const executedAt = new Date().toISOString();
 
     if (executionResult.ok) {
@@ -292,8 +405,21 @@ export class MissionRuntime implements IMissionRuntime {
           );
           executedVerifications.push(verification);
 
+          if (verification.outcome === "inconclusive") {
+            // Inconclusive verification: transition to PAUSED_RECOVERY (Invariant K-P7-5)
+            await this.stateStore.updateMissionLifecycle(mission.id, "PAUSED_RECOVERY", executedAt);
+            this.emit({
+              missionId: mission.id,
+              type: "MISSION_PAUSED_RECOVERY",
+              stepOrder: step.stepOrder,
+              stepId: step.id,
+              timestamp: executedAt,
+            });
+            return false;
+          }
+
           if (verification.outcome !== "criteria_satisfied") {
-            // Verification contradicted or inconclusive
+            // Verification explicitly contradicted or criteria not satisfied
             await this.stateStore.updateMissionLifecycle(mission.id, "FAILED", executedAt);
             this.emit({
               missionId: mission.id,
@@ -330,7 +456,10 @@ export class MissionRuntime implements IMissionRuntime {
 
       // Timeout and uncertain outcome rule (§17.2):
       // A timeout or uncertain failure transitions to PAUSED_RECOVERY (never blindly replay)
-      if (executionResult.error.category === "timeout" || executionResult.error.category === "execution_failure") {
+      if (
+        executionResult.error.category === "timeout" ||
+        executionResult.error.category === "execution_failure"
+      ) {
         await this.stateStore.updateMissionLifecycle(mission.id, "PAUSED_RECOVERY");
         this.emit({
           missionId: mission.id,

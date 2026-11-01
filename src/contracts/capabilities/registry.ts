@@ -25,6 +25,7 @@ export interface CapabilityCallerContext {
   isVajra?: boolean;
   isInternal?: boolean;
   isExternalMcp?: boolean;
+  idempotencyKey?: string;
 }
 
 export type ActivationState = "activated" | "inactive";
@@ -289,6 +290,7 @@ export class CapabilityRegistry {
       isVajra: ctx.isVajra === true,
       invocationId: correlation.invocationId,
       capabilityName: name,
+      idempotencyKey: ctx.idempotencyKey,
     };
 
     return capabilityExecutionContext.run(execContext, async () => {

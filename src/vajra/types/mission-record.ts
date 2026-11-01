@@ -17,12 +17,15 @@ export type MissionLifecycleState =
  * Dispatch and execution states of a discrete mission step.
  */
 export type StepDispatchState =
-  | "PENDING"
-  | "DISPATCHED"
-  | "EXECUTED"
-  | "VERIFIED"
-  | "FAILED"
-  | "SKIPPED";
+  "PENDING" | "DISPATCHED" | "EXECUTED" | "VERIFIED" | "FAILED" | "SKIPPED";
+
+/**
+ * Durable classification assigned to an interrupted mission step during recovery (Phase 8B Part 1).
+ */
+export type StepRecoveryClassification =
+  | "VERIFIED_NEVER_STARTED" // Proven never started; safe to dispatch upon authorized resume
+  | "REPLAY_PERMITTED" // Outcome unknown, but 4 replay predicates strictly satisfied
+  | "BLOCKED_UNRESOLVED"; // Outcome unknown and replay disallowed or side-effects uncertain
 
 /**
  * Explicit budget allocation granted to a mission.
@@ -72,6 +75,8 @@ export interface VajraStepRecord<TInput = unknown> {
   readonly dispatchedAt?: string | null;
   readonly executedAt?: string | null;
   readonly verifiedAt?: string | null;
+  readonly evidenceHash?: string | null;
+  readonly recoveryClassification?: StepRecoveryClassification | null;
 }
 
 /**
@@ -131,6 +136,8 @@ export function createVajraStepRecord<TInput = unknown>(opts: {
   dispatchedAt?: string | null;
   executedAt?: string | null;
   verifiedAt?: string | null;
+  evidenceHash?: string | null;
+  recoveryClassification?: StepRecoveryClassification | null;
 }): VajraStepRecord<TInput> {
   return Object.freeze({
     id: opts.id,
@@ -148,5 +155,7 @@ export function createVajraStepRecord<TInput = unknown>(opts: {
     dispatchedAt: opts.dispatchedAt ?? null,
     executedAt: opts.executedAt ?? null,
     verifiedAt: opts.verifiedAt ?? null,
+    evidenceHash: opts.evidenceHash ?? null,
+    recoveryClassification: opts.recoveryClassification ?? null,
   });
 }

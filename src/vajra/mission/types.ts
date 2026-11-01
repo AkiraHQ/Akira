@@ -2,13 +2,24 @@ import { z } from "zod";
 import { ExecutiveAction } from "../types/action";
 import { CorrelationMetadata } from "../../contracts/results/result";
 import { MissionDefinition, MissionStep } from "../../contracts/mission/mission-definition";
-import { MissionLifecycleState, StepDispatchState } from "../types/mission-record";
+import type {
+  MissionLifecycleState,
+  StepDispatchState,
+  StepRecoveryClassification,
+} from "../types/mission-record";
+
+export type { StepRecoveryClassification };
 
 /**
  * Deterministic outcomes produced by the Mission Admission Gateway.
  */
 export type MissionAdmissionOutcome =
-  | { status: "ADMITTED"; action: ExecutiveAction; correlation: CorrelationMetadata; idempotencyKey: string }
+  | {
+      status: "ADMITTED";
+      action: ExecutiveAction;
+      correlation: CorrelationMetadata;
+      idempotencyKey: string;
+    }
   | { status: "PAUSED_APPROVAL"; escalationId: string; reason: string }
   | { status: "REJECTED"; reason: string }
   | { status: "STALE"; reason: string }
@@ -42,9 +53,9 @@ export type PlanProposal = z.infer<typeof PlanProposalSchema>;
  * Failure classifications for operational step execution.
  */
 export type FailureClass =
-  | "RECOVERABLE_TRANSIENT"  // Transient connection hiccup or SQLite busy lock on pure read
-  | "NON_RECOVERABLE_HARD"   // Schema validation failure, command rejection, unknown capability
-  | "REQUIRES_HUMAN_GATE";   // Non-idempotent failure, budget exhaustion, uncertain timeout
+  | "RECOVERABLE_TRANSIENT" // Transient connection hiccup or SQLite busy lock on pure read
+  | "NON_RECOVERABLE_HARD" // Schema validation failure, command rejection, unknown capability
+  | "REQUIRES_HUMAN_GATE"; // Non-idempotent failure, budget exhaustion, uncertain timeout
 
 /**
  * The three distinct reality cases evaluated during boot crash recovery.
@@ -53,6 +64,26 @@ export type RecoveryTriageCase =
   | "KNOWN_NOT_BEGUN" // Process died before external call initiated -> safe to dispatch normally
   | "STATE_UNCERTAIN" // Interrupted in-flight or timeout -> mandatory four-condition replay gate
   | "KNOWN_OCCURRED"; // Evidence present in environment -> reconcile to verification without re-dispatch
+
+/**
+ * Normalized evidence outcome states produced by an evidence probe (Phase 8B Part 1).
+ */
+export type EvidenceOutcomeStatus =
+  | "VERIFIED_OCCURRED" // Verifiable proof external actuation completed
+  | "VERIFIED_NEVER_STARTED" // Verifiable proof external actuation never initiated
+  | "UNKNOWN"; // Outcome missing, timed out, ambiguous, unverified, or error
+
+/**
+ * Structured evidence evaluation result returned by ReplayEvidenceProbe.
+ */
+export interface EvidenceProbeResult {
+  readonly status: EvidenceOutcomeStatus;
+  readonly canonicalExecutionId?: string;
+  readonly externalTimestamp?: string;
+  readonly evidenceHash?: string;
+  readonly reason?: string;
+  readonly details?: unknown;
+}
 
 /**
  * Event emitted during mission runtime state progression.

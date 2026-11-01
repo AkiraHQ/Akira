@@ -76,24 +76,38 @@ export class MissionClosureManager {
       },
     });
 
-    // 2. Persist mission lifecycle state update in SQLite
-    await this.stateStore.updateMissionLifecycle(
-      mission.id,
-      targetLifecycle,
-      isCompleted ? completedAt : null,
-    );
-
-    // 3. Clear active_mission_id in vajra_operational_state if active
-    await this.clearActiveMissionIfMatching(mission.id);
-
-    // 4. Reconcile registered vajra_beliefs
-    const reconciledBeliefs = await this.reconcileRegisteredBeliefs(
+    // 2. Compute reconciled beliefs
+    const { reports: reconciledBeliefs, updatedBeliefs } = await this.computeReconciledBeliefs(
       mission.definition.completionCriteria.requiredEvidence,
       options.terminalVerificationRecord.observationIds,
       terminalVerificationRecord.outcome,
     );
 
-    // 5. Emit decoupled domain event on EventBus (GENESIS blast door)
+    // 3. Atomically finalize reality closure if supported; otherwise strictly ordered fallback
+    if (typeof this.stateStore.completeMissionRealityClosure === "function") {
+      await this.stateStore.completeMissionRealityClosure(
+        mission.id,
+        targetLifecycle,
+        isCompleted ? completedAt : null,
+        updatedBeliefs,
+      );
+    } else {
+      // Strictly ordered fallback:
+      // A. Save reconciled beliefs first
+      for (const belief of updatedBeliefs) {
+        await this.stateStore.saveBelief(belief);
+      }
+      // B. Clear active mission pointer if matching
+      await this.clearActiveMissionIfMatching(mission.id);
+      // C. Update mission lifecycle to target
+      await this.stateStore.updateMissionLifecycle(
+        mission.id,
+        targetLifecycle,
+        isCompleted ? completedAt : null,
+      );
+    }
+
+    // 4. Emit decoupled domain event on EventBus (GENESIS blast door)
     let eventPublished = false;
     if (this.eventPublisher && options.publishEvent !== false) {
       this.publishMissionCompletionEvent(mission.id, mission.correlationId, missionResult);
@@ -121,16 +135,20 @@ export class MissionClosureManager {
     }
   }
 
-  private async reconcileRegisteredBeliefs(
+  private async computeReconciledBeliefs(
     requiredEvidence: readonly string[] | undefined,
     evidenceIds: readonly string[],
     outcome: string,
-  ): Promise<BeliefReconciliationReport[]> {
+  ): Promise<{
+    reports: BeliefReconciliationReport[];
+    updatedBeliefs: EpistemicBelief[];
+  }> {
     if (!requiredEvidence || requiredEvidence.length === 0 || evidenceIds.length === 0) {
-      return [];
+      return { reports: [], updatedBeliefs: [] };
     }
 
     const reports: BeliefReconciliationReport[] = [];
+    const updatedBeliefs: EpistemicBelief[] = [];
     const beliefs = await this.stateStore.loadBeliefs();
 
     for (const belief of beliefs) {
@@ -166,7 +184,7 @@ export class MissionClosureManager {
           ttlMs: belief.ttlMs,
         });
 
-        await this.stateStore.saveBelief(updatedBelief);
+        updatedBeliefs.push(updatedBelief);
         reports.push({
           beliefId: belief.id,
           previousState,
@@ -190,7 +208,7 @@ export class MissionClosureManager {
           ttlMs: belief.ttlMs,
         });
 
-        await this.stateStore.saveBelief(updatedBelief);
+        updatedBeliefs.push(updatedBelief);
         reports.push({
           beliefId: belief.id,
           previousState,
@@ -201,7 +219,7 @@ export class MissionClosureManager {
       }
     }
 
-    return reports;
+    return { reports, updatedBeliefs };
   }
 
   private publishMissionCompletionEvent(

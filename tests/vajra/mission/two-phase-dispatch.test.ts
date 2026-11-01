@@ -5,10 +5,20 @@ import path from "path";
 import { MissionRuntime } from "../../../src/vajra/mission/runtime";
 import { SqliteOperationalStateStore } from "../../../src/persistence/vajra/sqlite-operational-state-store";
 import { ICoordinationDispatcher } from "../../../src/vajra/ports/coordination";
-import { createMissionDefinition, createMissionStep } from "../../../src/contracts/mission/mission-definition";
+import {
+  createMissionDefinition,
+  createMissionStep,
+} from "../../../src/contracts/mission/mission-definition";
 import { createMissionState } from "../../../src/contracts/mission/mission-state";
-import { createVajraMissionRecord, createVajraStepRecord } from "../../../src/vajra/types/mission-record";
-import { CorrelationMetadata, Result, CapabilityFailure } from "../../../src/contracts/results/result";
+import {
+  createVajraMissionRecord,
+  createVajraStepRecord,
+} from "../../../src/vajra/types/mission-record";
+import {
+  CorrelationMetadata,
+  Result,
+  CapabilityFailure,
+} from "../../../src/contracts/results/result";
 
 describe("Two-Phase Dispatch Protocol in MissionRuntime", () => {
   let db: Database.Database;
@@ -57,7 +67,9 @@ describe("Two-Phase Dispatch Protocol in MissionRuntime", () => {
       dispatchStep: vi.fn(async (step, _corr) => {
         // Query database during Phase B external actuation:
         // Must show DISPATCHED persisted, and DB must NOT be locked in an open transaction
-        const stepRow = db.prepare("SELECT dispatch_state, dispatched_at FROM vajra_mission_steps WHERE id = ?").get(step.id) as { dispatch_state: string; dispatched_at: string };
+        const stepRow = db
+          .prepare("SELECT dispatch_state, dispatched_at FROM vajra_mission_steps WHERE id = ?")
+          .get(step.id) as { dispatch_state: string; dispatched_at: string };
         capturedStatusDuringPhaseB = stepRow.dispatch_state;
 
         // Verify SQLite can execute a concurrent read/write (proving no transaction lock is held)
@@ -72,7 +84,31 @@ describe("Two-Phase Dispatch Protocol in MissionRuntime", () => {
       }),
     };
 
-    const runtime = new MissionRuntime(stateStore, mockCoordinator);
+    const mockObsReceiver = {
+      ingestObservation: vi.fn(),
+      getObservationsForMission: vi.fn(() => []),
+      getObservationsForStep: vi.fn(() => []),
+    };
+
+    const mockVerification = {
+      evaluateStep: vi.fn((stepId: string, missionId: string, obs: any[]) => ({
+        id: `vr-${stepId}`,
+        missionId,
+        stepId,
+        executionResultIds: [],
+        observationIds: obs.map((o) => o.id),
+        outcome: "criteria_satisfied" as const,
+        verifiedAt: new Date().toISOString(),
+        correlation,
+      })),
+    };
+
+    const runtime = new MissionRuntime(
+      stateStore,
+      mockCoordinator,
+      mockObsReceiver,
+      mockVerification,
+    );
 
     const step = createMissionStep({
       id: "step-tpd-1",
@@ -152,7 +188,31 @@ describe("Two-Phase Dispatch Protocol in MissionRuntime", () => {
       }),
     };
 
-    const runtime = new MissionRuntime(stateStore, mockCoordinator);
+    const mockObsReceiver = {
+      ingestObservation: vi.fn(),
+      getObservationsForMission: vi.fn(() => []),
+      getObservationsForStep: vi.fn(() => []),
+    };
+
+    const mockVerification = {
+      evaluateStep: vi.fn((stepId: string, missionId: string, obs: any[]) => ({
+        id: `vr-${stepId}`,
+        missionId,
+        stepId,
+        executionResultIds: [],
+        observationIds: obs.map((o) => o.id),
+        outcome: "criteria_satisfied" as const,
+        verifiedAt: new Date().toISOString(),
+        correlation,
+      })),
+    };
+
+    const runtime = new MissionRuntime(
+      stateStore,
+      mockCoordinator,
+      mockObsReceiver,
+      mockVerification,
+    );
 
     const step = createMissionStep({
       id: "step-tpd-fail",

@@ -5,11 +5,9 @@ import {
   VajraMissionRecord,
   VajraStepRecord,
   MissionLifecycleState,
+  StepRecoveryClassification,
 } from "../types/mission-record";
-import {
-  VajraEscalationRecord,
-  EscalationStatus,
-} from "../types/escalation-record";
+import { VajraEscalationRecord, EscalationStatus } from "../types/escalation-record";
 import { VajraVerificationRecord } from "../types/verification-record";
 import { ProvenanceRecord } from "../types/provenance";
 
@@ -41,6 +39,21 @@ export interface IOperationalStateStore {
   getBelief(id: string): Promise<EpistemicBelief | null>;
   deleteBelief(id: string): Promise<void>;
 
+  // Reality Closure Atomic Transaction
+  /**
+   * Atomically finalizes mission reality closure:
+   * - Persists reconciled epistemic beliefs
+   * - Clears active_mission_id if matching this missionId
+   * - Updates mission lifecycle state and completed_at
+   * All executed within a single database transaction.
+   */
+  completeMissionRealityClosure?(
+    missionId: string,
+    targetLifecycle: MissionLifecycleState,
+    completedAt: string | null,
+    updatedBeliefs?: readonly EpistemicBelief[],
+  ): Promise<void>;
+
   // Deliberation Traces (Audit Log)
   appendAuditTrace(trace: DeliberationTrace): Promise<void>;
   queryAuditTraces(limit?: number): Promise<readonly DeliberationTrace[]>;
@@ -61,7 +74,16 @@ export interface IOperationalStateStore {
   getStep(id: string): Promise<VajraStepRecord | null>;
   getStepsForMission(missionId: string): Promise<readonly VajraStepRecord[]>;
   preDispatchStep(stepId: string, idempotencyKey: string, dispatchedAt?: string): Promise<void>;
-  recordStepExecution(stepId: string, executionResultId: string, executedAt?: string): Promise<void>;
+  recordStepExecution(
+    stepId: string,
+    executionResultId: string,
+    executedAt?: string,
+    evidenceHash?: string,
+  ): Promise<void>;
+  updateStepRecoveryClassification(
+    stepId: string,
+    classification: StepRecoveryClassification,
+  ): Promise<void>;
   failStep(stepId: string, error: unknown, executedAt?: string): Promise<void>;
 
   // Escalations (Human Gates)

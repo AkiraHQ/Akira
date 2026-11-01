@@ -5,16 +5,16 @@ import { ImpactClass, ReversibilityClass } from "./policy";
  * Discrete operational actions produced by the executive cognitive arbitration.
  */
 export type ExecutiveActionKind =
-  | "answer_conversation"     // Return an immediate conversational turn to the human
-  | "request_clarification"   // Ask user clarifying question (high uncertainty)
-  | "request_verification"    // Dispatch observation probe (epistemic conflict)
-  | "execute_mission"         // Transition to multi-step mission execution (Phase 2 compat)
-  | "start_mission"           // Transition to multi-step mission execution (Phase 6)
-  | "escalate_to_human"       // Pause and request explicit human authorization (Contract K1)
-  | "disagree_and_counter"    // Initiate Disagreement Protocol with evidence
-  | "wait_and_observe"        // Await external event, telemetry, or pending step result
-  | "proactive_notification"  // Dispatch a non-intrusive proactive notification
-  | "reject_safety_violation";// Hard refusal of prohibited or destructive directive
+  | "answer_conversation" // Return an immediate conversational turn to the human
+  | "request_clarification" // Ask user clarifying question (high uncertainty)
+  | "request_verification" // Dispatch observation probe (epistemic conflict)
+  | "execute_mission" // Transition to multi-step mission execution (Phase 2 compat)
+  | "start_mission" // Transition to multi-step mission execution (Phase 6)
+  | "escalate_to_human" // Pause and request explicit human authorization (Contract K1)
+  | "disagree_and_counter" // Initiate Disagreement Protocol with evidence
+  | "wait_and_observe" // Await external event, telemetry, or pending step result
+  | "proactive_notification" // Dispatch a non-intrusive proactive notification
+  | "reject_safety_violation"; // Hard refusal of prohibited or destructive directive
 
 /**
  * Lifecycle status of human approval gating for an executive action.
@@ -121,4 +121,18 @@ export function createExecutiveAction<TPayload = unknown>(opts: {
     payload: opts.payload,
     decidedAt: opts.decidedAt ?? new Date().toISOString(),
   });
+}
+
+/**
+ * Authoritative validator for canonical idempotency keys (Phase 8B Part 1).
+ * Enforces canonical pattern: must begin with 'idemp-' followed by 1 to 256
+ * alphanumeric, hyphen, underscore, colon, or dot characters.
+ */
+export function isValidIdempotencyKey(key: unknown): key is string {
+  return (
+    typeof key === "string" &&
+    key.length >= 7 &&
+    key.length <= 256 &&
+    /^idemp-[A-Za-z0-9_\-.:]+$/.test(key)
+  );
 }
