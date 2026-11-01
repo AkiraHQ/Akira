@@ -141,14 +141,23 @@ export class MissionAdmissionGateway implements IMissionAdmissionGateway {
       };
     }
 
-    // Gate 6: Single Running Mission Lock
+    // Gate 6: Single Running Mission Lock & Unresolved Recovery Guard
     const activeMission = await this.stateStore.getActiveMission();
-    if (activeMission && activeMission.lifecycleState === "RUNNING") {
-      return {
-        status: "CONCURRENCY_LOCKED",
-        activeMissionId: activeMission.id,
-        reason: `Concurrency conflict: mission '${activeMission.id}' is currently RUNNING.`,
-      };
+    if (activeMission) {
+      if (activeMission.lifecycleState === "RUNNING") {
+        return {
+          status: "CONCURRENCY_LOCKED",
+          activeMissionId: activeMission.id,
+          reason: `Concurrency conflict: mission '${activeMission.id}' is currently RUNNING.`,
+        };
+      }
+      if (activeMission.lifecycleState === "PAUSED_RECOVERY") {
+        return {
+          status: "CONCURRENCY_LOCKED",
+          activeMissionId: activeMission.id,
+          reason: `Concurrency conflict: active mission '${activeMission.id}' is paused in recovery. Interrupted recovery must be resolved before admitting new missions.`,
+        };
+      }
     }
 
     // Gate 7: Capability Pre-Flight Check

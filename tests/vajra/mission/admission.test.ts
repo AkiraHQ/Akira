@@ -249,6 +249,90 @@ describe("MissionAdmissionGateway (Phase 6 Admission Gating)", () => {
     }
   });
 
+  it("Gate 6: Rejects with CONCURRENCY_LOCKED when active mission is in PAUSED_RECOVERY even if mode is REQUEST_DRIVEN", async () => {
+    const def = createMissionDefinition({
+      id: "paused-recovery-mission-01",
+      objective: "Interrupted mission awaiting recovery",
+      steps: [],
+      completionCriteria: { description: "done", requiredEvidence: ["ev-1"] },
+      correlation,
+    });
+    const state = createMissionState({
+      missionId: def.id,
+      definitionId: def.id,
+    });
+    const pausedMission = createVajraMissionRecord({
+      id: def.id,
+      objective: def.objective,
+      lifecycleState: "PAUSED_RECOVERY",
+      definition: def,
+      state,
+      allocatedBudget: { maxCostCents: 10, maxSteps: 3 },
+      idempotencyKey: `idemp-${def.id}`,
+      requestId: correlation.requestId,
+      correlationId: correlation.correlationId,
+      invocationId: correlation.invocationId,
+    });
+    await stateStore.createMission(pausedMission, []);
+    await stateStore.saveOperationalContext({
+      ...validContext,
+      activeMissionId: pausedMission.id,
+    });
+
+    // Context mode is REQUEST_DRIVEN (diverged from recovery)
+    const requestDrivenContext: OperationalContext = {
+      ...validContext,
+      mode: "REQUEST_DRIVEN",
+      activeMissionId: pausedMission.id,
+    };
+
+    const action = createBaseAction({ id: "new-mission-03" });
+    const outcome = await gateway.admitAction(action, requestDrivenContext);
+    expect(outcome.status).toBe("CONCURRENCY_LOCKED");
+    if (outcome.status === "CONCURRENCY_LOCKED") {
+      expect(outcome.activeMissionId).toBe("paused-recovery-mission-01");
+      expect(outcome.reason).toContain("paused in recovery");
+    }
+  });
+
+  it("Gate 6: Does not block admission with recovery lock when active mission is in PAUSED_APPROVAL", async () => {
+    const def = createMissionDefinition({
+      id: "paused-approval-mission-01",
+      objective: "Mission awaiting approval",
+      steps: [],
+      completionCriteria: { description: "done", requiredEvidence: ["ev-1"] },
+      correlation,
+    });
+    const state = createMissionState({
+      missionId: def.id,
+      definitionId: def.id,
+    });
+    const pausedApprovalMission = createVajraMissionRecord({
+      id: def.id,
+      objective: def.objective,
+      lifecycleState: "PAUSED_APPROVAL",
+      definition: def,
+      state,
+      allocatedBudget: { maxCostCents: 10, maxSteps: 3 },
+      idempotencyKey: `idemp-${def.id}`,
+      requestId: correlation.requestId,
+      correlationId: correlation.correlationId,
+      invocationId: correlation.invocationId,
+    });
+    await stateStore.createMission(pausedApprovalMission, []);
+    await stateStore.saveOperationalContext({
+      ...validContext,
+      activeMissionId: pausedApprovalMission.id,
+      version: 2, // version incremented after previous save
+    });
+
+    const action = createBaseAction({ id: "new-mission-04" });
+    const outcome = await gateway.admitAction(action, validContext);
+    // Should NOT be CONCURRENCY_LOCKED by recovery lock
+    expect(outcome.status).not.toBe("CONCURRENCY_LOCKED");
+    expect(outcome.status).toBe("ADMITTED");
+  });
+
   it("Gate 7: Pre-flight capability checks enforce registration and permissions", async () => {
     // Missing capability
     const actionMissingCap = createBaseAction({

@@ -6,6 +6,7 @@ import {
   initializeServer,
   getApplicationReadiness,
   ensureServerStarted,
+  isMissionAdmissionReady,
   isServerShuttingDown,
   registerServerSignalHandlers,
 } from "./server-lifecycle";
@@ -74,6 +75,44 @@ export default {
         );
       }
 
+      // Cognitive readiness probe: reflects whether VAJRA can safely admit new operational missions
+      if (url.pathname === "/ready/vajra" || url.pathname === "/api/ready/vajra") {
+        if (isServerShuttingDown()) {
+          return new Response(
+            JSON.stringify({ error: "Server is shutting down", code: "SERVER_SHUTTING_DOWN" }),
+            {
+              status: 503,
+              headers: {
+                "content-type": "application/json",
+                "X-Akira-Cognitive-Status": "STOPPED",
+                "X-Akira-Cognitive-Ready": "false",
+              },
+            },
+          );
+        }
+
+        await ensureServerStarted();
+        const readiness = getApplicationReadiness();
+        const missionReady = isMissionAdmissionReady();
+        const statusCode = missionReady ? 200 : 503;
+
+        const bodyData = readiness.vajraReadiness ?? {
+          status: readiness.vajraStatus,
+          isOperational: readiness.vajraReady,
+          hasUnresolvedRecovery: readiness.hasUnresolvedRecovery ?? false,
+          error: readiness.error,
+        };
+
+        return new Response(JSON.stringify(bodyData), {
+          status: statusCode,
+          headers: {
+            "content-type": "application/json",
+            "X-Akira-Cognitive-Status": readiness.vajraStatus,
+            "X-Akira-Cognitive-Ready": String(readiness.vajraReady),
+          },
+        });
+      }
+
       // Application readiness probe: reflects whether host application is ready to serve
       if (url.pathname === "/ready" || url.pathname === "/api/ready") {
         if (isServerShuttingDown()) {
@@ -81,16 +120,25 @@ export default {
             JSON.stringify({ error: "Server is shutting down", code: "SERVER_SHUTTING_DOWN" }),
             {
               status: 503,
-              headers: { "content-type": "application/json" },
+              headers: {
+                "content-type": "application/json",
+                "X-Akira-Cognitive-Status": "STOPPED",
+                "X-Akira-Cognitive-Ready": "false",
+              },
             },
           );
         }
 
-        const readiness = await ensureServerStarted();
+        await ensureServerStarted();
+        const readiness = getApplicationReadiness();
         const statusCode = readiness.applicationReady ? 200 : 503;
         return new Response(JSON.stringify(readiness), {
           status: statusCode,
-          headers: { "content-type": "application/json" },
+          headers: {
+            "content-type": "application/json",
+            "X-Akira-Cognitive-Status": readiness.vajraStatus,
+            "X-Akira-Cognitive-Ready": String(readiness.vajraReady),
+          },
         });
       }
 

@@ -357,7 +357,7 @@ export class SqliteOperationalStateStore implements IOperationalStateStore {
     return row ? mapRowToMission(row) : null;
   }
 
-  async getActiveMission(): Promise<VajraMissionRecord | null> {
+  getActiveMissionSync(): VajraMissionRecord | null {
     const row = this.db
       .prepare(
         `
@@ -379,6 +379,10 @@ export class SqliteOperationalStateStore implements IOperationalStateStore {
       .get() as MissionRow | undefined;
 
     return runningRow ? mapRowToMission(runningRow) : null;
+  }
+
+  async getActiveMission(): Promise<VajraMissionRecord | null> {
+    return this.getActiveMissionSync();
   }
 
   async updateMissionLifecycle(

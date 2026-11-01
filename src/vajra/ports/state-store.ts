@@ -64,6 +64,7 @@ export interface IOperationalStateStore {
   createMission(mission: VajraMissionRecord, steps: readonly VajraStepRecord[]): Promise<void>;
   getMission(id: string): Promise<VajraMissionRecord | null>;
   getActiveMission(): Promise<VajraMissionRecord | null>;
+  getActiveMissionSync?(): VajraMissionRecord | null;
   updateMissionLifecycle(
     id: string,
     lifecycleState: MissionLifecycleState,

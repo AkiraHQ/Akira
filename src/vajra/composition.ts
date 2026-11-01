@@ -91,6 +91,7 @@ export interface VajraReadinessReport {
   readonly operationalMode: string;
   readonly capabilitiesCount: number;
   readonly interruptedMissionsRecovered: number;
+  readonly hasUnresolvedRecovery: boolean;
   readonly subsystems: VajraSubsystemReadiness;
   readonly degradedReasons: readonly string[];
   readonly cleanupFailures?: readonly VajraCleanupFailure[];
@@ -160,6 +161,8 @@ export interface CleanupTask {
 
 // Subsystem composition state
 let activeController: ExecutiveController | null = null;
+let activeHandsPort: IHandsPort | null = null;
+let activeStateStore: IOperationalStateStore | null = null;
 let operationalStatus: VajraOperationalStatus = "UNINITIALIZED";
 let isInitializing = false;
 let lastRecoveryCount = 0;
@@ -282,6 +285,9 @@ export async function initializeVajraRuntime(
 
     // HANDS execution port: strictly unavailable in Phase 8A (physical sandbox execution disallowed)
     const handsPort = options?.handsPort ?? new UnavailableHandsAdapter();
+
+    activeStateStore = stateStore;
+    activeHandsPort = handsPort;
 
     if (options?.testCleanupTasks) {
       for (const task of options.testCleanupTasks) {
@@ -592,6 +598,8 @@ export async function shutdownVajraRuntime(options?: {
   }
 
   operationalStatus = "STOPPED";
+  activeHandsPort = null;
+  activeStateStore = null;
   currentSubsystems = {
     coreRuntime: false,
     deterministicReasoning: false,
@@ -663,6 +671,8 @@ export function _resetCompositionStateForTesting(): void {
   activeIngressCoordinator = null;
 
   activeController = null;
+  activeHandsPort = null;
+  activeStateStore = null;
   operationalStatus = "UNINITIALIZED";
   isInitializing = false;
   lastRecoveryCount = 0;
@@ -696,26 +706,82 @@ export function getVajraController(): ExecutiveController {
 
 /**
  * Returns a diagnostic report describing the operational readiness of VAJRA.
+ * Produces a side-effect-free, read-only diagnostic snapshot.
  */
 export function getVajraReadiness(): VajraReadinessReport {
+  // Dynamically sample live physical execution availability
+  const isRealExecutionAvailable = activeHandsPort
+    ? activeHandsPort.isAvailable()
+    : currentSubsystems.realExecution;
+
+  const dynamicDegradedReasons: string[] = [];
+  if (
+    !currentSubsystems.modelAssistedReasoning &&
+    operationalStatus !== "FAILED" &&
+    operationalStatus !== "STOPPED" &&
+    operationalStatus !== "UNINITIALIZED"
+  ) {
+    dynamicDegradedReasons.push("Model-assisted reasoning coprocessor is offline or unconfigured.");
+  }
+  if (
+    !isRealExecutionAvailable &&
+    operationalStatus !== "FAILED" &&
+    operationalStatus !== "STOPPED" &&
+    operationalStatus !== "UNINITIALIZED"
+  ) {
+    dynamicDegradedReasons.push(
+      "Physical sandbox execution (HANDS) is unavailable; capability execution is constrained to AKIRA OS.",
+    );
+  }
+  for (const reason of currentDegradedReasons) {
+    if (
+      !dynamicDegradedReasons.includes(reason) &&
+      !reason.includes("Physical sandbox") &&
+      !reason.includes("Model-assisted")
+    ) {
+      dynamicDegradedReasons.push(reason);
+    }
+  }
+
+  let diagnosticStatus = operationalStatus;
+  if (operationalStatus === "READY" || operationalStatus === "DEGRADED") {
+    diagnosticStatus = dynamicDegradedReasons.length > 0 ? "DEGRADED" : "READY";
+  }
+
   const isOperational =
-    (operationalStatus === "READY" || operationalStatus === "DEGRADED") &&
+    (diagnosticStatus === "READY" || diagnosticStatus === "DEGRADED") &&
     activeController?.getState() === "RUNNING";
 
+  let activeMission: any = null;
+  if (activeStateStore?.getActiveMissionSync) {
+    try {
+      activeMission = activeStateStore.getActiveMissionSync();
+    } catch {
+      activeMission = null;
+    }
+  }
+
+  const hasUnresolvedRecovery = activeMission?.lifecycleState === "PAUSED_RECOVERY";
+  const activeMissionId = activeMission
+    ? activeMission.id
+    : (activeController?.getOperationalContext().activeMissionId ?? null);
+
   return {
-    status: operationalStatus,
+    status: diagnosticStatus,
     isOperational,
     initialized: activeController !== null,
     controllerState: activeController?.getState() ?? "UNINITIALIZED",
-    activeMissionId: activeController?.getOperationalContext().activeMissionId ?? null,
+    activeMissionId,
     operationalMode: activeController?.getOperationalContext().mode ?? "UNKNOWN",
     capabilitiesCount: activeController?.getSelfModel().listCapabilities().length ?? 0,
     interruptedMissionsRecovered: lastRecoveryCount,
+    hasUnresolvedRecovery,
     subsystems: {
       ...currentSubsystems,
+      realExecution: isRealExecutionAvailable,
       coreRuntime: isOperational,
     },
-    degradedReasons: [...currentDegradedReasons],
+    degradedReasons: dynamicDegradedReasons,
     cleanupFailures: lastCleanupFailures.length > 0 ? [...lastCleanupFailures] : undefined,
     unreconciledTaskNames:
       unreconciledCleanupTasks.size > 0 ? Array.from(unreconciledCleanupTasks.keys()) : undefined,

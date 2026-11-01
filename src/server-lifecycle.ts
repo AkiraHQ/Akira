@@ -39,6 +39,9 @@ export interface ApplicationReadiness {
   readonly missionExecutionReady: boolean;
   readonly vajraStatus: VajraOperationalStatus;
   readonly vajraReadiness?: VajraReadinessReport;
+  readonly isDegraded?: boolean;
+  readonly degradedReasons?: readonly string[];
+  readonly hasUnresolvedRecovery?: boolean;
   readonly failedSubsystem?: ServerSubsystem;
   readonly error?: string;
   readonly timestamp: string;
@@ -188,6 +191,7 @@ export async function initializeServer(
           operationalMode: controller.getOperationalContext().mode,
           capabilitiesCount: controller.getSelfModel().listCapabilities().length,
           interruptedMissionsRecovered: 0,
+          hasUnresolvedRecovery: false,
           subsystems: {
             coreRuntime: isRunning,
             deterministicReasoning: isRunning,
@@ -275,23 +279,124 @@ export async function getOperationalVajraController(): Promise<ExecutiveControll
 export { getVajraIngressCoordinator };
 
 /**
- * Snapshot of the current application and subsystem readiness.
+ * Evaluates whether VAJRA can safely admit and execute new operational missions.
+ *
+ * Invariants:
+ * - Server must not be shutting down or shut down.
+ * - Host application and SQLite must be operational.
+ * - VAJRA cognitive runtime must be operational (isOperational === true).
+ * - No unresolved recovery mission can be active (hasUnresolvedRecovery !== true).
+ * - System health must not be CRITICAL (Gate 5 admission gate).
+ * - Note: Physical sandbox (HANDS) unavailability alone does not block admission;
+ *   AKIRA OS software capabilities can execute safely in degraded mode.
+ */
+export function isMissionAdmissionReady(): boolean {
+  if (isServerShuttingDown() || isServerShutdown()) {
+    return false;
+  }
+  const appReadiness = getApplicationReadiness();
+  if (!appReadiness.applicationReady || !appReadiness.vajraReady) {
+    return false;
+  }
+  const vajraReport = appReadiness.vajraReadiness;
+  if (!vajraReport || !vajraReport.isOperational) {
+    return false;
+  }
+  if (vajraReport.hasUnresolvedRecovery) {
+    return false;
+  }
+  if (activeLifecycleController?.getOperationalContext().systemHealthStatus === "CRITICAL") {
+    return false;
+  }
+  return true;
+}
+
+/**
+ * Dynamic snapshot of current application and subsystem readiness.
+ * Produces a side-effect-free, live projection of operational status.
  */
 export function getApplicationReadiness(): ApplicationReadiness {
-  if (lastReadiness) {
-    return lastReadiness;
+  const timestamp = new Date().toISOString();
+
+  if (!lastReadiness) {
+    return {
+      processLive: true,
+      applicationReady: false,
+      sqliteReady: false,
+      genesisReady: false,
+      capabilitiesReady: false,
+      observabilityReady: false,
+      vajraReady: false,
+      missionExecutionReady: false,
+      vajraStatus: "UNINITIALIZED",
+      isDegraded: false,
+      degradedReasons: [],
+      hasUnresolvedRecovery: false,
+      timestamp,
+    };
   }
+
+  if (isServerShuttingDown() || isServerShutdown()) {
+    return {
+      ...lastReadiness,
+      processLive: true,
+      applicationReady: false,
+      vajraReady: false,
+      missionExecutionReady: false,
+      vajraStatus: "STOPPED",
+      isDegraded: false,
+      degradedReasons: [],
+      hasUnresolvedRecovery: false,
+      timestamp,
+    };
+  }
+
+  // If VAJRA failed initialization, fail closed and preserve FAILED status
+  if (lastReadiness.vajraStatus === "FAILED" || lastReadiness.failedSubsystem === "vajra") {
+    return {
+      ...lastReadiness,
+      processLive: true,
+      vajraReady: false,
+      missionExecutionReady: false,
+      vajraStatus: "FAILED",
+      isDegraded: false,
+      timestamp,
+    };
+  }
+
+  let vajraReport: VajraReadinessReport | undefined;
+  try {
+    vajraReport = getVajraReadiness();
+  } catch {
+    vajraReport = undefined;
+  }
+
+  const vajraStatus = vajraReport ? vajraReport.status : lastReadiness.vajraStatus;
+  const vajraReady = vajraReport ? vajraReport.isOperational : lastReadiness.vajraReady;
+  const missionExecutionReady = vajraReport
+    ? vajraReport.subsystems.realExecution
+    : lastReadiness.missionExecutionReady;
+  const isDegraded = vajraStatus === "DEGRADED";
+  const degradedReasons = vajraReport ? vajraReport.degradedReasons : [];
+  const hasUnresolvedRecovery = vajraReport ? vajraReport.hasUnresolvedRecovery : false;
+
   return {
     processLive: true,
-    applicationReady: false,
-    sqliteReady: false,
-    genesisReady: false,
-    capabilitiesReady: false,
-    observabilityReady: false,
-    vajraReady: false,
-    missionExecutionReady: false,
-    vajraStatus: "UNINITIALIZED",
-    timestamp: new Date().toISOString(),
+    applicationReady: lastReadiness.applicationReady,
+    sqliteReady: lastReadiness.sqliteReady,
+    genesisReady: lastReadiness.genesisReady,
+    capabilitiesReady: lastReadiness.capabilitiesReady,
+    observabilityReady: lastReadiness.observabilityReady,
+    vajraReady,
+    missionExecutionReady,
+    vajraStatus,
+    vajraReadiness: vajraReport ?? lastReadiness.vajraReadiness,
+    isDegraded,
+    degradedReasons,
+    hasUnresolvedRecovery,
+    failedSubsystem: lastReadiness.failedSubsystem,
+    error: lastReadiness.error,
+    timestamp,
   };
 }
 
