@@ -43,6 +43,7 @@ export interface IMissionRuntime {
   pauseMission(missionId: string, reason: string): Promise<void>;
   cancelMission(missionId: string, reason: string): Promise<void>;
   getLastMissionResult?(missionId?: string): MissionResult | undefined;
+  requestShutdown?(options?: { timeoutMs?: number }): Promise<void>;
 }
 
 export type MissionEventListener = (event: MissionRuntimeEvent) => void;
@@ -56,6 +57,9 @@ export class MissionRuntime implements IMissionRuntime {
   private readonly listeners: MissionEventListener[] = [];
   private readonly closureManager: MissionClosureManager;
   private lastMissionResult?: MissionResult;
+  private isShutdownRequested: boolean = false;
+  private activeExecutionPromise: Promise<VajraMissionRecord> | null = null;
+  private activeMissionId: string | null = null;
 
   constructor(
     private readonly stateStore: IOperationalStateStore,
@@ -98,7 +102,17 @@ export class MissionRuntime implements IMissionRuntime {
       );
     }
 
-    return this.runMissionLoop(mission);
+    const executionPromise = this.runMissionLoop(mission);
+    this.activeExecutionPromise = executionPromise;
+    this.activeMissionId = missionId;
+    try {
+      return await executionPromise;
+    } finally {
+      if (this.activeMissionId === missionId) {
+        this.activeMissionId = null;
+        this.activeExecutionPromise = null;
+      }
+    }
   }
 
   async resumeMission(
@@ -124,7 +138,17 @@ export class MissionRuntime implements IMissionRuntime {
       throw new Error(`Mission '${missionId}' not found in state store.`);
     }
 
-    return this.runMissionLoop(mission, authorization);
+    const executionPromise = this.runMissionLoop(mission, authorization);
+    this.activeExecutionPromise = executionPromise;
+    this.activeMissionId = missionId;
+    try {
+      return await executionPromise;
+    } finally {
+      if (this.activeMissionId === missionId) {
+        this.activeMissionId = null;
+        this.activeExecutionPromise = null;
+      }
+    }
   }
 
   private async runMissionLoop(
@@ -247,6 +271,19 @@ export class MissionRuntime implements IMissionRuntime {
         this.emit({
           missionId,
           type: "MISSION_PAUSED_APPROVAL",
+          stepOrder: step.stepOrder,
+          stepId: step.id,
+          timestamp: new Date().toISOString(),
+        });
+        return (await this.stateStore.getMission(missionId))!;
+      }
+
+      // Cooperative shutdown check before dispatching unexecuted step
+      if (this.isShutdownRequested) {
+        await this.stateStore.updateMissionLifecycle(missionId, "PAUSED_RECOVERY");
+        this.emit({
+          missionId,
+          type: "MISSION_PAUSED_RECOVERY",
           stepOrder: step.stepOrder,
           stepId: step.id,
           timestamp: new Date().toISOString(),
@@ -533,5 +570,50 @@ export class MissionRuntime implements IMissionRuntime {
       type: "MISSION_CANCELLED",
       timestamp: cancelledAt,
     });
+  }
+
+  /**
+   * Requests cooperative shutdown of the mission runtime.
+   *
+   * Bounded Shutdown & Durable Safety Invariant:
+   * 1. Signals all in-flight loops that shutdown is requested.
+   * 2. Allows any currently executing capability step up to `timeoutMs` (default 5000ms)
+   *    to complete its discrete execution and verification recording.
+   * 3. Pauses execution BEFORE dispatching any subsequent step, persisting the mission as PAUSED_RECOVERY.
+   * 4. If an in-flight capability does not resolve within `timeoutMs`, shutdown proceeds without
+   *    fabricating completion or evidence; the unresolved step remains DISPATCHED in SQLite for
+   *    Phase 8B crash recovery to audit and triage safely upon restart.
+   */
+  async requestShutdown(options?: { timeoutMs?: number }): Promise<void> {
+    this.isShutdownRequested = true;
+    if (!this.activeExecutionPromise) {
+      return;
+    }
+
+    const timeoutMs = options?.timeoutMs ?? 5000;
+    let timer: NodeJS.Timeout | null = null;
+    const timeoutPromise = new Promise<void>((resolve) => {
+      timer = setTimeout(() => {
+        resolve();
+      }, timeoutMs);
+    });
+
+    try {
+      await Promise.race([
+        this.activeExecutionPromise.then(
+          () => {},
+          () => {},
+        ),
+        timeoutPromise,
+      ]);
+    } finally {
+      if (timer) clearTimeout(timer);
+    }
+  }
+
+  _resetShutdownForTesting(): void {
+    this.isShutdownRequested = false;
+    this.activeExecutionPromise = null;
+    this.activeMissionId = null;
   }
 }

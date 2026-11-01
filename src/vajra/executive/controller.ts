@@ -162,7 +162,16 @@ export class ExecutiveController {
               mode: "RECOVERY",
               activeMissionId: first.mission.id,
             });
-          } else if (first.pendingEscalations.length > 0) {
+          } else if (first.mission.lifecycleState === "PAUSED_RECOVERY") {
+            this.setOperationalFocus(`Interrupted mission pending recovery: ${first.mission.id}`);
+            this.selfModel.updateOperationalContext({
+              mode: "RECOVERY",
+              activeMissionId: first.mission.id,
+            });
+          } else if (
+            first.pendingEscalations.length > 0 ||
+            first.mission.lifecycleState === "PAUSED_APPROVAL"
+          ) {
             await this.stateStore.updateMissionLifecycle(first.mission.id, "PAUSED_APPROVAL");
             this.setOperationalFocus(
               `Pending human approval required for mission ${first.mission.id}`,
@@ -206,7 +215,10 @@ export class ExecutiveController {
     }
   }
 
-  async shutdown(correlation?: CorrelationMetadata): Promise<Result<void, string>> {
+  async shutdown(
+    correlation?: CorrelationMetadata,
+    options?: { timeoutMs?: number },
+  ): Promise<Result<void, string>> {
     const corr: CorrelationMetadata = correlation ?? {
       requestId: "vajra-shutdown",
       correlationId: "vajra-shutdown",
@@ -229,7 +241,37 @@ export class ExecutiveController {
     this.state = "STOPPING";
     const shutdownFailures: string[] = [];
 
-    // 1. Teardown GENESIS cognitive discovery subscription
+    // 1. Stop scheduler admission of new turns
+    if (this.scheduler && typeof (this.scheduler as any).stop === "function") {
+      (this.scheduler as any).stop();
+    }
+
+    // 2. Request cooperative interruption of active mission execution
+    if (this.missionRuntime && typeof (this.missionRuntime as any).requestShutdown === "function") {
+      try {
+        await (this.missionRuntime as any).requestShutdown({ timeoutMs: options?.timeoutMs });
+      } catch (runtimeErr: any) {
+        const msg = runtimeErr?.message ?? String(runtimeErr);
+        console.error("[ExecutiveController] Error during mission runtime shutdown:", runtimeErr);
+        shutdownFailures.push(`Mission runtime shutdown failed: ${msg}`);
+      }
+    }
+
+    // 3. Drain pending scheduler turns (if any)
+    if (this.scheduler && typeof (this.scheduler as any).drain === "function") {
+      try {
+        await (this.scheduler as any).drain(options?.timeoutMs);
+      } catch (drainErr: any) {
+        const msg = drainErr?.message ?? String(drainErr);
+        console.error(
+          "[ExecutiveController] Error draining scheduler queue during shutdown:",
+          drainErr,
+        );
+        shutdownFailures.push(`Scheduler drain failed: ${msg}`);
+      }
+    }
+
+    // 4. Teardown GENESIS cognitive discovery subscription
     if (this.unsubscribeGenesis) {
       try {
         this.unsubscribeGenesis();
@@ -244,12 +286,12 @@ export class ExecutiveController {
       }
     }
 
-    // 2. Update operational context in-memory to PAUSED
+    // 5. Update operational context in-memory to PAUSED
     this.selfModel.updateOperationalContext({
       mode: "PAUSED",
     });
 
-    // 3. Durably persist PAUSED operational mode to state store
+    // 6. Durably persist PAUSED operational mode to state store
     if (this.stateStore && !this.isOperationalContextPersistedAsPaused) {
       try {
         await this.persistOperationalContext();
@@ -279,7 +321,13 @@ export class ExecutiveController {
   isTeardownReconciled(): boolean {
     const subscriptionDisposed = this.unsubscribeGenesis === undefined;
     const persistenceComplete = !this.stateStore || this.isOperationalContextPersistedAsPaused;
-    return this.state === "STOPPED" && subscriptionDisposed && persistenceComplete;
+    const schedulerStopped =
+      !this.scheduler ||
+      typeof (this.scheduler as any).isStopped !== "function" ||
+      (this.scheduler as any).isStopped();
+    return (
+      this.state === "STOPPED" && subscriptionDisposed && persistenceComplete && schedulerStopped
+    );
   }
 
   private async persistOperationalContext(): Promise<void> {

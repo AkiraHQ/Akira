@@ -584,17 +584,68 @@ export async function reconcileVajraCleanup(): Promise<ReconciliationResult> {
   };
 }
 
+export interface VajraShutdownOptions {
+  correlation?: CorrelationMetadata;
+  force?: boolean;
+  timeoutMs?: number;
+}
+
 /**
  * Gracefully shuts down the active VAJRA runtime.
  * Symmetrical to initialization; preserves shared database, registry, and event bus.
  */
-export async function shutdownVajraRuntime(options?: {
-  correlation?: CorrelationMetadata;
-  force?: boolean;
-}): Promise<void> {
+export async function shutdownVajraRuntime(options?: VajraShutdownOptions): Promise<void> {
   // If force mode is requested, re-attempt reconciliation on all remaining unreconciled cleanup tasks
   if (options?.force && unreconciledCleanupTasks.size > 0) {
     await reconcileVajraCleanup();
+  }
+
+  // Detach background ingress adapters first so no new stimuli enter during shutdown
+  if (activePlatformEventAdapter) activePlatformEventAdapter.detach();
+  if (activeGenesisDiscoveryAdapter) activeGenesisDiscoveryAdapter.detach();
+  if (activeUserDirectiveAdapter) activeUserDirectiveAdapter.detach();
+  if (activeIngressCoordinator) activeIngressCoordinator.detach();
+  activePlatformEventAdapter = null;
+  activeGenesisDiscoveryAdapter = null;
+  activeUserDirectiveAdapter = null;
+  activeIngressCoordinator = null;
+
+  if (activeController) {
+    const controllerToShutdown = activeController;
+    activeController = null;
+
+    try {
+      if (
+        controllerToShutdown.getState() === "RUNNING" ||
+        (controllerToShutdown.getState() === "STOPPED" &&
+          !controllerToShutdown.isTeardownReconciled())
+      ) {
+        const shutdownResult = await controllerToShutdown.shutdown(options?.correlation, {
+          timeoutMs: options?.timeoutMs,
+        });
+        if (!shutdownResult.ok) {
+          const error = shutdownResult.error;
+          lastCleanupFailures.push({ name: "controller-shutdown", error });
+          unreconciledCleanupTasks.set("controller-shutdown", {
+            name: "controller-shutdown",
+            cleanup: async () => {
+              const res = await controllerToShutdown.shutdown(options?.correlation, {
+                timeoutMs: options?.timeoutMs,
+              });
+              if (!res.ok) {
+                throw new Error(res.error);
+              }
+            },
+          });
+          hasUnreconciledCleanup = true;
+          operationalStatus = "FAILED";
+          throw new Error(`VAJRA shutdown failed: ${error}`);
+        }
+      }
+    } catch (err) {
+      operationalStatus = "FAILED";
+      throw err;
+    }
   }
 
   operationalStatus = "STOPPED";
@@ -609,52 +660,6 @@ export async function shutdownVajraRuntime(options?: {
     recoveryCompleted: false,
   };
   currentDegradedReasons = [];
-
-  // Detach background ingress adapters first so no new stimuli enter during shutdown
-  if (activePlatformEventAdapter) activePlatformEventAdapter.detach();
-  if (activeGenesisDiscoveryAdapter) activeGenesisDiscoveryAdapter.detach();
-  if (activeUserDirectiveAdapter) activeUserDirectiveAdapter.detach();
-  if (activeIngressCoordinator) activeIngressCoordinator.detach();
-  activePlatformEventAdapter = null;
-  activeGenesisDiscoveryAdapter = null;
-  activeUserDirectiveAdapter = null;
-  activeIngressCoordinator = null;
-
-  if (!activeController) {
-    return;
-  }
-
-  const controllerToShutdown = activeController;
-  activeController = null;
-
-  try {
-    if (
-      controllerToShutdown.getState() === "RUNNING" ||
-      (controllerToShutdown.getState() === "STOPPED" &&
-        !controllerToShutdown.isTeardownReconciled())
-    ) {
-      const shutdownResult = await controllerToShutdown.shutdown(options?.correlation);
-      if (!shutdownResult.ok) {
-        const error = shutdownResult.error;
-        lastCleanupFailures.push({ name: "controller-shutdown", error });
-        unreconciledCleanupTasks.set("controller-shutdown", {
-          name: "controller-shutdown",
-          cleanup: async () => {
-            const res = await controllerToShutdown.shutdown(options?.correlation);
-            if (!res.ok) {
-              throw new Error(res.error);
-            }
-          },
-        });
-        hasUnreconciledCleanup = true;
-        operationalStatus = "FAILED";
-        throw new Error(`VAJRA shutdown failed: ${error}`);
-      }
-    }
-  } catch (err) {
-    operationalStatus = "FAILED";
-    throw err;
-  }
 }
 
 /**

@@ -24,6 +24,9 @@ export interface ICooperativeScheduler {
   getPendingCount(): number;
   getMaxQueueSize(): number;
   isBusy(): boolean;
+  stop?(): void;
+  isStopped?(): boolean;
+  drain?(timeoutMs?: number): Promise<void>;
 }
 
 const DEFAULT_MAX_QUEUE_SIZE = 50;
@@ -41,10 +44,14 @@ const DEFAULT_MAX_QUEUE_SIZE = 50;
  * 5. Rejected work is never appended to the queue; no rejected closure or unresolved promise is retained.
  * 6. `getPendingCount()` strictly reflects the actual waiting queue (`this.queue.length`).
  * 7. When a queued turn begins execution, freed capacity is immediately available to new submissions.
+ * 8. When `stop()` is called, new turn submissions reject immediately. In-flight turns complete,
+ *    and `drain(timeoutMs)` waits for in-flight tasks and queued turns to finish.
  */
 export class CooperativeTurnScheduler implements ICooperativeScheduler {
   private queue: Array<() => Promise<void>> = [];
   private processing: boolean = false;
+  private isStoppedFlag: boolean = false;
+  private readonly drainListeners: Array<() => void> = [];
   private readonly maxQueueSize: number;
 
   constructor(maxQueueSize: number = DEFAULT_MAX_QUEUE_SIZE) {
@@ -63,7 +70,51 @@ export class CooperativeTurnScheduler implements ICooperativeScheduler {
     return this.processing;
   }
 
+  stop(): void {
+    this.isStoppedFlag = true;
+  }
+
+  isStopped(): boolean {
+    return this.isStoppedFlag;
+  }
+
+  drain(timeoutMs: number = 5000): Promise<void> {
+    if (!this.processing && this.queue.length === 0) {
+      return Promise.resolve();
+    }
+
+    return new Promise<void>((resolve) => {
+      let timer: NodeJS.Timeout | null = null;
+      const check = () => {
+        if (!this.processing && this.queue.length === 0) {
+          if (timer) clearTimeout(timer);
+          const idx = this.drainListeners.indexOf(check);
+          if (idx !== -1) this.drainListeners.splice(idx, 1);
+          resolve();
+        }
+      };
+
+      timer = setTimeout(() => {
+        const idx = this.drainListeners.indexOf(check);
+        if (idx !== -1) this.drainListeners.splice(idx, 1);
+        resolve();
+      }, timeoutMs);
+
+      this.drainListeners.push(check);
+    });
+  }
+
   enqueueTurn<T>(task: () => Promise<T>): Promise<T> {
+    if (this.isStoppedFlag) {
+      return Promise.reject(
+        new SchedulerCapacityExceededError(
+          "Scheduler is stopped; turn rejected.",
+          this.queue.length,
+          this.maxQueueSize,
+        ),
+      );
+    }
+
     // Synchronous atomic capacity decision: reject immediately if queue limit reached
     if (this.queue.length >= this.maxQueueSize) {
       return Promise.reject(
@@ -107,6 +158,13 @@ export class CooperativeTurnScheduler implements ICooperativeScheduler {
     }
 
     this.processing = false;
+    for (const listener of [...this.drainListeners]) {
+      try {
+        listener();
+      } catch {
+        // Observers must not fail processing loop
+      }
+    }
     // Yield to the event loop before running the next turn
     setTimeout(() => {
       this.processNext();

@@ -59,9 +59,11 @@ export interface ServerLifecycleOptions {
 export interface ServerShutdownOptions {
   readonly correlation?: CorrelationMetadata;
   readonly force?: boolean;
+  readonly timeoutMs?: number;
   readonly shutdownVajra?: (options?: {
     correlation?: CorrelationMetadata;
     force?: boolean;
+    timeoutMs?: number;
   }) => Promise<void>;
   readonly shutdownObservability?: () => void;
 }
@@ -432,7 +434,11 @@ export async function shutdownServer(options?: ServerShutdownOptions): Promise<v
       // 1. VAJRA Shutdown
       const shutdownVajra = options?.shutdownVajra ?? shutdownVajraRuntime;
       try {
-        await shutdownVajra({ correlation: options?.correlation, force: options?.force });
+        await shutdownVajra({
+          correlation: options?.correlation,
+          force: options?.force,
+          timeoutMs: options?.timeoutMs,
+        });
       } catch (vajraErr: any) {
         console.error("[ServerLifecycle] Error during VAJRA runtime shutdown:", vajraErr);
         throw vajraErr;
