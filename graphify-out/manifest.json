@@ -60,9 +60,9 @@
     "semantic_hash": "ee19083bccc4b40d1ee52909f4282bb6"
   },
   "scripts/validate-architecture.ts": {
-    "mtime": 1788642310.1722445,
-    "seen": 1788642468.9713264,
-    "ast_hash": "9d9361cb0c2896624faf59f2035d95dd",
+    "mtime": 1793432315.9679914,
+    "seen": 1793432684.2092655,
+    "ast_hash": "c198265a990cc3169627609c6fb3d956",
     "semantic_hash": ""
   },
   "scripts/validate_migration.ts": {
@@ -2562,10 +2562,10 @@
     "semantic_hash": "5d84cc95f2576169ff33d9b1549f74fc"
   },
   "src/instrumentation/publisher.ts": {
-    "mtime": 1788384740.0063496,
-    "seen": 1788606119.7367046,
-    "ast_hash": "56cb29975db95e0926d9076ca48a8eaa",
-    "semantic_hash": "56cb29975db95e0926d9076ca48a8eaa"
+    "mtime": 1793438085.8546221,
+    "seen": 1793438514.4900267,
+    "ast_hash": "4d8f3db8e4682607f61a43dc2ba831b7",
+    "semantic_hash": ""
   },
   "src/instrumentation/server/index.ts": {
     "mtime": 1790707469.134796,
@@ -2946,15 +2946,15 @@
     "semantic_hash": "684d1059a47ee28bcf4738c16a20cb2b"
   },
   "src/persistence/initializer.ts": {
-    "mtime": 1791143799.2455769,
-    "seen": 1791144127.222086,
-    "ast_hash": "67f4c861998db00c85c40e8d6a24b6bb",
+    "mtime": 1793550319.309608,
+    "seen": 1793550567.1103835,
+    "ast_hash": "85af6ea0e7ddd51429de657287521a86",
     "semantic_hash": ""
   },
   "src/persistence/migration-impl.ts": {
-    "mtime": 1791143799.2467487,
-    "seen": 1791144127.222088,
-    "ast_hash": "8ff303ef59a0aa1d32b6bad879c1e143",
+    "mtime": 1793550384.275383,
+    "seen": 1793550567.1103854,
+    "ast_hash": "3b1a0133ee2c172b4d87eade7790980b",
     "semantic_hash": ""
   },
   "src/persistence/migration.ts": {
@@ -3210,10 +3210,10 @@
     "semantic_hash": "2ddd54e136d0a2a9cc129cd625817d0e"
   },
   "src/server.ts": {
-    "mtime": 1784135225.0275915,
-    "seen": 1788606119.7368686,
-    "ast_hash": "3c5bed1c29555e04a0ec849da362348d",
-    "semantic_hash": "3c5bed1c29555e04a0ec849da362348d"
+    "mtime": 1793559618.506471,
+    "seen": 1793563874.4090977,
+    "ast_hash": "85f591c01d4c3bee3f9d10597d29a4d4",
+    "semantic_hash": ""
   },
   "src/shared/error/error-capture.ts": {
     "mtime": 1784047809.2291157,
@@ -4998,9 +4998,9 @@
     "semantic_hash": ""
   },
   "src/contracts/capabilities/registry.ts": {
-    "mtime": 1791143799.2432036,
-    "seen": 1791144127.1870272,
-    "ast_hash": "d98a7cacb7c4ca82b133bd24358b2c8e",
+    "mtime": 1793549473.2842863,
+    "seen": 1793550567.060828,
+    "ast_hash": "532d71f0905465e5ee6dde009ec855b2",
     "semantic_hash": ""
   },
   "src/contracts/historical-recall.ts": {
@@ -5928,27 +5928,27 @@
     "semantic_hash": ""
   },
   "src/vajra/boundaries/akira-os-port.ts": {
-    "mtime": 1791143799.5123837,
-    "seen": 1791144127.2279735,
-    "ast_hash": "07bb971411961442632c1185845615fd",
+    "mtime": 1793550319.403079,
+    "seen": 1793550567.1237385,
+    "ast_hash": "ee759a8c75af01513eae48a8eea789dd",
     "semantic_hash": ""
   },
   "src/vajra/boundaries/escalation-port.ts": {
-    "mtime": 1791143799.5129502,
-    "seen": 1791144127.2279756,
-    "ast_hash": "a0b6c46971bf0c5e5c7c2a80a27c5dbb",
+    "mtime": 1793379072.738519,
+    "seen": 1793379301.0439582,
+    "ast_hash": "e067251e97b4bfc9da30dd1e2dd70505",
     "semantic_hash": ""
   },
   "src/vajra/boundaries/genesis-port.ts": {
-    "mtime": 1791143799.5134974,
-    "seen": 1791144127.2279785,
-    "ast_hash": "b2633d8fe49ed9c6e64cea3321f76180",
+    "mtime": 1793399036.4112618,
+    "seen": 1793432684.3384988,
+    "ast_hash": "ee2698b51b91f2a681d22b2af3e1e879",
     "semantic_hash": ""
   },
   "src/vajra/boundaries/hands-port.ts": {
-    "mtime": 1791829686.4247086,
-    "seen": 1791829756.2024462,
-    "ast_hash": "6616940ae1905a9724ccb90bf6684e95",
+    "mtime": 1793383726.1648326,
+    "seen": 1793383897.5816917,
+    "ast_hash": "98e411f8af73a9fb3bb75a402a1e4dd9",
     "semantic_hash": ""
   },
   "src/vajra/boundaries/index.ts": {
@@ -5958,9 +5958,9 @@
     "semantic_hash": ""
   },
   "src/vajra/executive/controller.ts": {
-    "mtime": 1791143799.5193682,
-    "seen": 1791144127.228,
-    "ast_hash": "0eb7d57beef160e2a0735147dc65d4df",
+    "mtime": 1793563755.6230695,
+    "seen": 1793563874.412875,
+    "ast_hash": "f9bce3e3482c4447ab78ea5ee587ac8f",
     "semantic_hash": ""
   },
   "src/vajra/executive/index.ts": {
@@ -5976,21 +5976,21 @@
     "semantic_hash": ""
   },
   "src/vajra/executive/scheduler.ts": {
-    "mtime": 1791143799.521387,
-    "seen": 1791144127.228004,
-    "ast_hash": "c7c8052e490e6b1bd2669ff77a373db3",
+    "mtime": 1793562983.0479302,
+    "seen": 1793563874.4131122,
+    "ast_hash": "0a97e012a23163cf3514dadf1da687d4",
     "semantic_hash": ""
   },
   "src/vajra/index.ts": {
-    "mtime": 1791143799.521387,
-    "seen": 1791144127.2280073,
-    "ast_hash": "8323e3e9fdbf5563d7e36964d3f2ec7e",
+    "mtime": 1793398580.4410002,
+    "seen": 1793432684.343248,
+    "ast_hash": "9ccb63997f0de0d4c129d719cb07f9c0",
     "semantic_hash": ""
   },
   "src/vajra/ports/coordination.ts": {
-    "mtime": 1791143799.527436,
-    "seen": 1791144127.2280226,
-    "ast_hash": "71f2959f598cec643cb9500bff0b69c1",
+    "mtime": 1793549507.143503,
+    "seen": 1793550567.1345093,
+    "ast_hash": "d6d3e34b0835da87de82fd7fa878b7b3",
     "semantic_hash": ""
   },
   "src/vajra/ports/decision.ts": {
@@ -6024,9 +6024,9 @@
     "semantic_hash": ""
   },
   "src/vajra/ports/state-store.ts": {
-    "mtime": 1791143799.5294535,
-    "seen": 1791144127.2280297,
-    "ast_hash": "8e4fee7ad978baa49efe5c766a5a3a42",
+    "mtime": 1793559331.2929664,
+    "seen": 1793563874.4164603,
+    "ast_hash": "c4c311b15bac3436547675c2360b1460",
     "semantic_hash": ""
   },
   "src/vajra/ports/understanding.ts": {
@@ -6054,9 +6054,9 @@
     "semantic_hash": ""
   },
   "src/vajra/types/action.ts": {
-    "mtime": 1791143799.5334928,
-    "seen": 1791144127.2280495,
-    "ast_hash": "648354fc0273b51801f6b21f6a6b7c7a",
+    "mtime": 1793550343.546708,
+    "seen": 1793550567.1415038,
+    "ast_hash": "d29e32d3644e0d9eecdec55c995ee299",
     "semantic_hash": ""
   },
   "src/vajra/types/belief.ts": {
@@ -6120,9 +6120,9 @@
     "semantic_hash": ""
   },
   "tests/vajra/executive-controller.test.ts": {
-    "mtime": 1791143799.5494013,
-    "seen": 1791144127.2438142,
-    "ast_hash": "95953e6d615d6423f2dd019356e6105e",
+    "mtime": 1793446425.7602482,
+    "seen": 1793446565.622908,
+    "ast_hash": "13ffc01d9e5b26d344a06ff212d28c41",
     "semantic_hash": ""
   },
   "tests/vajra/self-model.test.ts": {
@@ -6180,15 +6180,15 @@
     "semantic_hash": ""
   },
   "src/persistence/vajra/mappers.ts": {
-    "mtime": 1791143799.510653,
-    "seen": 1791144127.224221,
-    "ast_hash": "7750436cfd9a624ca7b271b1ce2e073f",
+    "mtime": 1793550319.347019,
+    "seen": 1793550567.1130774,
+    "ast_hash": "0185e7398f7d361960c8cbfb815e5de3",
     "semantic_hash": ""
   },
   "src/persistence/vajra/sqlite-operational-state-store.ts": {
-    "mtime": 1791143799.5112188,
-    "seen": 1791144127.2242224,
-    "ast_hash": "70d862241b2c02f1076e4ec036005749",
+    "mtime": 1793559347.3210566,
+    "seen": 1793563874.405696,
+    "ast_hash": "528b5c18fcd54b7eb9f1f3fa3e742893",
     "semantic_hash": ""
   },
   "src/vajra/boundaries/model-coprocessor-port.ts": {
@@ -6252,9 +6252,9 @@
     "semantic_hash": ""
   },
   "src/vajra/types/mission-record.ts": {
-    "mtime": 1791143799.5334928,
-    "seen": 1791144127.2280543,
-    "ast_hash": "dc40a88af3070ae0f39f870ac9452708",
+    "mtime": 1793550319.5818229,
+    "seen": 1793550567.142609,
+    "ast_hash": "ba79fb8f84e2d4f5cc84eaa7f099148d",
     "semantic_hash": ""
   },
   "src/vajra/types/provenance.ts": {
@@ -6282,9 +6282,9 @@
     "semantic_hash": ""
   },
   "tests/vajra/persistence/migration.test.ts": {
-    "mtime": 1791143799.5494013,
-    "seen": 1791144127.2438314,
-    "ast_hash": "3aa908928bd3b7c136462fdea2b990ad",
+    "mtime": 1793551636.7621112,
+    "seen": 1793552010.1017609,
+    "ast_hash": "5b57d5146e6ad670576d55d27779585d",
     "semantic_hash": ""
   },
   "tests/vajra/persistence/recovery-detection.test.ts": {
@@ -6474,15 +6474,15 @@
     "semantic_hash": ""
   },
   "src/vajra/mission/admission.ts": {
-    "mtime": 1791143799.521387,
-    "seen": 1791144127.2280092,
-    "ast_hash": "928e835ab1279e06ef5a4d4f8069e805",
+    "mtime": 1793559470.9466562,
+    "seen": 1793563874.4138803,
+    "ast_hash": "b33f7bbcd9be420d826da32076b79a97",
     "semantic_hash": ""
   },
   "src/vajra/mission/coordinator.ts": {
-    "mtime": 1791143799.523404,
-    "seen": 1791144127.2280104,
-    "ast_hash": "83a84d8875f5d599f2b0d61ca8c992c7",
+    "mtime": 1793549521.1110277,
+    "seen": 1793550567.132734,
+    "ast_hash": "9b0459cccdd197590c5bf6f68ee5260a",
     "semantic_hash": ""
   },
   "src/vajra/mission/index.ts": {
@@ -6498,27 +6498,27 @@
     "semantic_hash": ""
   },
   "src/vajra/mission/recovery.ts": {
-    "mtime": 1791143799.523404,
-    "seen": 1791144127.2280147,
-    "ast_hash": "6f1e1320021bc12b749ed824ee4638c4",
+    "mtime": 1793556063.571435,
+    "seen": 1793556176.1419003,
+    "ast_hash": "c90c62ca70fe03a7a6b94ba4afcb6e5e",
     "semantic_hash": ""
   },
   "src/vajra/mission/runtime.ts": {
-    "mtime": 1791143799.523404,
-    "seen": 1791144127.2280157,
-    "ast_hash": "823fc1938e4dd0a990026cd9d3aba7dd",
+    "mtime": 1793563049.5276268,
+    "seen": 1793563874.4143088,
+    "ast_hash": "ad9701daaadb1c416c25918b36b52828",
     "semantic_hash": ""
   },
   "src/vajra/mission/types.ts": {
-    "mtime": 1791143799.5254202,
-    "seen": 1791144127.2280166,
-    "ast_hash": "406b116e08b3a4a2ed9fda3703e5749f",
+    "mtime": 1793550443.0542927,
+    "seen": 1793550567.1335344,
+    "ast_hash": "fbc667989de26e2cbd6a0488f5de1628",
     "semantic_hash": ""
   },
   "tests/vajra/mission/admission.test.ts": {
-    "mtime": 1791143799.5494013,
-    "seen": 1791144127.2438157,
-    "ast_hash": "a2138ccdb02229671c870d4efaa2ebf8",
+    "mtime": 1793559703.546538,
+    "seen": 1793563874.4421656,
+    "ast_hash": "374e82449726b031961ae9b0426dae5b",
     "semantic_hash": ""
   },
   "tests/vajra/mission/boundary-invariants.test.ts": {
@@ -6540,21 +6540,21 @@
     "semantic_hash": ""
   },
   "tests/vajra/mission/recovery.test.ts": {
-    "mtime": 1791143799.5494013,
-    "seen": 1791144127.2438219,
-    "ast_hash": "94bc38798c829699e8050a9a4ba08bb7",
+    "mtime": 1793555463.044271,
+    "seen": 1793556176.2153227,
+    "ast_hash": "46e4a8f61c80df8598c3c99b22e3ce8b",
     "semantic_hash": ""
   },
   "tests/vajra/mission/runtime.test.ts": {
-    "mtime": 1791143799.5494013,
-    "seen": 1791144127.243823,
-    "ast_hash": "a027e5e231772dca72b97b88f9861886",
+    "mtime": 1793556063.571435,
+    "seen": 1793556176.2153332,
+    "ast_hash": "f883f3ae726056a70a5905817f0a817b",
     "semantic_hash": ""
   },
   "tests/vajra/mission/two-phase-dispatch.test.ts": {
-    "mtime": 1791143799.5494013,
-    "seen": 1791144127.2438247,
-    "ast_hash": "ba310698df968a9c4bab4cfbb3f32d6b",
+    "mtime": 1793556063.571435,
+    "seen": 1793556176.2153378,
+    "ast_hash": "cca362378d5da04dac5dcdbe47e1561d",
     "semantic_hash": ""
   },
   "docs/Vajra/VAJRA-PHASE-5-COMPLETION-AND-VERIFICATION-REPORT.md": {
@@ -6834,9 +6834,9 @@
     "semantic_hash": ""
   },
   "src/vajra/closure/closure-manager.ts": {
-    "mtime": 1791143799.515779,
-    "seen": 1791144127.2279854,
-    "ast_hash": "278bf1a44c2e6bed8ab210ded8e9ddf6",
+    "mtime": 1793556063.571435,
+    "seen": 1793556176.132405,
+    "ast_hash": "b58ac893c3b3be2e826d1e17de8cd038",
     "semantic_hash": ""
   },
   "src/vajra/closure/index.ts": {
@@ -6993,6 +6993,120 @@
     "mtime": 1791143799.5494013,
     "seen": 1791144127.2437947,
     "ast_hash": "5c1e304dd2ecf8d2182f15872ae41d62",
+    "semantic_hash": ""
+  },
+  "src/vajra/composition.ts": {
+    "mtime": 1793563112.9110951,
+    "seen": 1793563874.4117973,
+    "ast_hash": "c9ff6b8921c46d9e92faa709d84c48dd",
+    "semantic_hash": ""
+  },
+  "tests/vajra/composition.test.ts": {
+    "mtime": 1793389347.8146102,
+    "seen": 1793389488.1404817,
+    "ast_hash": "222120edd896975babbba0088afbe494",
+    "semantic_hash": ""
+  },
+  "tests/vajra/escalation-adapter.test.ts": {
+    "mtime": 1793379141.2978864,
+    "seen": 1793379301.064289,
+    "ast_hash": "44c7af6cac0188430045feb2529060c3",
+    "semantic_hash": ""
+  },
+  "docs/Vajra/VAJRA-PHASE-8-RUNTIME-INTEGRATION-AUDIT.md": {
+    "mtime": 1793374323.6045742,
+    "seen": 1793379301.0830925,
+    "ast_hash": "0d59d918f469d8a2f1b32e0e932fc747",
+    "semantic_hash": ""
+  },
+  "src/server-lifecycle.ts": {
+    "mtime": 1793563149.8149567,
+    "seen": 1793563874.409095,
+    "ast_hash": "ef77f9975f7cdace415816ee2db95d0d",
+    "semantic_hash": ""
+  },
+  "tests/vajra/server-lifecycle.test.ts": {
+    "mtime": 1793396010.69011,
+    "seen": 1793432684.4010234,
+    "ast_hash": "5c2b0efe7d2db8ac9eda97b26e69e6bb",
+    "semantic_hash": ""
+  },
+  "src/vajra/ingress/adapters/genesis-discovery-adapter.ts": {
+    "mtime": 1793436386.2056556,
+    "seen": 1793436972.4510598,
+    "ast_hash": "9dcfd9f55b26552c4493390d0f7752f3",
+    "semantic_hash": ""
+  },
+  "src/vajra/ingress/adapters/platform-event-adapter.ts": {
+    "mtime": 1793438096.6422472,
+    "seen": 1793438514.5141354,
+    "ast_hash": "ec389853652b08d2639e1b2049a4eb30",
+    "semantic_hash": ""
+  },
+  "src/vajra/ingress/adapters/user-directive-adapter.ts": {
+    "mtime": 1793436429.2297127,
+    "seen": 1793436972.451069,
+    "ast_hash": "7b5da03e61a0d4e9612b40d87f7f4f8d",
+    "semantic_hash": ""
+  },
+  "src/vajra/ingress/coordinator.ts": {
+    "mtime": 1793436474.1532688,
+    "seen": 1793436972.451073,
+    "ast_hash": "bcc941e505075b9a4fea4ce125a91b21",
+    "semantic_hash": ""
+  },
+  "src/vajra/ingress/index.ts": {
+    "mtime": 1793398574.9382763,
+    "seen": 1793432684.3432684,
+    "ast_hash": "9d3437d140625e154af487f9ef2dee29",
+    "semantic_hash": ""
+  },
+  "src/vajra/ingress/types.ts": {
+    "mtime": 1793398310.7660542,
+    "seen": 1793432684.3432713,
+    "ast_hash": "cd7462c560dfe454f7fa55f249039ca4",
+    "semantic_hash": ""
+  },
+  "src/vajra/server/ingress.ts": {
+    "mtime": 1793446234.746758,
+    "seen": 1793446565.598519,
+    "ast_hash": "6b9ffbdbdcd5a0b2217b8479377eec77",
+    "semantic_hash": ""
+  },
+  "tests/vajra/ingress/stimulus-ingress.test.ts": {
+    "mtime": 1793438124.2717881,
+    "seen": 1793438514.5537744,
+    "ast_hash": "24c56ac7602b27d79cd200830fd7c730",
+    "semantic_hash": ""
+  },
+  "src/contracts/capabilities/execution-context.ts": {
+    "mtime": 1793549442.635791,
+    "seen": 1793550567.0606725,
+    "ast_hash": "49ea23da863568a98b96d67110023396",
+    "semantic_hash": ""
+  },
+  "tests/vajra/ingress/ingress-hardening.test.ts": {
+    "mtime": 1793441415.3568373,
+    "seen": 1793441506.378132,
+    "ast_hash": "232d0cefa383a6312706878a498dd373",
+    "semantic_hash": ""
+  },
+  "tests/vajra/mission/restart-integration.test.ts": {
+    "mtime": 1793556063.571435,
+    "seen": 1793556176.215329,
+    "ast_hash": "b58508a36bd301fe3c420b36522d0a42",
+    "semantic_hash": ""
+  },
+  "tests/vajra/integration/shutdown-restart.test.ts": {
+    "mtime": 1793563755.6230695,
+    "seen": 1793563874.4421623,
+    "ast_hash": "72e217a8261ec881295096eb6f699bac",
+    "semantic_hash": ""
+  },
+  "tests/vajra/readiness.test.ts": {
+    "mtime": 1793560305.8092277,
+    "seen": 1793563874.4440215,
+    "ast_hash": "25318ce7d1180bc0a7e027cddff6ceef",
     "semantic_hash": ""
   }
 }
