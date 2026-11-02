@@ -53,3 +53,8 @@ Thumbs.db
 
 # Misc
 *.tsbuildinfo
+
+# Understand Anything
+.ua/intermediate/
+.ua/tmp/
+.ua/diff-overlay.json

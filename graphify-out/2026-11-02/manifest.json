@@ -3210,9 +3210,9 @@
     "semantic_hash": "2ddd54e136d0a2a9cc129cd625817d0e"
   },
   "src/server.ts": {
-    "mtime": 1793395571.7117314,
-    "seen": 1793395805.4201853,
-    "ast_hash": "51726bb390ea38e320df038e959afeaa",
+    "mtime": 1793559618.506471,
+    "seen": 1793563874.4090977,
+    "ast_hash": "85f591c01d4c3bee3f9d10597d29a4d4",
     "semantic_hash": ""
   },
   "src/shared/error/error-capture.ts": {
@@ -5958,9 +5958,9 @@
     "semantic_hash": ""
   },
   "src/vajra/executive/controller.ts": {
-    "mtime": 1793446214.2862062,
-    "seen": 1793446565.5933654,
-    "ast_hash": "0645fa37fbfa8b6da073a1515bffc6b4",
+    "mtime": 1793563755.6230695,
+    "seen": 1793563874.412875,
+    "ast_hash": "f9bce3e3482c4447ab78ea5ee587ac8f",
     "semantic_hash": ""
   },
   "src/vajra/executive/index.ts": {
@@ -5976,9 +5976,9 @@
     "semantic_hash": ""
   },
   "src/vajra/executive/scheduler.ts": {
-    "mtime": 1793438113.6508636,
-    "seen": 1793438514.513851,
-    "ast_hash": "0e28d849d7aa11da4408e5f110432609",
+    "mtime": 1793562983.0479302,
+    "seen": 1793563874.4131122,
+    "ast_hash": "0a97e012a23163cf3514dadf1da687d4",
     "semantic_hash": ""
   },
   "src/vajra/index.ts": {
@@ -6024,9 +6024,9 @@
     "semantic_hash": ""
   },
   "src/vajra/ports/state-store.ts": {
-    "mtime": 1793555225.8690925,
-    "seen": 1793556176.1456914,
-    "ast_hash": "2b8c9c025b16fcd10a3914d10d80d16e",
+    "mtime": 1793559331.2929664,
+    "seen": 1793563874.4164603,
+    "ast_hash": "c4c311b15bac3436547675c2360b1460",
     "semantic_hash": ""
   },
   "src/vajra/ports/understanding.ts": {
@@ -6186,9 +6186,9 @@
     "semantic_hash": ""
   },
   "src/persistence/vajra/sqlite-operational-state-store.ts": {
-    "mtime": 1793555248.5437996,
-    "seen": 1793556176.1166732,
-    "ast_hash": "8c45d65808c0539b085ca1ad592ead01",
+    "mtime": 1793559347.3210566,
+    "seen": 1793563874.405696,
+    "ast_hash": "528b5c18fcd54b7eb9f1f3fa3e742893",
     "semantic_hash": ""
   },
   "src/vajra/boundaries/model-coprocessor-port.ts": {
@@ -6474,9 +6474,9 @@
     "semantic_hash": ""
   },
   "src/vajra/mission/admission.ts": {
-    "mtime": 1791143799.521387,
-    "seen": 1791144127.2280092,
-    "ast_hash": "928e835ab1279e06ef5a4d4f8069e805",
+    "mtime": 1793559470.9466562,
+    "seen": 1793563874.4138803,
+    "ast_hash": "b33f7bbcd9be420d826da32076b79a97",
     "semantic_hash": ""
   },
   "src/vajra/mission/coordinator.ts": {
@@ -6504,9 +6504,9 @@
     "semantic_hash": ""
   },
   "src/vajra/mission/runtime.ts": {
-    "mtime": 1793555648.1152391,
-    "seen": 1793556176.1419084,
-    "ast_hash": "c1cbd11f7d1d9833946978945b4b8f5c",
+    "mtime": 1793563049.5276268,
+    "seen": 1793563874.4143088,
+    "ast_hash": "ad9701daaadb1c416c25918b36b52828",
     "semantic_hash": ""
   },
   "src/vajra/mission/types.ts": {
@@ -6516,9 +6516,9 @@
     "semantic_hash": ""
   },
   "tests/vajra/mission/admission.test.ts": {
-    "mtime": 1791143799.5494013,
-    "seen": 1791144127.2438157,
-    "ast_hash": "a2138ccdb02229671c870d4efaa2ebf8",
+    "mtime": 1793559703.546538,
+    "seen": 1793563874.4421656,
+    "ast_hash": "374e82449726b031961ae9b0426dae5b",
     "semantic_hash": ""
   },
   "tests/vajra/mission/boundary-invariants.test.ts": {
@@ -6996,9 +6996,9 @@
     "semantic_hash": ""
   },
   "src/vajra/composition.ts": {
-    "mtime": 1793555401.8599498,
-    "seen": 1793556176.1331947,
-    "ast_hash": "4cc5a3f9bf954316ecb7bd8abd8e5ff2",
+    "mtime": 1793563112.9110951,
+    "seen": 1793563874.4117973,
+    "ast_hash": "c9ff6b8921c46d9e92faa709d84c48dd",
     "semantic_hash": ""
   },
   "tests/vajra/composition.test.ts": {
@@ -7020,9 +7020,9 @@
     "semantic_hash": ""
   },
   "src/server-lifecycle.ts": {
-    "mtime": 1793398609.3382995,
-    "seen": 1793432684.3350925,
-    "ast_hash": "268f6b99bba8b39b1a5a16b7a8385f6b",
+    "mtime": 1793563149.8149567,
+    "seen": 1793563874.409095,
+    "ast_hash": "ef77f9975f7cdace415816ee2db95d0d",
     "semantic_hash": ""
   },
   "tests/vajra/server-lifecycle.test.ts": {
@@ -7095,6 +7095,18 @@
     "mtime": 1793556063.571435,
     "seen": 1793556176.215329,
     "ast_hash": "b58508a36bd301fe3c420b36522d0a42",
+    "semantic_hash": ""
+  },
+  "tests/vajra/integration/shutdown-restart.test.ts": {
+    "mtime": 1793563755.6230695,
+    "seen": 1793563874.4421623,
+    "ast_hash": "72e217a8261ec881295096eb6f699bac",
+    "semantic_hash": ""
+  },
+  "tests/vajra/readiness.test.ts": {
+    "mtime": 1793560305.8092277,
+    "seen": 1793563874.4440215,
+    "ast_hash": "25318ce7d1180bc0a7e027cddff6ceef",
     "semantic_hash": ""
   }
 }

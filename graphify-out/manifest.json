@@ -7108,5 +7108,17 @@
     "seen": 1793563874.4440215,
     "ast_hash": "25318ce7d1180bc0a7e027cddff6ceef",
     "semantic_hash": ""
+  },
+  ".agents/rules/understand.md": {
+    "mtime": 1793632183.2597344,
+    "seen": 1793632247.5693078,
+    "ast_hash": "adc082c32dea683e3f1174dc85ce8ca6",
+    "semantic_hash": ""
+  },
+  ".agents/workflows/understand.md": {
+    "mtime": 1793632188.0729344,
+    "seen": 1793632247.5698376,
+    "ast_hash": "fa28cb2baec3e4b73da79f5824b55a60",
+    "semantic_hash": ""
   }
 }
