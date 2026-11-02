@@ -1,31 +1,31 @@
 # Graph Report - AKIRA  (2026-11-02)
 
 ## Corpus Check
-- 1185 files · ~877,562 words
+- 1188 files · ~1,016,356 words
 - Verdict: corpus is large enough that graph structure adds value.
 - Unclassified: 12 file(s) not represented in the graph (top: (none) 7, .toml 1, .db 1)
 
 ## Summary
-- 8616 nodes · 21533 edges · 441 communities (309 shown, 132 thin omitted)
+- 8605 nodes · 21523 edges · 451 communities (315 shown, 136 thin omitted)
 - Extraction: 93% EXTRACTED · 7% INFERRED · 0% AMBIGUOUS · INFERRED: 1472 edges (avg confidence: 0.89)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `1ce6c9f8`
+- Built from commit: `27e8d3d1`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
 ## Community Hubs (Navigation)
 - observability/composition.ts
 - event-bus.ts
-- vajra/composition.ts
+- controller.ts
 - reflection/engine/index.ts
 - genesis/reasoning/index.ts
 - metrics/registry.ts
-- AnalyticsRepository
+- AnalyticsEngine.ts
 - RuntimeAdapter
 - IdentityVersion
-- story-service.ts
+- genesis/index.ts
 - cn
 - InMemoryIdentityRepository
 - IdentityRepository
@@ -33,28 +33,28 @@
 - routeTree.gen.ts
 - identity/types.ts
 - AKIRA ADR Process
-- AnalyticsEngine.ts
+- calculators.ts
 - vajra/reasoning/types.ts
-- TelemetryError
-- search.tsx
+- telemetry.ts
+- akira-os/index.ts
 - identityService
-- MilestoneRepository
+- genesis-planning.test.ts
 - The 9-Stage Execution Workflow
-- shutdown-restart.test.ts
+- IOperationalStateStore
 - planningService
 - identityContextProvider
 - tests/capability-registry.test.ts
-- dependency-resolver.test.ts
-- akira-store
-- AIProvider
-- genesis-planning.test.ts
+- ModuleManifest
+- lucide-react
+- aiProviderManager
+- GoalDecompositionService.ts
 - manifest.test.ts
-- PresenceContext
+- presence.test.ts
 - TelemetrySeverity
 - VaultFile
-- telemetry.ts
+- telemetry-factory.ts
 - PlanningGraph
-- react
+- VaultWorkspace.tsx
 - habits/service.ts
 - CooperativeTurnScheduler
 - run_loop.py
@@ -62,9 +62,9 @@
 - PlanningService.ts
 - logger/index.ts
 - context-rules.ts
-- analytics-service.ts
-- carousel.tsx
-- akira-os/index.ts
+- analyticsService
+- react
+- useAkira
 - Skill Creator
 - runtime-manager.ts
 - context-engine.ts
@@ -76,15 +76,15 @@
 - Awareness Session
 - package.json
 - SEC-002 Provider API Keys Inlined Into The Client Bundle
-- validate-architecture.ts
+- analytics-service.ts
 - Process
-- SqliteVaultFolderRepository
+- VaultFolder
 - retention/policy.ts
 - SelfModel
 - compilerOptions
 - Synthesized Decisions
 - AKIRA OS
-- Phase 3E — Mission Contract & VAJRA Architecture Study
+- 4. VAJRA Authority Boundary
 - relationships/service.ts
 - relationship-service.ts
 - VAJRA-BRAIN-ARCHITECTURE.md
@@ -92,23 +92,23 @@
 - ExecutiveController
 - recall-rules.ts
 - IdentityInterest
-- genesis-decision-engine.test.ts
+- analytics.test.ts
 - Recommendation
 - akira-sdk.ts
 - SqliteVaultTagRepository
-- SqliteTaskRepository
+- 2.2 Subsystem Breakdown & Actual Behavior
 - REL-002 Synchronous Spin-Wait Blocks The Server Event Loop
 - instrumentation.test.ts
 - perf-ab.ts
 - VAJRA-IMPLEMENTATION-ARCHAEOLOGY.md
 - Append-Only SQLite Event Store
 - generate_review.py
-- reflection/constants.ts
+- SqliteVaultFileRepository
 - chat.tsx
 - GEN-002 No Cognitive State Survives A Restart
-- understanding/engine.ts
+- presenceService
 - event-translation.ts
-- historical-search-intent.ts
+- genesis-relationship-engine.test.ts
 - components.json
 - TimelineSubscriber
 - Failure-Mode Matrix
@@ -118,13 +118,13 @@
 - Architecture
 - timeline.tsx
 - akira-store.ts
-- ReasoningCollection
+- Phase 3A Implementation Proposal: Capability Foundation & Vertical Slice
 - Memory Policy
 - Companion State Engine
-- TaskRepository
+- Task
 - 9. K19 Correlation & Provenance Architecture
 - AnalyticsRepository
-- command.tsx
+- sidebar.tsx
 - IdentityEvidence
 - VAJRA Phase 7 Implementation Design: Observation, Verification & Reality-State Closure
 - eventBus
@@ -132,16 +132,16 @@
 - Documentation Accuracy Scorecard
 - Context Builder
 - Companion Core Philosophy
-- Phase A — Build Recovery
-- .read
+- Stage 1B — Diagnostics Subsystem Investigation
+- class-variance-authority
 - verify-observability-reachability.ts
-- tools/registry.ts
+- tools.index.tsx
 - vault.test.ts
 - Phase 3C Implementation Proposal: First Command Capability & Rule N1 Vertical Slice
 - IdentityPersonality
 - AKIRA — VAJRA Phase 3: Durable Operational State Architecture & Implementation Design
 - .events
-- BlockerRepository
+- Blocker
 - genesis-reviewer Subagent
 - CapabilityRegistry
 - CRIT-007 No Automated Quality Gate Exists
@@ -151,8 +151,8 @@
 - AKIRA — Engineering Handoff & Architecture Baseline
 - AKIRA Foundation Contracts
 - form.tsx
-- insight-engine.ts
-- genesis/index.ts
+- SqliteTaskRepository
+- brain.tsx
 - RendererRegistry.ts
 - createServerFn RPC Layer
 - ADR-021: Observability Platform Architecture
@@ -161,7 +161,7 @@
 - dependencies
 - LifecycleManager
 - package_skill.py
-- Healthy systems explicitly verified
+- 3. Real-Repository Scenario Results
 - Note
 - 3.2 Target capabilities
 - CLAUDE.md Governance Router
@@ -170,7 +170,7 @@
 - createDefaultStrategyRegistry
 - ContextAssemblyService
 - Grader Agent
-- aiProviderManager
+- Phase A — Build Recovery
 - SqliteProjectRepository
 - SqliteSettingsRepository.ts
 - genesis-production-composition.test.ts
@@ -179,7 +179,7 @@
 - DAT-002 Vault Dedup Corrupts Siblings On Soft Delete
 - Module State Machine (UNLOADED to RUNNING)
 - Module Manifest System
-- SqliteSessionRepository
+- chat6_findings.md
 - chart.tsx
 - IdentityPreference
 - IdentityRelationship
@@ -200,7 +200,7 @@
 - Identity Layer
 - DecisionEngine
 - AKIRA Foundation Contracts — Final Consistency Audit
-- timelineService
+- Healthy systems explicitly verified
 - SqliteTimelineRepository
 - Workspace Shell (Shell.tsx)
 - run_eval.py
@@ -222,14 +222,14 @@
 - Manifest Validation Rules
 - PermissionManager
 - AKIRA N1 Decision: Internal Command Authority
-- SqliteTimelineRepository.ts
+- Thumbnail.tsx
 - AKIRA N2 Decision: Non-VAJRA Requests and Tier-2 Activation
 - AKIRA N3 Decision: GENESIS Command and Mutation Boundary
 - Failure Isolation Policies
 - BND-001: AKIRA OS to GENESIS event path is severed
 - AuditFacade
 - Dependency Rules Matrix
-- VAJRA PHASE 5 — DECISION ARBITER
+- Data Protection Philosophy
 - AKIRA Target Architecture
 - 20.2 Still OPEN
 - Sliding-Window Telemetry Retention
@@ -241,14 +241,14 @@
 - persistAddNote
 - Shell layoutMode prop
 - EventBusObserver
-- @tanstack/react-start
+- planningValidationService
 - IdentitySkill
 - identityService (identityFoundationService)
 - sdk-context.ts
 - TelemetryValidator
 - Audit 02: Architectural Boundary Audit
 - DEP-005: SDK erases all error information
-- session-history-retention.test.ts
+- akira-store
 - verify_boundaries.py
 - JSON Schemas
 - FORGE Developer Interface
@@ -261,15 +261,15 @@
 - Directed Acyclic Graph Module Representation
 - Immutable Unified Telemetry Model
 - Unmeasurable Dimensions Are Absent, Never Zero
-- session-outcomes.ts
+- sessions.tsx
 - Telemetry Performance Budgets
 - Audit 04: AKIRA OS Platform Audit
 - Strategy Crash-Isolation Test Pattern
 - Loop Prevention and Bus Depth Guard
 - Relationship Engine (Companion Intelligence Sprint 5)
-- WorkspaceProvider
+- MetricRegistry
 - Stage 2 Real AKIRA Repository Behavioral Evaluation Report
-- events/event-service.ts
+- AkiraState
 - Coding Conventions
 - ReviewHandler
 - habits/constants.ts
@@ -285,16 +285,17 @@
 - sample_parser.ts
 - rules/graphify.md
 - workflows/graphify.md
+- Severance S4 — Dead Story and Importance Builders
 - scripts
 - IModuleInstance
 - IdentityConfidence
-- readiness.test.ts
+- vajra/composition.ts
 - Phase 3D — VAJRA Readiness & Orchestration Boundary Analysis
-- External Integrations
+- tasks
 - RuntimeManager
 - AKIRA — PHASE 0 BASELINE FREEZE & PROTECTION SPECIFICATION
-- provider-manager.ts
-- Severance S4 — Dead Story and Importance Builders
+- SqliteSearchHistoryRepository
+- Identity Graph
 - AKIRA Tier-2 Activation Clarification
 - ICooperativeScheduler
 - Codebase Concerns
@@ -302,9 +303,9 @@
 - sdk-errors.ts
 - VAJRA Phase 1 → Phase 2 Handoff Report
 - 16. SAFE DISPOSITION PLAN
-- StorageAPI
+- SDKContext
 - Project State
-- planAnalysisService
+- MilestoneRepository
 - PART VIII: CONTROLLED LEARNING & AUDITABILITY
 - AKIRA — PHASE 1: LEGACY RETIREMENT & ARCHIVAL REPORT
 - 19. FINAL EXECUTIVE SUMMARY
@@ -328,16 +329,16 @@
 - Manifest Authoring Best Practices
 - Voice Brain Dump Integration (Future)
 - Nine Local GENESIS Subsystem Emitters
-- 10. Idempotency Contract
+- chat-declaration-promoter.ts
 - 5.1 Definitive Schema Inventory
 - diagnostics-service.ts
 - SessionRepository
 - check-module-boundaries.mjs
 - lifecycle-manager.ts
-- 11. Concurrency Model & Single Running Mission Policy
-- tasks
-- Codebase Structure
-- state/service.ts
+- Instrumentation Event Bus (globalEventBus)
+- HistoricalRecallProvider
+- SqliteSessionRepository
+- state/constants.ts
 - ProactiveRateLimiter
 - 6. Evidence Model & Taxonomy
 - resource-sampler.ts
@@ -374,7 +375,7 @@
 - 6. Mission Admission Architecture
 - 12. MissionStep State Machine
 - Technology Stack
-- IOperationalStateStore
+- ExecutiveAction
 - Onboarding Summary
 - 13. Capability Resolution
 - 19. Human Approval Handling
@@ -382,13 +383,23 @@
 - 8. MissionDefinition Design
 - 9. MissionStep Design
 - 1. Executive Summary
+- navigation-menu.tsx
 - Conflict Detection Report
+- relationships/constants.ts
 - Synthesized Constraints
+- AKIRA Changelog
 - context.md
 - requirements.md
-- 7. Transaction Boundaries & The Two-Phase Dispatch Model
-- 14. Human Approval Persistence
-- 8. Crash Recovery Boundary
+- WorkspaceAPI
+- 21. Contract Examples
+- Stage 1B — Clean Installation Verification
+- glass-dialog.tsx
+- AnalyticsAPI
+- 2. Core Communication Primitives
+- Desktop-First Architecture
+- blockerAnalysisService
+- .query
+- 1. System Boundaries
 
 ## God Nodes (most connected - your core abstractions)
 1. `cn()` - 220 edges
@@ -403,16 +414,16 @@
 10. `getDatabaseConnection()` - 79 edges
 
 ## Surprising Connections (you probably didn't know these)
-- `Weak tests and validation` --references--> `LifecycleManager`  [INFERRED]
-  deep-scan/chat4_findings.md → archive/legacy-platform/src/runtime/lifecycle/lifecycle-manager.ts
-- `9.5 Lifecycle and orchestration` --references--> `LifecycleManager`  [INFERRED]
-  docs/architecture/AKIRA-ARCHITECTURE-DISPOSITION.md → archive/legacy-platform/src/runtime/lifecycle/lifecycle-manager.ts
-- `16. Phase 0 Exit Criteria` --references--> `RuntimeManager`  [INFERRED]
-  docs/architecture/AKIRA-ARCHITECTURE-DISPOSITION.md → archive/legacy-platform/src/runtime/runtime-manager.ts
-- `16.2 How the stages relate to the P0 phases` --references--> `RuntimeManager`  [INFERRED]
-  docs/architecture/AKIRA-TARGET-ARCHITECTURE.md → archive/legacy-platform/src/runtime/runtime-manager.ts
-- `Session outcomes survive a restart — `cfb8a70`` --references--> `selectSessionOutcomes()`  [INFERRED]
-  deep-scan/chat5_findings.md → src/akira-os/sessions/session-outcomes.ts
+- `4.3 Identity` --references--> `InMemoryIdentityRepository`  [INFERRED]
+  docs/architecture/AKIRA-ARCHITECTURE-DISPOSITION.md → src/genesis/identity/repositories/InMemoryIdentityRepository.ts
+- `4. Identity System` --references--> `InMemoryIdentityRepository`  [INFERRED]
+  docs/architecture/AKIRA-ENGINEERING-HANDOFF.md → src/genesis/identity/repositories/InMemoryIdentityRepository.ts
+- `6. Goals & Missions` --references--> `IdentityGoal`  [INFERRED]
+  docs/architecture/AKIRA-ENGINEERING-HANDOFF.md → src/genesis/identity/types.ts
+- `O3. What are the Goal schema, its states, and its relationship to Project and Task?` --references--> `IdentityGoal`  [INFERRED]
+  docs/architecture/AKIRA-TARGET-ARCHITECTURE.md → src/genesis/identity/types.ts
+- `11. Architectural Invariants Being Exercised` --references--> `SqliteProjectRepository`  [INFERRED]
+  docs/architecture/PHASE-3A-IMPLEMENTATION-PROPOSAL.md → src/persistence/repositories/SqliteProjectRepository.ts
 
 ## Import Cycles
 - 4-file cycle: `src/components/vault/FileGrid.tsx -> src/components/vault/Thumbnail.tsx -> src/routes/tools.vault.tsx -> src/components/vault/VaultWorkspace.tsx -> src/components/vault/FileGrid.tsx`
@@ -442,35 +453,35 @@
 - **Provenance preservation implemented across Reflection, Knowledge, Habit and Identity contexts** — docs_genesis_architecture_companion_intelligence_08_context_resolution_engine_provenance_preservation, docs_genesis_architecture_companion_intelligence_07_reflection_engine_reflection_context, docs_genesis_architecture_decisions_adr_009_knowledge_engine_knowledge_context, docs_genesis_architecture_decisions_adr_011_habit_intelligence_habit_context, docs_genesis_architecture_decisions_adr_003_emergent_identity_traceable_lineage [INFERRED 0.85]
 - **Vault Dedup Lifecycle Data-Loss Defect** — docs_audits_06_data_integrity_dat_002, docs_audits_06_data_integrity_dat_003, docs_audits_akira_master_audit_crit_006, docs_modules_vault_vault_storage_service, docs_audits_08_testing_audit_tst_002 [INFERRED 0.85]
 
-## Communities (441 total, 132 thin omitted)
+## Communities (451 total, 136 thin omitted)
 
 ### Community 0 - "observability/composition.ts"
 Cohesion: 0.03
-Nodes (35): package.json sideEffects allowlist, 12. Observability & Health, initializeObservability(), recordHealthTransition(), ComponentHealth, ComponentHealthOptions, ComponentHealthStatus, ComponentState (+27 more)
+Nodes (36): package.json sideEffects allowlist, 12. Observability & Health, EventDeliveryObserver, initializeObservability(), recordHealthTransition(), ComponentHealth, ComponentHealthOptions, ComponentHealthStatus (+28 more)
 
 ### Community 1 - "event-bus.ts"
-Cohesion: 0.06
-Nodes (21): ADR-008: Event-Driven Timeline, capabilityExecutionContext, REALITY_ADAPTER_ID, RealityAdapterMetrics, EventBus, EventDeliveryObserver, globalEventBus, EventService (+13 more)
+Cohesion: 0.07
+Nodes (23): ADR-008: Event-Driven Timeline, capabilityExecutionContext, REALITY_ADAPTER_ID, RealityAdapterMetrics, EventBus, globalEventBus, EventService, PersistenceSubscriber (+15 more)
 
-### Community 2 - "vajra/composition.ts"
+### Community 2 - "controller.ts"
 Cohesion: 0.03
-Nodes (44): getOperationalVajraController(), ServerLifecycleOptions, CleanupTask, currentDegradedReasons, currentSubsystems, getGenesisDiscoveryAdapter(), getPlatformEventAdapter(), getUserDirectiveAdapter() (+36 more)
+Nodes (37): Steps:, Workflow: understand, getGenesisDiscoveryAdapter(), getPlatformEventAdapter(), getUserDirectiveAdapter(), getVajraIngressCoordinator(), VajraLifecycleState, SchedulerCapacityExceededError (+29 more)
 
 ### Community 3 - "reflection/engine/index.ts"
 Cohesion: 0.05
 Nodes (30): ThresholdSelectionPolicy, ContextAssemblyService, ContextAssemblyResult, SelectedContext, SelectionPolicy, contextProviderRegistry, contextIntelligenceService, CandidateContext (+22 more)
 
 ### Community 4 - "genesis/reasoning/index.ts"
-Cohesion: 0.19
-Nodes (12): 3. COMPLETE FILE-LEVEL VAJRA CANDIDATE INVENTORY, 3.1 Existing Reasoning Artifacts in `src/genesis/reasoning/`, ReflectionResult, ReasoningEngine, createDefaultStrategyRegistry(), ReasoningStrategyRegistry, DeductiveReasoningStrategy, ImplicationReasoningStrategy (+4 more)
+Cohesion: 0.08
+Nodes (27): 3.1 Existing Reasoning Artifacts in `src/genesis/reasoning/`, 3.5 Existing GENESIS Decision Engine Remnants in `src/genesis/decision/`, DecisionEngine, DecisionStrategyRegistry, Decision, DecisionCollection, DecisionStrategy, DecisionType (+19 more)
 
 ### Community 5 - "metrics/registry.ts"
-Cohesion: 0.05
-Nodes (20): ActiveTimer, Counter, Gauge, Histogram, HistogramData, Metric, MetricLabelSet, MetricMetadata (+12 more)
-
-### Community 6 - "AnalyticsRepository"
 Cohesion: 0.06
-Nodes (15): ADR-015: Analytics Subsystem Reliability & Self-Recovery, ProjectsCalculator, DailyMetrics, HistoricalAggregates, ProjectMetrics, AnalyticsRepository, SqliteAnalyticsRepository, AnalyticsValidator (+7 more)
+Nodes (19): ActiveTimer, Counter, Gauge, Histogram, HistogramData, Metric, MetricLabelSet, MetricMetadata (+11 more)
+
+### Community 6 - "AnalyticsEngine.ts"
+Cohesion: 0.07
+Nodes (17): Dead / duplicate / orphaned infrastructure, AnalyticsEngine, AnalyticsSubscriber, DailyMetrics, HistoricalAggregates, ProjectMetrics, AnalyticsRepository, SqliteAnalyticsRepository (+9 more)
 
 ### Community 7 - "RuntimeAdapter"
 Cohesion: 0.05
@@ -480,13 +491,13 @@ Nodes (27): AnalyticsAdapter, EventAdapter, MemoryAdapter, NotificationAdapter, 
 Cohesion: 0.09
 Nodes (5): uid(), IdentityChangeType, IdentitySnapshot, IdentityTimeline, IdentityVersion
 
-### Community 9 - "story-service.ts"
-Cohesion: 0.03
-Nodes (43): dirty, flushAll(), flushers, FlushPhase, isBatching(), markDirty(), PHASE_ORDER, registerFlusher() (+35 more)
+### Community 9 - "genesis/index.ts"
+Cohesion: 0.02
+Nodes (92): 13.2 GENESIS Memory Boundary (Decoupled Reality Handoff), dirty, flushAll(), flushers, FlushPhase, isBatching(), markDirty(), PHASE_ORDER (+84 more)
 
 ### Community 10 - "cn"
-Cohesion: 0.02
-Nodes (147): clsx, input-otp, @radix-ui/react-accordion, @radix-ui/react-avatar, @radix-ui/react-checkbox, @radix-ui/react-context-menu, @radix-ui/react-dropdown-menu, @radix-ui/react-hover-card (+139 more)
+Cohesion: 0.03
+Nodes (83): cmdk, @radix-ui/react-accordion, @radix-ui/react-avatar, @radix-ui/react-context-menu, @radix-ui/react-menubar, @radix-ui/react-select, @radix-ui/react-tabs, vaul (+75 more)
 
 ### Community 11 - "InMemoryIdentityRepository"
 Cohesion: 0.05
@@ -502,7 +513,7 @@ Nodes (40): NoteCardProps, SessionLog, sessionService, 1. Test Environment, 2. M
 
 ### Community 14 - "routeTree.gen.ts"
 Cohesion: 0.05
-Nodes (50): @tanstack/react-query, getRouter(), Route, Route, Route, Route, Route, Route (+42 more)
+Nodes (50): @tanstack/react-query, @tanstack/react-router, getRouter(), renderErrorPage(), Route, Route, Route, Route (+42 more)
 
 ### Community 15 - "identity/types.ts"
 Cohesion: 0.15
@@ -512,37 +523,37 @@ Nodes (31): DomainEvent, Events, eventService, defaultIdentityRepository, identi
 Cohesion: 0.05
 Nodes (41): Workspace Canvas Shell (Shell.tsx), Dynamic Tool Registry (toolsRegistry), Archived Reflection Context, Reflection Confidence, Reflection Context, Reflection Engine, AI Context Engine (prompt compiler), Context Relevance Filter (+33 more)
 
-### Community 17 - "AnalyticsEngine.ts"
+### Community 17 - "calculators.ts"
 Cohesion: 0.05
-Nodes (21): AnalyticsEngine, AnalyticsSubscriber, ActivitySummary, DailyActiveProjectsMetricCalculator, DailyFileMetricCalculator, DailyNoteMetricCalculator, DailySearchMetricCalculator, DailySessionMetricCalculator (+13 more)
+Nodes (18): ActivitySummary, DailyActiveProjectsMetricCalculator, DailyFileMetricCalculator, DailyNoteMetricCalculator, DailySearchMetricCalculator, DailySessionMetricCalculator, DailyTaskMetricCalculator, ProductivitySummary (+10 more)
 
 ### Community 18 - "vajra/reasoning/types.ts"
+Cohesion: 0.04
+Nodes (73): File-Level Inventory, 10.1 The Three Reasoning Tiers, 10.2 Capability-Aware Safe Fallback Semantics, 10. Adaptive Strategy Model & Capability-Aware Fallback, 11.1 Pure Reasoning Output Contract (`StrategyReasoningOutput`), 11. Strategy Capability Contracts, 12.1 The `IModelCoprocessorPort` Boundary, 12.2 Coprocessor Invariants: (+65 more)
+
+### Community 19 - "telemetry.ts"
 Cohesion: 0.07
-Nodes (40): File-Level Inventory, 10.1 The Three Reasoning Tiers, 22. Exact File-Level Implementation Plan, 2. Phase 4 Revision 1 — Architectural Corrections Summary, 3.3 Existing Phase 2 VAJRA Core Domain & Ports, 9.2 Strict Separation of Epistemic Operations, 5. Test-only implementations and manually constructed paths, HistoricalMemoryItem (+32 more)
+Nodes (17): ADR-0022, TelemetryIdGenerator, TelemetryPipeline, TelemetryPipelineStage, TelemetryProvider, TelemetrySerializer, TelemetrySink, PipelineError (+9 more)
 
-### Community 19 - "TelemetryError"
-Cohesion: 0.06
-Nodes (14): TelemetryPipeline, TelemetryPipelineStage, TelemetrySerializer, TelemetrySink, MetricNotFoundError, MetricOverflowError, MetricTypeError, ContextError (+6 more)
+### Community 20 - "akira-os/index.ts"
+Cohesion: 0.14
+Nodes (16): ADR-0022, searchHistoryService, searchService, CommandPalette(), ResultPreview(), Drawer(), DrawerContent, ScrollArea (+8 more)
 
-### Community 20 - "search.tsx"
-Cohesion: 0.12
-Nodes (20): vaul, searchHistoryService, searchService, CommandPalette(), ResultPreview(), Drawer(), DrawerContent, DrawerDescription (+12 more)
-
-### Community 22 - "MilestoneRepository"
-Cohesion: 0.10
-Nodes (6): InMemoryMilestoneRepository, MilestoneRepository, milestoneService, uid(), planningValidationService, Milestone
+### Community 22 - "genesis-planning.test.ts"
+Cohesion: 0.11
+Nodes (4): InMemoryMilestoneRepository, milestoneService, uid(), Milestone
 
 ### Community 23 - "The 9-Stage Execution Workflow"
 Cohesion: 0.05
 Nodes (35): 1. Domain Separation Invariant, 2. Structural Layer Invariants, 3. Implementation Boundary Guidelines, Architectural Invariants Reference, Invariant 2.1: UI Isolation, Invariant 2.2: Service Dominance, Invariant 2.3: Server/Persistence Isolation, Invariant 2.4: Single Authority of Truth (+27 more)
 
-### Community 24 - "shutdown-restart.test.ts"
-Cohesion: 0.15
-Nodes (19): better-sqlite3, createMissionDefinition(), createMissionStep(), createMissionState(), db, dbPath, db, dbPath (+11 more)
+### Community 24 - "IOperationalStateStore"
+Cohesion: 0.04
+Nodes (30): 18. Updated Test & Verification Strategy, Verification Gate Checklist (Post-Implementation):, 2. `src/vajra/mission/admission.ts`, 3. `src/vajra/mission/planner.ts`, 5. `src/vajra/mission/runtime.ts`, 6. `src/vajra/mission/recovery.ts`, 7. `src/vajra/mission/index.ts`, Detailed File Specifications (+22 more)
 
 ### Community 25 - "planningService"
-Cohesion: 0.07
-Nodes (7): InMemoryPlanRepository, uid(), planningService, uid(), progressService, Plan, Progress
+Cohesion: 0.09
+Nodes (5): 4. Legacy Code Audit & Prohibition Matrix, InMemoryPlanRepository, planningService, Plan, Progress
 
 ### Community 26 - "identityContextProvider"
 Cohesion: 0.11
@@ -552,85 +563,89 @@ Nodes (4): identityContextProvider, IdentityCompleteness, IdentityHealth, Identi
 Cohesion: 0.07
 Nodes (15): CapabilityBinding, Capability, CapabilityError, CapabilityNotFoundError, CapabilityVersionMismatchError, DuplicateCapabilityRegistrationError, InvalidCapabilityMetadataError, InvalidCapabilityPriorityError (+7 more)
 
-### Community 28 - "dependency-resolver.test.ts"
+### Community 28 - "ModuleManifest"
 Cohesion: 0.09
-Nodes (11): CircularDependencyError, DependencyError, DuplicateDependencyError, InvalidDependencyError, MissingDependencyError, SelfDependencyError, DependencyGraph, DependencyNode (+3 more)
+Nodes (13): ModuleManifest, CircularDependencyError, DependencyError, DuplicateDependencyError, InvalidDependencyError, MissingDependencyError, SelfDependencyError, DependencyGraph (+5 more)
 
-### Community 29 - "akira-store"
-Cohesion: 0.08
-Nodes (24): Developer Mode Visibility Gating, getVisibleTools, Tool Registry, Tool Interface, Tool Categories, toolsRegistry, Event Middleware Pipeline, Instrumentation Publisher and Client-Server Split (+16 more)
+### Community 29 - "lucide-react"
+Cohesion: 0.09
+Nodes (19): 5. Current Architecture Map & Subsystem Classification, Global Command Palette Overlay, Shell Responsive Breakpoint Behavior, Workspace Shell, Developer Mode Visibility Gating, getVisibleTools, Tool Registry, Tool Interface (+11 more)
 
-### Community 30 - "AIProvider"
-Cohesion: 0.12
-Nodes (22): 11. Model & Provider Integration, 3.2 Existing AI Provider & Model Infrastructure in `src/genesis/context/ai/`, initialProvider, AIProvider, providerRegistry, providers, geminiAdapter, GeminiProvider (+14 more)
-
-### Community 31 - "genesis-planning.test.ts"
+### Community 30 - "aiProviderManager"
 Cohesion: 0.07
-Nodes (17): 9.1 Goals (FACT), 4. Legacy Code Audit & Prohibition Matrix, InMemoryTemplateRepository, PlanRepository, TemplateRepository, goalClassifier, goalDecompositionService, GoalCategory (+9 more)
+Nodes (28): 11. Model & Provider Integration, 3.2 Existing AI Provider & Model Infrastructure in `src/genesis/context/ai/`, initialProvider, AIProvider, aiProviderManager, applyUnedited(), ProviderMetrics, ProviderStatus (+20 more)
+
+### Community 31 - "GoalDecompositionService.ts"
+Cohesion: 0.09
+Nodes (16): 9.1 Goals (FACT), InMemoryTemplateRepository, TemplateRepository, goalClassifier, goalDecompositionService, uid(), GoalCategory, Career (+8 more)
 
 ### Community 32 - "manifest.test.ts"
 Cohesion: 0.08
-Nodes (19): DuplicateCapabilityError, DuplicateModuleError, DuplicateRouteError, InvalidVersionError, ManifestError, ManifestValidationError, MissingFieldError, UnknownPropertyError (+11 more)
+Nodes (17): DuplicateCapabilityError, DuplicateModuleError, DuplicateRouteError, InvalidVersionError, ManifestError, ManifestValidationError, MissingFieldError, UnknownPropertyError (+9 more)
 
-### Community 33 - "PresenceContext"
-Cohesion: 0.09
-Nodes (24): buildPresenceContext(), AFTERNOON_START_HOUR, CONTINUITY_MAX_DECAY_GAP, CONVERSATION_CONTINUITY_THRESHOLD, EVENING_START_HOUR, MORNING_START_HOUR, NEXT_DAY_GAP_THRESHOLD, NIGHT_START_HOUR (+16 more)
+### Community 33 - "presence.test.ts"
+Cohesion: 0.10
+Nodes (20): buildPresenceContext(), AFTERNOON_START_HOUR, CONTINUITY_MAX_DECAY_GAP, CONVERSATION_CONTINUITY_THRESHOLD, EVENING_START_HOUR, MORNING_START_HOUR, NEXT_DAY_GAP_THRESHOLD, NIGHT_START_HOUR (+12 more)
 
 ### Community 34 - "TelemetrySeverity"
 Cohesion: 0.10
 Nodes (16): TelemetryFactory, TelemetryRecord, ReportedDiagnostic, Logger, deepFreeze(), TelemetryMetadata, TelemetrySeverity, CRITICAL (+8 more)
 
 ### Community 35 - "VaultFile"
-Cohesion: 0.08
-Nodes (11): FavoritesBarProps, PreviewPanelProps, TagEditorProps, ThumbnailProps, TrashViewProps, VaultFileRepository, SqliteVaultFileRepository, VaultFileLinkRow (+3 more)
-
-### Community 36 - "telemetry.ts"
 Cohesion: 0.11
-Nodes (25): ADR-0022, TelemetryContext, TelemetryIdGenerator, TelemetryProvider, metricRegistry, TelemetryCorrelation, TelemetryMetadataArray, TelemetryMetadataValue (+17 more)
+Nodes (7): FavoritesBarProps, TagEditorProps, TrashViewProps, VaultFileRepository, VaultFileLinkRow, VaultFileRow, VaultFile
+
+### Community 36 - "telemetry-factory.ts"
+Cohesion: 0.14
+Nodes (18): TelemetryContext, metricRegistry, TelemetryCorrelation, AuditRecord, DiagnosticRecord, HealthRecord, LogRecord, MetricRecord (+10 more)
 
 ### Community 37 - "PlanningGraph"
-Cohesion: 0.18
-Nodes (16): Stage 1C Part A — Repository Integrity, createHealthRuleEngine(), HealthEvaluation, HealthRule, HealthRuleEngine, CompletedRule, DerivedCompletionRule, HealthyRule (+8 more)
+Cohesion: 0.13
+Nodes (19): P0 Production Build Failure, Phase A — Baseline (pre-repair), Stage 1C Part A — Repository Integrity, createHealthRuleEngine(), HealthEvaluation, HealthRule, HealthRuleEngine, CompletedRule (+11 more)
 
-### Community 38 - "react"
-Cohesion: 0.05
-Nodes (50): lucide-react, react, getRawFileBase64(), uploadMockFileServer(), ContextMenu(), ContextMenuProps, EmptyState(), EmptyStateProps (+42 more)
+### Community 38 - "VaultWorkspace.tsx"
+Cohesion: 0.07
+Nodes (32): uploadMockFileServer(), ContextMenu(), ContextMenuProps, EmptyState(), EmptyStateProps, FavoritesBar(), MetadataPanel(), TagEditor() (+24 more)
 
 ### Community 39 - "habits/service.ts"
 Cohesion: 0.13
 Nodes (23): ADR-0011, buildHabitContext(), HabitCallback, HabitEngineEvent, habitEvents, HabitEventType, listeners, addHabitEvidence() (+15 more)
+
+### Community 40 - "CooperativeTurnScheduler"
+Cohesion: 0.14
+Nodes (5): 11.1 Concurrency Rules, 11.2 Single Running Mission Policy (Phase 3 Concurrency Simplification), 11. Concurrency Model & Single Running Mission Policy, 19. Concurrency, Consistency & Invalidation Lifecycle, CooperativeTurnScheduler
 
 ### Community 41 - "run_loop.py"
 Cohesion: 0.09
 Nodes (9): generate_html(), main(), _call_claude(), improve_description(), main(), main(), run_loop(), split_eval_set() (+1 more)
 
 ### Community 43 - "CorrelationMetadata"
-Cohesion: 0.04
-Nodes (53): Steps:, Workflow: understand, 3. Target Contract Mapping, Existing Files Modified:, 3.4 Existing Capability Registry & Host in AKIRA OS, 26. Architectural Invariants (Phase 6 Blast Doors), 28. Test Strategy, 31. Open Architectural Questions (+45 more)
+Cohesion: 0.05
+Nodes (60): 3. Target Contract Mapping, Existing Files Modified:, 1. `src/vajra/mission/types.ts`, 3.4 Existing Ports & Boundaries (`src/vajra/`), 4. `src/vajra/mission/coordinator.ts`, better-sqlite3, zod, ActivationTier (+52 more)
 
 ### Community 44 - "PlanningService.ts"
-Cohesion: 0.15
-Nodes (21): DomainEventName, DependencyRepository, InMemoryDependencyRepository, adaptivePlanningService, dependencyService, uid(), planningGraphBuilder, recommendationService (+13 more)
+Cohesion: 0.17
+Nodes (19): DomainEventName, InMemoryDependencyRepository, adaptivePlanningService, uid(), recommendationService, BlockerSeverity, Dependency, DependencyType (+11 more)
 
 ### Community 45 - "logger/index.ts"
 Cohesion: 0.29
 Nodes (6): listeners, LogEntry, logger, logHistory, LogLevel, LogListener
 
 ### Community 47 - "context-rules.ts"
-Cohesion: 0.04
-Nodes (45): ACTIVE_PROJECT_REASON, describesDeletedProject(), STATED_ASPIRATION_REASON, ContextListener, contextService, listeners, ContextItem, MemoryRelationship (+37 more)
+Cohesion: 0.03
+Nodes (62): 9.1 The five primitives, ACTIVE_PROJECT_REASON, describesDeletedProject(), rankedActive(), STATED_ASPIRATION_REASON, ContextItem, getRetentionPolicy(), trimOldest() (+54 more)
 
-### Community 48 - "analytics-service.ts"
+### Community 48 - "analyticsService"
+Cohesion: 0.11
+Nodes (7): ActivityCalculator, ProductivityCalculator, VaultCalculator, analyticsService, AnalyticsQueryOptions, QueryService, validateAndResolveQuery()
+
+### Community 49 - "react"
 Cohesion: 0.08
-Nodes (25): DashboardBuilder, DashboardDTO, dashboardService, ActivityWidget, ProductivityWidget, ProjectWidget, SearchWidget, SessionWidget (+17 more)
+Nodes (37): embla-carousel-react, @radix-ui/react-alert-dialog, react, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter() (+29 more)
 
-### Community 49 - "carousel.tsx"
-Cohesion: 0.07
-Nodes (37): embla-carousel-react, @radix-ui/react-alert-dialog, react-day-picker, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter() (+29 more)
-
-### Community 50 - "akira-os/index.ts"
-Cohesion: 0.08
-Nodes (72): 5. Current Architecture Map & Subsystem Classification, Global Command Palette Overlay, Shell Responsive Breakpoint Behavior, Workspace Shell, 11. Legacy Code Audit, sonner, @tanstack/react-router, ADR-0022 (+64 more)
+### Community 50 - "useAkira"
+Cohesion: 0.15
+Nodes (47): 11. Legacy Code Audit, sonner, PageHeader(), Shell(), AiCore(), CaptureThoughtDialog(), ConfirmDialog(), GlassDialog() (+39 more)
 
 ### Community 51 - "Skill Creator"
 Cohesion: 0.06
@@ -638,11 +653,11 @@ Nodes (34): Advanced: Blind comparison, Anatomy of a Skill, Capture Intent, Clau
 
 ### Community 52 - "runtime-manager.ts"
 Cohesion: 0.08
-Nodes (16): IModuleEventBus, IModuleLogger, ModuleContext, ModuleDefinition, IModuleLoader, ModuleLoader, isValidTransition(), ModuleState (+8 more)
+Nodes (10): IModuleEventBus, IModuleLogger, ModuleContext, ModuleDefinition, ModuleInstance, IModuleLoader, ModuleLoader, isValidTransition() (+2 more)
 
 ### Community 53 - "context-engine.ts"
-Cohesion: 0.13
-Nodes (20): getWorkspaceProvider(), registerWorkspaceProvider(), aiContextEngine, EngineOptions, promptBuilder, contextRelevanceSelector, SelectedContext, ContextPackage (+12 more)
+Cohesion: 0.04
+Nodes (76): 4.1 Operational decisions currently embedded in cognition or UI, 7. GENESIS ↔ VAJRA Boundary, Enforcing Rule N3, Existing Code Collisions (Must Be Neutralized), getHistoricalRecallProvider(), getWorkspaceProvider(), registerWorkspaceProvider(), aiContextEngine (+68 more)
 
 ### Community 54 - "Companion Intelligence Layer"
 Cohesion: 0.11
@@ -650,15 +665,15 @@ Nodes (22): Consolidation Engine, Future AI Context Engine, Reasoning Engine, Aw
 
 ### Community 55 - "MemoryEvent"
 Cohesion: 0.04
-Nodes (27): 9.1 The five primitives, chatDeclarationPromoter, onEvent(), Declaration, parseDeclaration(), MemoryEvent, counts, seed() (+19 more)
+Nodes (22): CandidateReason, MemoryCandidate, CandidateRule, ValidationOutcome, ValidationRule, validationRules, validator, MemoryEvent (+14 more)
 
 ### Community 56 - "search/services/index.ts"
-Cohesion: 0.09
-Nodes (15): persistClearSearchHistory, persistDeleteSearchHistory, persistGetSearchHistory, persistRunSearch, CacheEntry, SearchManager, SearchHistoryEntry, SearchHistoryRepository (+7 more)
+Cohesion: 0.14
+Nodes (12): persistClearSearchHistory, persistDeleteSearchHistory, persistGetSearchHistory, persistRunSearch, CacheEntry, SearchManager, SearchHistoryEntry, SearchRepository (+4 more)
 
 ### Community 57 - "AkiraEvent"
-Cohesion: 0.10
-Nodes (11): CustomCalculator, BenchmarkResult, benchmarkRunner, RebuildManager, RebuildProgress, EventDelivery, EventRepository, SqliteEventRepository (+3 more)
+Cohesion: 0.13
+Nodes (8): ADR-015: Analytics Subsystem Reliability & Self-Recovery, ConsistencyChecker, EventDelivery, EventRepository, SqliteEventRepository, createTestContext(), AkiraEvent, seedTiedEvents()
 
 ### Community 58 - "initiative/service.ts"
 Cohesion: 0.13
@@ -669,52 +684,56 @@ Cohesion: 0.08
 Nodes (22): Context Package, Companion Session, Session Outcomes, Awareness Session, Awareness Snapshot, Companion Presence, Constructive Challenge, Conversation Cycle (+14 more)
 
 ### Community 60 - "package.json"
-Cohesion: 0.04
-Nodes (54): name, private, sideEffects, type, class-variance-authority, date-fns, eslint, eslint-config-prettier (+46 more)
+Cohesion: 0.03
+Nodes (62): name, private, sideEffects, type, clsx, date-fns, eslint, eslint-config-prettier (+54 more)
 
 ### Community 61 - "SEC-002 Provider API Keys Inlined Into The Client Bundle"
 Cohesion: 0.11
 Nodes (19): REL-010 Invalid External Input Unvalidated At Every RPC Entry, TST-004 No Test Exercises The Wiring, Only The Units, TST-006 Excessive Mocking Hides The Defect It Should Catch, Security Posture Summary, Prototype Pollution Probe (Not Exploitable), SEC-001 Unsandboxed Module Loading And startup Path Escape, SEC-002 Provider API Keys Inlined Into The Client Bundle, SEC-003 resolveSafePath Prefix Check Permits Sibling Escape (+11 more)
 
-### Community 62 - "validate-architecture.ts"
-Cohesion: 0.13
-Nodes (14): assert(), cleanupTestDb(), failures, realisticPayload, runTests(), scanImports(), scanTimelineWrites(), walk() (+6 more)
+### Community 62 - "analytics-service.ts"
+Cohesion: 0.16
+Nodes (19): DashboardBuilder, DashboardDTO, dashboardService, ActivityWidget, ProductivityWidget, ProjectWidget, SearchWidget, SessionWidget (+11 more)
 
 ### Community 63 - "Process"
 Cohesion: 0.07
 Nodes (27): Analyzing Benchmark Results, Categories for Suggestions, Guidelines, Guidelines, Inputs, Inputs, Output Format, Post-hoc Analyzer Agent (+19 more)
 
+### Community 64 - "VaultFolder"
+Cohesion: 0.12
+Nodes (11): FolderNode(), FolderNodeProps, FolderTree(), FolderTreeProps, MetadataPanelProps, VaultSidebar(), VaultSidebarProps, VaultFolderRepository (+3 more)
+
 ### Community 65 - "retention/policy.ts"
-Cohesion: 0.05
-Nodes (22): rankedActive(), applyDurableRetention(), applyRuntimeRetention(), classifyDurability(), DEFAULT_RETENTION_POLICY, DURABILITY_BY_EVENT_TYPE, DurabilityClass, GenesisRetentionPolicy (+14 more)
+Cohesion: 0.06
+Nodes (21): applyDurableRetention(), applyRuntimeRetention(), classifyDurability(), DEFAULT_RETENTION_POLICY, DURABILITY_BY_EVENT_TYPE, DurabilityClass, GenesisRetentionPolicy, build() (+13 more)
 
 ### Community 66 - "SelfModel"
 Cohesion: 0.06
-Nodes (63): 21.1 Clean Contract Separation, 2.1 Core Domain Code, 3. Invariant Verification Matrix, 12.1 Architectural Mechanisms:, 12.2 Policy Configuration (Fields on `PolicyEnvelope`):, 12. Policy Boundary: Architectural Mechanism vs. Policy Configuration, 1. Executive Summary, 28. Exact File-Level Implementation Plan (+55 more)
+Nodes (54): 2.1 Core Domain Code, 12.1 Architectural Mechanisms:, 12.2 Policy Configuration (Fields on `PolicyEnvelope`):, 12. Policy Boundary: Architectural Mechanism vs. Policy Configuration, 28. Exact File-Level Implementation Plan, 3.1 Existing Decision Artifacts in `src/vajra/ports/decision.ts`, 3.2 Existing Action Contracts in `src/vajra/types/action.ts`, 3.3 Existing Human Escalation Infrastructure (+46 more)
 
 ### Community 67 - "compilerOptions"
 Cohesion: 0.11
 Nodes (18): compilerOptions, allowImportingTsExtensions, jsx, lib, module, moduleResolution, noEmit, noFallthroughCasesInSwitch (+10 more)
 
 ### Community 69 - "Synthesized Decisions"
-Cohesion: 0.07
-Nodes (29): ADR-001: Separation of Memory and AI Models, ADR-002: Story-First Memory Architecture, ADR-003: Emergent Identity Discovery, ADR-004: Decoupled Context Builder, ADR-005: Companion Core Behavioral Model, ADR-006: Deterministic Presence Subsystem, ADR-007: Ephemeral Session-Scoped Companion State Layer, ADR-008: Dedicated Goal Subsystem (+21 more)
+Cohesion: 0.06
+Nodes (31): ADR-001: Separation of Memory and AI Models, ADR-002: Story-First Memory Architecture, ADR-003: Emergent Identity Discovery, ADR-004: Decoupled Context Builder, ADR-005: Companion Core Behavioral Model, ADR-006: Deterministic Presence Subsystem, ADR-007: Ephemeral Session-Scoped Companion State Layer, ADR-008: Dedicated Goal Subsystem (+23 more)
 
 ### Community 70 - "AKIRA OS"
-Cohesion: 0.17
-Nodes (11): Active, AKIRA OS, Business Context, Constraints, Context, Core Value, Key Decisions, Out of Scope (+3 more)
+Cohesion: 0.18
+Nodes (10): Active, AKIRA OS, Business Context, Context, Core Value, Key Decisions, Out of Scope, Requirements (+2 more)
 
-### Community 71 - "Phase 3E — Mission Contract & VAJRA Architecture Study"
-Cohesion: 0.09
-Nodes (22): 10. O1–O12 Decision Audit, 12. Architectural Risks, 15. Explicit Non-Goals, 16. Human Decisions Required, 1. Executive Conclusion, 3. Goal vs Mission, 4. VAJRA Authority Boundary, 6. Verification Model (+14 more)
+### Community 71 - "4. VAJRA Authority Boundary"
+Cohesion: 0.50
+Nodes (4): 4. VAJRA Authority Boundary, Potential Authority Collisions, VAJRA Primary Control Loop, What VAJRA Must NOT Own (Hard Invariants)
 
 ### Community 72 - "relationships/service.ts"
-Cohesion: 0.12
-Nodes (24): buildRelationshipContext(), CONFIDENCE_PERSON_OBSERVED, CONFIDENCE_RELATIONSHIP_ARCHIVED, CONFIDENCE_RELATIONSHIP_EVOLVED, CONFIDENCE_RELATIONSHIP_IDENTIFIED, CONFIDENCE_RELATIONSHIP_REFINED, CONFIDENCE_RELATIONSHIP_UNDERSTOOD, CONFIDENCE_RELATIONSHIP_VERIFIED (+16 more)
+Cohesion: 0.18
+Nodes (16): buildRelationshipContext(), listeners, RelationshipCallback, RelationshipEngineEvent, relationshipEvents, RelationshipEventType, applyUserCorrection(), observePerson() (+8 more)
 
 ### Community 73 - "relationship-service.ts"
 Cohesion: 0.06
-Nodes (28): RelationshipRule, relationshipRules, byMemory, indexAdd(), indexAttach(), indexDetach(), indexRemove(), listeners (+20 more)
+Nodes (27): RelationshipRule, relationshipRules, byMemory, indexAdd(), indexAttach(), indexDetach(), indexRemove(), listeners (+19 more)
 
 ### Community 74 - "VAJRA-BRAIN-ARCHITECTURE.md"
 Cohesion: 0.14
@@ -722,39 +741,39 @@ Nodes (13): 13. Epistemic Uncertainty & Evidence Model, 19. Durability & Idempot
 
 ### Community 75 - "__root.tsx"
 Cohesion: 0.12
-Nodes (10): Entry Points, timelineService, BootSequence(), Toaster(), ToasterProps, LovableErrorOptions, LovableEvents, reportLovableError() (+2 more)
+Nodes (10): timelineService, Toaster(), ToasterProps, LovableErrorOptions, LovableEvents, reportLovableError(), Window, Dynamic, Optional and Splat Segments (+2 more)
 
 ### Community 76 - "ExecutiveController"
-Cohesion: 0.08
-Nodes (22): Invariant Boundary Enforcement, 18.1 Deterministic Boot Guarantees & Triaged Recovery Evaluation, 18. Crash Recovery on Process Restart, 6. `src/vajra/mission/recovery.ts`, 10. Recommended minimal implementation plan, 1. Actual startup flow, 2. Actual dependency graph, 4. Missing production connections (+14 more)
+Cohesion: 0.04
+Nodes (34): Invariant Boundary Enforcement, 3.4 Existing Capability Registry & Host in AKIRA OS, 18.1 Deterministic Boot Guarantees & Triaged Recovery Evaluation, 18. Crash Recovery on Process Restart, 1.1 Revision History & Architectural Correction Summary, 1. Executive Summary, 26. Architectural Invariants (Phase 6 Blast Doors), 28. Test Strategy (+26 more)
 
 ### Community 77 - "recall-rules.ts"
 Cohesion: 0.09
-Nodes (22): 13.2 GENESIS Memory Boundary (Decoupled Reality Handoff), buildRecallEvaluationContext(), classifyMemory(), computeSemanticRelevance(), getStems(), IGNORE_WORDS, MemoryCategory, MULTI_FACTOR_RECALL_PREFIX (+14 more)
+Nodes (18): MemoryImportance, buildRecallEvaluationContext(), classifyMemory(), computeSemanticRelevance(), getStems(), IGNORE_WORDS, MemoryCategory, MULTI_FACTOR_RECALL_PREFIX (+10 more)
 
 ### Community 78 - "IdentityInterest"
 Cohesion: 0.11
 Nodes (4): identityInterestService, uid(), IdentityInterest, InterestCategory
 
-### Community 79 - "genesis-decision-engine.test.ts"
-Cohesion: 0.21
-Nodes (8): 3.5 Existing GENESIS Decision Engine Remnants in `src/genesis/decision/`, DecisionEngine, DecisionStrategyRegistry, Decision, DecisionCollection, DecisionStrategy, DecisionType, ReasoningResult
+### Community 79 - "analytics.test.ts"
+Cohesion: 0.10
+Nodes (4): ProjectsCalculator, CustomCalculator, AnalyticsValidator, diagnosticsService
 
 ### Community 80 - "Recommendation"
 Cohesion: 0.17
 Nodes (3): RecommendationRule, recommendationRuleEngine, Recommendation
 
 ### Community 81 - "akira-sdk.ts"
-Cohesion: 0.14
-Nodes (8): AnalyticsAPI, AkiraSDK, SDKContext, SDK_VERSION, MemoryAPI, NotificationAPI, SearchAPI, WorkspaceAPI
+Cohesion: 0.19
+Nodes (5): AkiraSDK, SDK_VERSION, MemoryAPI, NotificationAPI, SearchAPI
 
 ### Community 82 - "SqliteVaultTagRepository"
 Cohesion: 0.19
 Nodes (3): VaultTagRepository, SqliteVaultTagRepository, VaultTag
 
-### Community 83 - "SqliteTaskRepository"
-Cohesion: 0.16
-Nodes (11): 10. RPC Transport, 1. Frontend / Backend Boundary, 2.2 Subsystem Breakdown & Actual Behavior, 2. GENESIS (Cognitive Subsystem), 3. Memory System, 4. Identity System, 6. Goals & Missions, 7. Projects & Tasks (+3 more)
+### Community 83 - "2.2 Subsystem Breakdown & Actual Behavior"
+Cohesion: 0.17
+Nodes (12): 10. RPC Transport, 1. Frontend / Backend Boundary, 2.1 Application & Runtime Topology, 2.2 Subsystem Breakdown & Actual Behavior, 2. Current System Understanding, 2. GENESIS (Cognitive Subsystem), 3. Memory System, 4. Identity System (+4 more)
 
 ### Community 84 - "REL-002 Synchronous Spin-Wait Blocks The Server Event Loop"
 Cohesion: 0.09
@@ -769,8 +788,8 @@ Cohesion: 0.11
 Nodes (20): Common Patterns, Coverage, Fixtures and Factories, Mocking, Test File Organization, Test Framework, Test Structure, Test Types (+12 more)
 
 ### Community 87 - "VAJRA-IMPLEMENTATION-ARCHAEOLOGY.md"
-Cohesion: 0.07
-Nodes (27): 10. MISSION ARCHITECTURE AUDIT, 12. SAFETY & CORRECTNESS FOUNDATIONS, 13. TEST & VERIFICATION MAP, 14. DEAD & UNREACHABLE CODE ANALYSIS, 17. DELETION SAFETY REPORT, 18. RECOMMENDED MIGRATION ORDER, 1. REPOSITORY SNAPSHOT, 4.1 Conversation Flow (What Actually Executes Today) (+19 more)
+Cohesion: 0.08
+Nodes (25): 10. MISSION ARCHITECTURE AUDIT, 12. SAFETY & CORRECTNESS FOUNDATIONS, 13. TEST & VERIFICATION MAP, 14. DEAD & UNREACHABLE CODE ANALYSIS, 17. DELETION SAFETY REPORT, 18. RECOMMENDED MIGRATION ORDER, 1. REPOSITORY SNAPSHOT, 3. COMPLETE FILE-LEVEL VAJRA CANDIDATE INVENTORY (+17 more)
 
 ### Community 88 - "Append-Only SQLite Event Store"
 Cohesion: 0.11
@@ -780,29 +799,25 @@ Nodes (17): DAT-005 Event Store And Timeline Diverge Silently, DAT-010 Analytics
 Cohesion: 0.14
 Nodes (9): build_run(), embed_file(), find_runs(), _find_runs_recursive(), generate_html(), get_mime_type(), _kill_port(), load_previous_iteration() (+1 more)
 
-### Community 90 - "reflection/constants.ts"
-Cohesion: 0.29
-Nodes (6): CONFIDENCE_ANALYZE_EVIDENCE, CONFIDENCE_COLLECT_CONTEXTS, CONFIDENCE_GENERATE_REFLECTION, CONFIDENCE_REFLECTION_ARCHIVED, CONFIDENCE_REFLECTION_FINALIZED, CONFIDENCE_SESSION_FINALIZED
-
 ### Community 91 - "chat.tsx"
-Cohesion: 0.11
-Nodes (25): BlockToken, CodeBlock(), CodeLine, highlightCodeLine(), MarkdownRenderer(), parseMarkdown(), renderInlineText(), describeProviderFailure() (+17 more)
+Cohesion: 0.08
+Nodes (33): Codebase Structure, Directory Layout, Directory Purposes, Key File Locations, Naming Conventions, Special Directories, Where to Add New Code, BlockToken (+25 more)
 
 ### Community 92 - "GEN-002 No Cognitive State Survives A Restart"
 Cohesion: 0.15
 Nodes (16): GEN-002 No Cognitive State Survives A Restart, GEN-003 GENESIS Records Its Own Lifecycle As User Reality, GEN-004 No Duplicate Detection In The Promote Path, GEN-005 Collection Getters Return The Live Internal Array, GEN-006 Prompt Assembly Has No Token Budget, GEN-008 Insight Recency Filter Triggered By Substrings, GEN-010 Companion State Snapshot Discards Three Fields, GEN-011 Quadratic Understanding Graph Rebuild (+8 more)
 
-### Community 93 - "understanding/engine.ts"
-Cohesion: 0.05
-Nodes (40): buildUnderstandingGraph(), uid(), isMemoryTrivial(), isStoryTrivial(), isTrivial(), listeners, notifyListeners(), rebuildGraph() (+32 more)
+### Community 93 - "presenceService"
+Cohesion: 0.13
+Nodes (13): 1. Derived context-engine state is discarded on restart while its source data survives, AKIRA Deep Scan — Chat 4 Findings, Boot-order dependency in `companionStateService.bootstrap()`, Confirmed bugs, Final infrastructure inventory, Healthy infrastructure verified, Seven services initialize against an empty workspace at boot, Suspected issues (+5 more)
 
 ### Community 94 - "event-translation.ts"
 Cohesion: 0.09
 Nodes (13): DeletionPayload, LegacyMissionCompletedPayload, MissionCompletedPayload, NotePayload, ProjectPayload, SUPPORTED_PLATFORM_EVENT_TYPES, TaskCompletedPayload, TranslatedEvent (+5 more)
 
-### Community 95 - "historical-search-intent.ts"
-Cohesion: 0.15
-Nodes (18): 4.1 Operational decisions currently embedded in cognition or UI, Existing Code Collisions (Must Be Neutralized), getHistoricalRecallProvider(), genesisCovers(), recallHistory(), asksForProvenance(), detectHistoricalQuestion(), detectHistoricalSearch() (+10 more)
+### Community 95 - "genesis-relationship-engine.test.ts"
+Cohesion: 0.12
+Nodes (9): ImportanceRule, importanceRules, ImportanceSignal, SignalType, RecallCandidate, authored(), candidate(), saturated() (+1 more)
 
 ### Community 96 - "components.json"
 Cohesion: 0.11
@@ -825,20 +840,24 @@ Cohesion: 0.12
 Nodes (4): identityHabitService, uid(), HabitFrequency, IdentityHabit
 
 ### Community 101 - "reflection/service.ts"
-Cohesion: 0.11
-Nodes (25): 1. Derived context-engine state is discarded on restart while its source data survives, AKIRA Deep Scan — Chat 4 Findings, Boot-order dependency in `companionStateService.bootstrap()`, Confirmed bugs, Dead / duplicate / orphaned infrastructure, Final infrastructure inventory, Seven services initialize against an empty workspace at boot, Suspected issues (+17 more)
+Cohesion: 0.17
+Nodes (17): 4.4 Context, Appendix B — Defects Found (Documented, Not Fixed), buildReflectionContext(), listeners, ReflectionCallback, ReflectionEngineEvent, reflectionEvents, ReflectionEventType (+9 more)
 
 ### Community 102 - "Architecture"
-Cohesion: 0.17
-Nodes (11): Anti-Pattern: Direct Mutation of Workspace State by GENESIS, Anti-Pattern: Direct Persistence Import in Client Components, Anti-Pattern: Hardcoding Viewport Measurements, Anti-Patterns, Architecture, Component Responsibilities, Cross-Cutting Concerns, Error Handling (+3 more)
+Cohesion: 0.11
+Nodes (17): Anti-Pattern: Direct Mutation of Workspace State by GENESIS, Anti-Pattern: Direct Persistence Import in Client Components, Anti-Pattern: Hardcoding Viewport Measurements, Anti-Patterns, Architecture, Component Responsibilities, Cross-Cutting Concerns, Data Flow (+9 more)
 
 ### Community 103 - "timeline.tsx"
-Cohesion: 0.13
-Nodes (16): @tanstack/react-virtual, TimelineEvent, DetailDrawerProps, RendererRegistry, Props, State, TimelineErrorBoundary, TimelineList() (+8 more)
+Cohesion: 0.07
+Nodes (28): Dead / duplicate / orphaned architecture, Appendix A — Audit Discrepancies, @tanstack/react-virtual, getTimelineEvents, dbTransaction(), timelineService, uid(), TimelineCursor (+20 more)
 
 ### Community 104 - "akira-store.ts"
-Cohesion: 0.08
-Nodes (17): 8. Orchestration Map, emit(), listeners, pendingPersistence, pendingPersistenceCount(), pendingUpdaters, set(), settlePendingPersistence() (+9 more)
+Cohesion: 0.07
+Nodes (19): 8. Orchestration Map, 13.1 Lifecycle table, persistEndSession, persistStartSession, persistUpdateActiveTask, sessionsService, emit(), listeners (+11 more)
+
+### Community 105 - "Phase 3A Implementation Proposal: Capability Foundation & Vertical Slice"
+Cohesion: 0.11
+Nodes (19): 10. Tests Required, 11. Architectural Invariants Being Exercised, 12. Rollback Strategy, 13. Unresolved Decisions (Open Questions Checklist), 14. Exact Acceptance Criteria, 1. Objective, 2. Current Implementation Seam, 3. Target Contract Mapping (+11 more)
 
 ### Community 106 - "Memory Policy"
 Cohesion: 0.13
@@ -848,9 +867,9 @@ Nodes (11): Active Memory, Historical Memory, Memory Candidate, Memory Reinforce
 Cohesion: 0.17
 Nodes (10): Closure Stage, The Brain, Continuity Window, Session Continuity, Continuity Confidence, Presence Confidence, Presence Context, Presence Engine (+2 more)
 
-### Community 108 - "TaskRepository"
-Cohesion: 0.13
-Nodes (6): InMemoryTaskRepository, TaskRepository, nextActionService, taskService, uid(), Task
+### Community 108 - "Task"
+Cohesion: 0.12
+Nodes (4): nextActionService, taskService, uid(), Task
 
 ### Community 109 - "9. K19 Correlation & Provenance Architecture"
 Cohesion: 0.50
@@ -860,9 +879,9 @@ Nodes (4): 9.1 The Correlation Rule, 9.2 Provenance Assignment Matrix, 9.3 Unifi
 Cohesion: 0.13
 Nodes (14): AnalyticsEngine, AnalyticsRepository, daily_metrics table, EventRepository.findBetween(), MetricCalculator contract, project_metrics table, ADR-012: Core Metrics Framework, AnalyticsService facade (+6 more)
 
-### Community 112 - "command.tsx"
-Cohesion: 0.17
-Nodes (11): cmdk, @radix-ui/react-dialog, Command, CommandDialog(), CommandEmpty, CommandGroup, CommandInput, CommandItem (+3 more)
+### Community 112 - "sidebar.tsx"
+Cohesion: 0.06
+Nodes (44): @radix-ui/react-dialog, @radix-ui/react-separator, @radix-ui/react-tooltip, Input, Separator, SheetContent, SheetContentProps, SheetDescription (+36 more)
 
 ### Community 113 - "IdentityEvidence"
 Cohesion: 0.12
@@ -888,24 +907,24 @@ Nodes (14): GEN-013 Boot-Order Race Against Un-Hydrated Reality, GEN-014 Bootstr
 Cohesion: 0.13
 Nodes (11): Memory Lifecycle, Story Model, Contextual Recall, Memory Importance Engine, Passive Recall, Recall Signals, Retrieval and Recall Engine, Adaptive Memory Engine (+3 more)
 
-### Community 120 - "Phase A — Build Recovery"
-Cohesion: 0.09
-Nodes (18): P0 Production Build Failure, Phase A — Baseline (pre-repair), Phase A — Build Recovery, Stage 1B — Clean Installation Verification, E1 — Clean Clone of Committed HEAD, E2 — Clean Copy of the Recovered Working Tree, F1 — Clean Clone of main Does Not Build, Undeclared Toolchain Expectations (+10 more)
+### Community 120 - "Stage 1B — Diagnostics Subsystem Investigation"
+Cohesion: 0.24
+Nodes (8): Stage 1B — Diagnostics Baseline, Stage 1B — Diagnostics Subsystem Investigation, DiagnosticsService Name Collision, Stale Reference vs Incomplete Implementation Classification, Subsystem A — Runtime Diagnostics (src/diagnostics/), Subsystem B — Observability Diagnostics, Subsystem C — Analytics Diagnostics, Stage 1B — Summary
 
-### Community 121 - ".read"
-Cohesion: 0.11
-Nodes (19): 16. Correlation and Traceability (K19), 7.1 What may be asked of GENESIS, 7.2 Interaction, 7.3 What GENESIS sends and receives, 7. GENESIS Contract (K11), 1. Audit Scope, 2. Verdict, 3. Summary (+11 more)
+### Community 121 - "class-variance-authority"
+Cohesion: 0.14
+Nodes (15): class-variance-authority, @radix-ui/react-toggle, @radix-ui/react-toggle-group, Alert, AlertDescription, AlertTitle, alertVariants, Badge() (+7 more)
 
 ### Community 122 - "verify-observability-reachability.ts"
 Cohesion: 0.09
 Nodes (21): files, FORMATTABLE, insideProject(), payload, PRETTIER_BIN, res, ROOT, abort() (+13 more)
 
-### Community 123 - "tools/registry.ts"
-Cohesion: 0.35
-Nodes (7): getEnabledTools(), getTools(), getToolsByCategory(), getVisibleTools(), Tool, toolsRegistry, getDevVisibleTools()
+### Community 123 - "tools.index.tsx"
+Cohesion: 0.23
+Nodes (11): getEnabledTools(), getTools(), getToolsByCategory(), getVisibleTools(), Tool, toolsRegistry, getDevVisibleTools(), CATEGORIES (+3 more)
 
 ### Community 124 - "vault.test.ts"
-Cohesion: 0.10
+Cohesion: 0.11
 Nodes (28): getRawFileBase64Rpc, persistCreateFolder, persistDeleteFile, persistDeleteFolder, persistLinkTagToFile, persistMoveFile, persistMoveFolder, persistPermanentDeleteFile (+20 more)
 
 ### Community 125 - "Phase 3C Implementation Proposal: First Command Capability & Rule N1 Vertical Slice"
@@ -917,16 +936,16 @@ Cohesion: 0.12
 Nodes (4): identityPersonalityService, uid(), IdentityPersonality, PersonalityTrait
 
 ### Community 127 - "AKIRA — VAJRA Phase 3: Durable Operational State Architecture & Implementation Design"
-Cohesion: 0.13
-Nodes (14): 13. Audit Trace Semantics & Operational Lifecycle, 15. Failure Semantics & Fail-Safe Invariants, 16. Repository / Service Boundary Architecture, 17. Updated File-Level Implementation Plan, 19. Architectural Risks & Tradeoffs, 1. Executive Summary, 20. Explicit Unresolved Decisions, 21. Implementation Sequence (Upon Future Approval) (+6 more)
+Cohesion: 0.07
+Nodes (27): 10.1 Key Synthesis, 10.2 Responsibility Division, 10. Idempotency Contract, 13. Audit Trace Semantics & Operational Lifecycle, 14.1 Lifecycle States, 14.2 Persistence Across Process Restarts, 14. Human Approval Persistence, 15. Failure Semantics & Fail-Safe Invariants (+19 more)
 
 ### Community 128 - ".events"
-Cohesion: 0.09
-Nodes (20): 14. What Must NOT Be Fixed Before MCP, 5.2 Component analysis, 5. Runtime Disposition, 12.1 Three roles, 12.2 Target persistence map, 12. Persistence Ownership, 9.2 Distinctions that must not blur (TARGET), 9.3 Scope of the primitives (+12 more)
+Cohesion: 0.05
+Nodes (38): 12. Final Disposition Table, 14. What Must NOT Be Fixed Before MCP, 5.2 Component analysis, 5. Runtime Disposition, 16. Correlation and Traceability (K19), 1. Audit Scope, 2. Verdict, 3. Summary (+30 more)
 
-### Community 129 - "BlockerRepository"
-Cohesion: 0.13
-Nodes (4): BlockerRepository, InMemoryBlockerRepository, blockerAnalysisService, Blocker
+### Community 129 - "Blocker"
+Cohesion: 0.18
+Nodes (3): InMemoryBlockerRepository, uid(), Blocker
 
 ### Community 130 - "genesis-reviewer Subagent"
 Cohesion: 0.25
@@ -941,8 +960,8 @@ Cohesion: 0.17
 Nodes (14): GEN-012 Planning Subsystem Does Not Typecheck, REL-001 Application Cannot Start And No Gate Caught It, TST-001 No Automated Quality Gate Of Any Kind, TST-003 Largest GENESIS Suite Executes Zero Tests, TST-009 Coverage Tooling Installed And Unreachable, GENESIS Barrel Import Graph Cost, QUA-001 Lint Gate Detects Nothing But Formatting, QUA-007 371 Uses Of any At The System Seams (+6 more)
 
 ### Community 133 - "context-resolution/service.ts"
-Cohesion: 0.14
-Nodes (14): subscribeToPresence(), buildResolvedContext(), BASELINE_CONFIDENCE_THRESHOLD, ContextResolutionCallback, ContextResolutionEvent, contextResolutionEvents, ContextResolutionEventType, listeners (+6 more)
+Cohesion: 0.09
+Nodes (31): PresenceContext, subscribeToPresence(), buildResolvedContext(), BASELINE_CONFIDENCE_THRESHOLD, ContextResolutionCallback, ContextResolutionEvent, contextResolutionEvents, ContextResolutionEventType (+23 more)
 
 ### Community 134 - "devDependencies"
 Cohesion: 0.10
@@ -953,24 +972,24 @@ Cohesion: 0.12
 Nodes (16): 10. Test Matrix Breakdown, 11. What Phase 3 Did NOT Do (Blast Door Invariants Preserved), 12. Final Status & Readiness, 1. Migration 003 Definitive Metric Inventory, 2. Schema-Version Migration Protocol, 3.2 Pure Mappers in `src/persistence/vajra/mappers.ts`, 3. Domain Models & Mappers, 4. SqliteOperationalStateStore Adapter (+8 more)
 
 ### Community 136 - "AKIRA — Engineering Handoff & Architecture Baseline"
-Cohesion: 0.09
-Nodes (21): 10. Recommended Phase 3 Starting Point, 11. Evidence & Tests Supporting the Current State, 12. WHAT I WOULD NOT TOUCH, 1. Executive Summary, 2.1 Application & Runtime Topology, 2. Current System Understanding, 3. Major Work Already Completed, 6.1 Subsystem Ownership & Boundaries (+13 more)
+Cohesion: 0.12
+Nodes (16): 10. Recommended Phase 3 Starting Point, 11. Evidence & Tests Supporting the Current State, 12. WHAT I WOULD NOT TOUCH, 1. Executive Summary, 3. Major Work Already Completed, 6.1 Subsystem Ownership & Boundaries, 6.2 The Five Core Communication Primitives, 6.3 Decided Boundary Rules: N1, N2, and N3 (+8 more)
 
 ### Community 137 - "AKIRA Foundation Contracts"
-Cohesion: 0.05
-Nodes (42): 10. AKIRA OS Contract (K14), 11. Ownership Matrix, 12. Persistence Contract (K15), 13. Lifecycle Contract (K16), 14. Authority Contract (K17), 15. Failure Contract (K18), 17. Interaction Semantics (K20), 18. MCP Boundary (K21) (+34 more)
+Cohesion: 0.07
+Nodes (28): 10. AKIRA OS Contract (K14), 11. Ownership Matrix, 12. Persistence Contract (K15), 13. Lifecycle Contract (K16), 14. Authority Contract (K17), 15. Failure Contract (K18), 17. Interaction Semantics (K20), 18. MCP Boundary (K21) (+20 more)
 
 ### Community 138 - "form.tsx"
-Cohesion: 0.18
-Nodes (14): @radix-ui/react-label, react-hook-form, FormControl, FormDescription, FormFieldContext, FormFieldContextValue, FormItem, FormItemContext (+6 more)
+Cohesion: 0.10
+Nodes (22): @radix-ui/react-label, @radix-ui/react-slot, react-hook-form, Breadcrumb, BreadcrumbEllipsis(), BreadcrumbItem, BreadcrumbLink, BreadcrumbList (+14 more)
 
-### Community 139 - "insight-engine.ts"
+### Community 139 - "SqliteTaskRepository"
+Cohesion: 0.22
+Nodes (3): TaskRepository, SqliteTaskRepository, Task
+
+### Community 140 - "brain.tsx"
 Cohesion: 0.12
-Nodes (20): getInsightContext(), arraysEqual(), buildInsightGraph(), insightEngine, InsightListener, insights, listeners, notifyListeners() (+12 more)
-
-### Community 140 - "genesis/index.ts"
-Cohesion: 0.04
-Nodes (53): CandidateReason, MemoryCandidate, CandidateRule, rules, candidateHistory, CandidateListener, candidateService, listeners (+45 more)
+Nodes (8): listeners, LogEntry, logger, logHistory, LogLevel, LogListener, BrainInspectorPage(), linkedMemoryList()
 
 ### Community 141 - "RendererRegistry.ts"
 Cohesion: 0.20
@@ -1004,17 +1023,17 @@ Nodes (10): ModuleContext dependency injection, ModuleInstance, RuntimeManager, 
 Cohesion: 0.14
 Nodes (4): main(), package_skill(), should_exclude(), validate_skill()
 
-### Community 149 - "Healthy systems explicitly verified"
-Cohesion: 0.08
-Nodes (22): Healthy systems explicitly verified, Scan coverage, 3. Real-Repository Scenario Results, Assertion Outcomes (Scenario 1), Assertion Outcomes (Scenario 2), Assertion Outcomes (Scenario 3), Assertion Outcomes (Scenario 4), Assertion Outcomes (Scenario 5) (+14 more)
+### Community 149 - "3. Real-Repository Scenario Results"
+Cohesion: 0.12
+Nodes (16): 3. Real-Repository Scenario Results, Assertion Outcomes (Scenario 1), Assertion Outcomes (Scenario 2), Assertion Outcomes (Scenario 4), Assertion Outcomes (Scenario 5), Assertion Outcomes (Scenario 6), Comparative Analysis, Comparative Analysis (+8 more)
 
 ### Community 150 - "Note"
-Cohesion: 0.22
-Nodes (4): NoteRepository, NoteRow, SqliteNoteRepository, Note
+Cohesion: 0.26
+Nodes (3): NoteRepository, SqliteNoteRepository, Note
 
 ### Community 151 - "3.2 Target capabilities"
-Cohesion: 0.20
-Nodes (10): 3.1 Responsibility, 3.2 Target capabilities, 3. GENESIS Target Boundary, Cognitive Context, Identity System, Insights, Memory System, Recall (+2 more)
+Cohesion: 0.22
+Nodes (9): 3.1 Responsibility, 3.2 Target capabilities, 3. GENESIS Target Boundary, Cognitive Context, Identity System, Insights, Memory System, Reflection (+1 more)
 
 ### Community 152 - "CLAUDE.md Governance Router"
 Cohesion: 0.18
@@ -1040,9 +1059,13 @@ Nodes (11): ContextAssemblyResult, ContextAssemblyService, ScoredContextCollecti
 Cohesion: 0.12
 Nodes (16): Field Descriptions, Grader Agent, Grading Criteria, Guidelines, Inputs, Output Format, Process, Role (+8 more)
 
+### Community 158 - "Phase A — Build Recovery"
+Cohesion: 0.16
+Nodes (10): Phase A — Build Recovery, Five-Phase Event Migration Proposal, Phase B — Event Architecture Reconciliation, The Three Severance Points, CF-5 — No Boundary Violation in Any Diagnostics Implementation, CF-7 — events Table Is Not Part of the Initialised Schema, AKIRA Architecture Constitution, AKIRA OS Pillar (Reality) (+2 more)
+
 ### Community 159 - "SqliteProjectRepository"
-Cohesion: 0.08
-Nodes (23): 10. Tests Required, 11. Architectural Invariants Being Exercised, 12. Rollback Strategy, 13. Unresolved Decisions (Open Questions Checklist), 14. Exact Acceptance Criteria, 1. Objective, 2. Current Implementation Seam, 3. Target Contract Mapping (+15 more)
+Cohesion: 0.19
+Nodes (4): ProjectRepository, ProjectRow, SqliteProjectRepository, Project
 
 ### Community 160 - "SqliteSettingsRepository.ts"
 Cohesion: 0.24
@@ -1068,9 +1091,9 @@ Nodes (10): Provider Registration Lifecycle, LifecycleManager, Module State Mach
 Cohesion: 0.20
 Nodes (7): Cycle Detection (Temporary/Permanent Marks), DependencyNode, Dependency Resolver, Module Manifest System, Platform Module Runtime, AKIRA Platform SDK, Shared Components (Joint Ownership)
 
-### Community 167 - "SqliteSessionRepository"
-Cohesion: 0.16
-Nodes (11): C6-03 — Session history retention (decision: preserve 30 days), C6-04 — Boot-fabricated habit — fixed `f26e50b`, Fixed, Found while implementing, HARDENING — Chat 6, Held, Model, Probes (+3 more)
+### Community 167 - "chat6_findings.md"
+Cohesion: 0.20
+Nodes (9): C6-03 — Session history retention (decision: preserve 30 days), C6-04 — Boot-fabricated habit — fixed `f26e50b`, Fixed, Found while implementing, HARDENING — Chat 6, Held, Model, Probes (+1 more)
 
 ### Community 168 - "chart.tsx"
 Cohesion: 0.24
@@ -1089,8 +1112,8 @@ Cohesion: 0.27
 Nodes (10): declarationsInSource(), publishedConstants(), publishedLiterals(), publishedValues(), PUBLISHER_FILES, read(), REGISTRY, REPO_ROOT (+2 more)
 
 ### Community 172 - "RealityAdapter"
-Cohesion: 0.08
-Nodes (20): Event Pipeline Remediation Design, Idempotency Keyed on AkiraEvent.id, RealityAdapter, RealityAdapterMetrics, AkiraEvent Envelope, AnalyticsSubscriber (never registered), Event Store, GENESIS MemoryEvent Stream (eventService) (+12 more)
+Cohesion: 0.24
+Nodes (8): Idempotency Keyed on AkiraEvent.id, RealityAdapter, RealityAdapterMetrics, AkiraEvent Envelope, Event Store, GENESIS MemoryEvent Stream (eventService), MemoryEvent, PersistenceSubscriber
 
 ### Community 173 - "/pre-pr Skill"
 Cohesion: 0.27
@@ -1144,9 +1167,9 @@ Nodes (6): Decision, DecisionCollection, DecisionEngine, DecisionStrategy (Inter
 Cohesion: 0.14
 Nodes (13): 10. Summary, 1. Verdict, 2. Checks Requested, 3. Recent Changes Verified, 4. §22.3 Held-Open Items vs N1–N3, 5. GENESIS Command-Freedom (N3), 6. N2 Scope (Tier 2, Rule N2), 7. Ownership Matrix vs Contracts (+5 more)
 
-### Community 188 - "timelineService"
-Cohesion: 0.16
-Nodes (11): AKIRA Deep Scan — Chat 3 Findings, Dead / duplicate / orphaned architecture, Final inventory, Scan coverage, Stale or weak tests and validators, Suspected bugs requiring later investigation, Timeline development seeding may reach a packaged desktop build, Appendix A — Audit Discrepancies (+3 more)
+### Community 188 - "Healthy systems explicitly verified"
+Cohesion: 0.14
+Nodes (13): 1. Task reordering is silently discarded, AKIRA Deep Scan — Chat 3 Findings, Confirmed bugs, Final inventory, Healthy systems explicitly verified, Scan coverage, Stale or weak tests and validators, Suspected bugs requiring later investigation (+5 more)
 
 ### Community 189 - "SqliteTimelineRepository"
 Cohesion: 0.22
@@ -1190,7 +1213,7 @@ Nodes (16): DAT-001 Fire-And-Forget Database Writes, DAT-009 RPC Id Passthrough 
 
 ### Community 199 - "Observation"
 Cohesion: 0.04
-Nodes (96): **Proposed Code Artifacts**, Required Tests, 13. Missing Contracts, 14. Recommended Smallest Implementation Slice (Phase 3E Next Step), 2. Mission Definition Precisely, 5. Mission Lifecycle, Recommendation: Pure Mission & Mission Step Contract Slice, The Primary Finding of Phase 3E (+88 more)
+Nodes (86): **Proposed Code Artifacts**, Required Tests, 10. O1–O12 Decision Audit, 12. Architectural Risks, 13. Missing Contracts, 14. Recommended Smallest Implementation Slice (Phase 3E Next Step), 15. Explicit Non-Goals, 16. Human Decisions Required (+78 more)
 
 ### Community 200 - "akira-sdk.test.ts"
 Cohesion: 0.17
@@ -1232,9 +1255,9 @@ Nodes (8): PermissionCatalog, PermissionDeniedError, PermissionNotFoundError, Pe
 Cohesion: 0.17
 Nodes (12): 10. Decision Status, 1. Question, 2. Relevant Existing Decisions, 3. Model A — Direct Single-Owner Commands, 4. Model B — All Commands Through VAJRA, 5. Comparison, 6. Proposed Resolution, 7. Boundary Conditions (+4 more)
 
-### Community 210 - "SqliteTimelineRepository.ts"
-Cohesion: 0.18
-Nodes (7): getTimelineEvents, TimelineCursor, TimelineQueryRequest, TimelineQueryResult, TimelineRepository, fallbackQueue, TimelineEventRow
+### Community 210 - "Thumbnail.tsx"
+Cohesion: 0.20
+Nodes (10): getRawFileBase64(), FileGrid(), FileGridProps, FileList(), FileListProps, PreviewPanel(), PreviewPanelProps, Thumbnail() (+2 more)
 
 ### Community 211 - "AKIRA N2 Decision: Non-VAJRA Requests and Tier-2 Activation"
 Cohesion: 0.17
@@ -1256,13 +1279,13 @@ Nodes (5): Audit Event Flow, AuditCryptoManager, AuditFacade, AuditLogger (HMAC-
 Cohesion: 0.33
 Nodes (3): Dependency Rules Matrix, src/observability Package Tree, Telemetry Access Control Matrix
 
-### Community 217 - "VAJRA PHASE 5 — DECISION ARBITER"
-Cohesion: 0.29
-Nodes (6): 1. Executive Summary, 2.2 Test Architecture, 2. Implemented Components, 4. Verification Gates Report, COMPLETION & VERIFICATION REPORT, VAJRA PHASE 5 — DECISION ARBITER
+### Community 217 - "Data Protection Philosophy"
+Cohesion: 0.16
+Nodes (5): VaultHashService, Vault Security and Data Integrity Recovery, VaultValidationService, Dangling Reference Integrity and Export Safety, Data Protection Philosophy
 
 ### Community 218 - "AKIRA Target Architecture"
-Cohesion: 0.05
-Nodes (44): 10.1 Responsibility, 10.2 Planes and contents (TARGET), 10.3 Model transport, 10.4 The store, 10. AKIRA OS, 11. HANDS, 14.1 The facts that constrain the decision, 14.2 Options (+36 more)
+Cohesion: 0.04
+Nodes (48): 10.1 Responsibility, 10.2 Planes and contents (TARGET), 10.3 Model transport, 10.4 The store, 10. AKIRA OS, 11. HANDS, 14.1 The facts that constrain the decision, 14.2 Options (+40 more)
 
 ### Community 219 - "20.2 Still OPEN"
 Cohesion: 0.12
@@ -1296,10 +1319,6 @@ Nodes (4): ADR-005: Container Layout, Fit Mode, Shell layoutMode prop, Scroll Mo
 Cohesion: 0.50
 Nodes (3): EventBusObserver, HealthRegistry, PerformanceMonitor
 
-### Community 229 - "@tanstack/react-start"
-Cohesion: 0.11
-Nodes (17): @tanstack/react-start, AddNoteInput, persistAddNote, persistDeleteNote, persistUpdateNote, AddNoteInput, notesService, persistAddProject (+9 more)
-
 ### Community 230 - "IdentitySkill"
 Cohesion: 0.12
 Nodes (4): identitySkillService, uid(), IdentitySkill, SkillCategory
@@ -1309,8 +1328,8 @@ Cohesion: 0.50
 Nodes (4): getIdentityHealth, IdentityProfile, identityService (identityFoundationService), validateIdentity
 
 ### Community 232 - "sdk-context.ts"
-Cohesion: 0.12
-Nodes (10): AnalyticsService, EventBus, MemoryService, NotificationService, PermissionManager, SearchService, StorageService, TimelineService (+2 more)
+Cohesion: 0.15
+Nodes (9): AnalyticsService, EventBus, MemoryService, NotificationService, PermissionManager, SearchService, StorageService, TimelineService (+1 more)
 
 ### Community 235 - "Audit 02: Architectural Boundary Audit"
 Cohesion: 0.67
@@ -1320,9 +1339,9 @@ Nodes (3): Measured Cross-Directory Import Directions, Audit 02: Architectural B
 Cohesion: 1.00
 Nodes (3): DEP-005: SDK erases all error information, DEP-006: The SDK has no type contracts, Platform SDK Assessment
 
-### Community 237 - "session-history-retention.test.ts"
-Cohesion: 0.31
-Nodes (7): outcomes(), deletedAtT0(), project(), reloadView(), restart(), session(), T0
+### Community 237 - "akira-store"
+Cohesion: 0.15
+Nodes (10): Event Pipeline Remediation Design, Event Middleware Pipeline, Instrumentation Publisher and Client-Server Split, serializationValidator, VaultStorageService, akira-store, Brain Inspector and Debugger (/brain), Error Boundaries and Resilience (+2 more)
 
 ### Community 238 - "verify_boundaries.py"
 Cohesion: 0.31
@@ -1337,8 +1356,8 @@ Cohesion: 0.12
 Nodes (4): identityValueService, uid(), IdentityValue, ValueCategory
 
 ### Community 246 - "AKIRA Architecture Disposition"
-Cohesion: 0.06
-Nodes (47): Healthy infrastructure verified, Healthy paths explicitly proven, 10. Future Canonical Concepts, 11.1 Principles (PROPOSAL), 11.2 Candidate capability surface, 11.3 Must NEVER be exposed directly through MCP, 11.4 Server-function inventory (FACT, 47), 11. MCP Boundary Candidates (+39 more)
+Cohesion: 0.05
+Nodes (43): Healthy paths explicitly proven, 10. Future Canonical Concepts, 11.3 Must NEVER be exposed directly through MCP, 13. What Must Be Fixed Before MCP, 15. Recommended Migration Order, 16. Phase 0 Exit Criteria, 1. Purpose, 2.1 Runtime topology (FACT) (+35 more)
 
 ### Community 247 - "vault-security.test.ts"
 Cohesion: 0.38
@@ -1348,21 +1367,17 @@ Nodes (5): readableContent(), removeContents(), reset(), storagePathOf(), vaultR
 Cohesion: 0.20
 Nodes (10): AKIRA Deep Scan — Chat 6: Production-Readiness Verification, C6-01 — Deleting a project during a running session wedges session persistence (P0, data loss), C6-02 — Companion State never retracts a present-tense claim (P1, fabrication), C6-03 — A deleted project's past sessions: kept in the store, cascaded away on disk (P2, loss on restart), C6-04 — Every boot fabricates one habit; no real habit survives restart (P3), Closed since Chats 3–5, Confirmed failures, Healthy, re-confirmed (+2 more)
 
-### Community 254 - "session-outcomes.ts"
-Cohesion: 0.14
-Nodes (14): HasEvidence, HasId, HasTimestamp, selectSessionOutcomes(), SessionOutcomes, SessionWindow, within(), eventInMarch (+6 more)
-
-### Community 263 - "WorkspaceProvider"
-Cohesion: 0.22
-Nodes (7): Data Flow, Layers, Primary Request Path (Workspace Mutation):, Secondary Flow (GENESIS Cognitive Context Recall & AI Streaming):, Naming Patterns, Naming Conventions, WorkspaceProvider
+### Community 254 - "sessions.tsx"
+Cohesion: 0.12
+Nodes (16): HasEvidence, HasId, HasTimestamp, selectSessionOutcomes(), SessionOutcomes, SessionWindow, within(), Route (+8 more)
 
 ### Community 264 - "Stage 2 Real AKIRA Repository Behavioral Evaluation Report"
 Cohesion: 0.20
 Nodes (9): 1. Pre-Flight Repository Integrity & Isolation Verification, 2. Methodology & Comparison Setup, 4. Summary Table of Stage 2 Real-Repository Results, 5. Architectural Verification Check, 6. Final Evaluation Verdict & Classification, **A. READY FOR AKIRA IMPLEMENTATION**, Evidence Summary, Final Skill Classification: (+1 more)
 
-### Community 265 - "events/event-service.ts"
+### Community 265 - "AkiraState"
 Cohesion: 0.03
-Nodes (27): callbacks, EventCallback, PersistHandler, seed(), AkiraState, CONVERSATION, declEvents(), stream() (+19 more)
+Nodes (30): importanceCache, ImportanceListener, listeners, seed(), AkiraState, CONVERSATION, declEvents(), stream() (+22 more)
 
 ### Community 266 - "Coding Conventions"
 Cohesion: 0.22
@@ -1377,16 +1392,16 @@ Cohesion: 0.33
 Nodes (3): ProjectRecord, ProjectRepository, sqliteProjectRepository
 
 ### Community 270 - "store-types.ts"
-Cohesion: 0.06
-Nodes (36): persistSaveConversations, querySearchMessages, searchRecallViaCapability(), conversationsService, historicalRecall, persistDeleteSetting, persistGetSetting, persistSetSetting (+28 more)
+Cohesion: 0.05
+Nodes (43): @tanstack/react-start, persistSaveConversations, querySearchMessages, searchRecallViaCapability(), conversationsService, historicalRecall, AddNoteInput, persistAddNote (+35 more)
 
 ### Community 272 - "PART X: SCENARIO VERIFICATION WALKTHROUGHS"
 Cohesion: 0.11
 Nodes (18): PART X: SCENARIO VERIFICATION WALKTHROUGHS, Scenario 10: VAJRA restarts after a crash, Scenario 11: The underlying LLM provider is replaced (Gemini $\to$ Claude), Scenario 12: VAJRA needs information from GENESIS, Scenario 13: VAJRA needs information from AKIRA OS, Scenario 14: VAJRA wants to perform a low-risk autonomous action, Scenario 15: VAJRA encounters a high-impact irreversible action, Scenario 16: Two pieces of evidence contradict each other (+10 more)
 
 ### Community 274 - "sqlite-operational-state-store.ts"
-Cohesion: 0.03
-Nodes (61): 3.1 Domain Types in `src/vajra/types/`, 22. Explicit Phase 3 Exit Criteria, 2.1 What Phase 3 Delivers, AllocatedBudgetSchema, BeliefRow, DeliberationTraceRow, EscalationRow, mapBeliefToRow() (+53 more)
+Cohesion: 0.05
+Nodes (55): 3.1 Domain Types in `src/vajra/types/`, 22. Explicit Phase 3 Exit Criteria, 2.1 What Phase 3 Delivers, 13.1 Authoritative Epistemic Belief Reconciliation (`vajra_beliefs`), 13. Epistemic Beliefs & GENESIS Memory Boundary, 1. Repository Contract Archaeology & Invariants, 2. Epistemic Authority & Ownership Boundaries, 3.5 SQLite Operational State Schema (Phase 3 Baseline) (+47 more)
 
 ### Community 275 - "COMPLETION & VERIFICATION REPORT"
 Cohesion: 0.12
@@ -1400,45 +1415,41 @@ Nodes (3): runEventStoreMigration(), CREATE_EVENTS_TABLE, CREATE_INDEXES
 Cohesion: 0.14
 Nodes (13): 1. Executive Summary, 2. Implemented Architecture & Artifacts, 3. Mandatory Revision 1 Invariants Verification, 4.1 TypeScript Compiler Verification, 4.2 VAJRA Brain Test Suite, 4.3 Architecture Validation Suite, 4.4 Full Repository Test Suite, 4.5 Production Build Verification (+5 more)
 
+### Community 281 - "Severance S4 — Dead Story and Importance Builders"
+Cohesion: 0.18
+Nodes (9): initializeGenesis Explicit Registration, Reachability Test Class, Context Builder (Sprint 9), Memory Importance Engine (Sprint 7), Recall and Retrieval Engine (Sprint 8), Confidence Engine, IdentityEvidence, Personality Engine (+1 more)
+
 ### Community 283 - "scripts"
 Cohesion: 0.17
 Nodes (12): scripts, build, build:dev, dev, format, lint, preview, test (+4 more)
 
 ### Community 284 - "IModuleInstance"
-Cohesion: 0.09
-Nodes (8): LifecycleManager, ContinueOnFailurePolicy, FailFastPolicy, LifecyclePolicy, StrictPolicy, IRuntimeManager, IModuleInstance, ADR-019: Centralized Lifecycle Manager
+Cohesion: 0.07
+Nodes (16): LifecycleManager, ContinueOnFailurePolicy, FailFastPolicy, LifecyclePolicy, StrictPolicy, IRuntimeManager, IModuleInstance, ModuleState (+8 more)
 
-### Community 286 - "readiness.test.ts"
-Cohesion: 0.11
-Nodes (30): 2.1 Runtime topology (FACT), 2.2 Snapshot facts, 2.3 Size (FACT), 2. Current Architecture Snapshot, consumeLastCapturedError(), renderErrorPage(), fetch(), getServerEntry() (+22 more)
+### Community 286 - "vajra/composition.ts"
+Cohesion: 0.10
+Nodes (38): consumeLastCapturedError(), shutdownObservability(), fetch(), ApplicationReadiness, ensureServerStarted(), getApplicationReadiness(), getOperationalVajraController(), initializeServer() (+30 more)
 
 ### Community 287 - "Phase 3D — VAJRA Readiness & Orchestration Boundary Analysis"
 Cohesion: 0.11
 Nodes (17): 10. Explicit Recommendation: Should VAJRA Implementation Begin After Phase 3D?, 1. Executive Summary, 2. Current → Target Mapping, 3. VAJRA Responsibility Matrix, 5. Defensive Guardrails: Preventing VAJRA Anti-Patterns, 6. Recommended Smallest Implementation Slice (Phase 3D), 7. Expected File Changes & Protected Components, 8. Required Tests & Acceptance Criteria (+9 more)
 
-### Community 288 - "External Integrations"
-Cohesion: 0.25
-Nodes (7): APIs & External Services, Authentication & Identity, CI/CD & Deployment, Environment Configuration, External Integrations, Monitoring & Observability, Webhooks & Callbacks
-
-### Community 289 - "RuntimeManager"
-Cohesion: 0.17
-Nodes (5): ModuleInstance, RuntimeManager, ADR-016: Platform Runtime Module Core, ADR-017: Module Manifest System, ADR-018: Dependency Resolution Engine
+### Community 288 - "tasks"
+Cohesion: 0.12
+Nodes (15): Executive Summary & Objective Realization, 2.2 Explicit Phase 3 Blast Doors (What Phase 3 Will NOT Do), 2. Phase 3 Scope & Boundaries, Architectural Constraints, APIs & External Services, Authentication & Identity, CI/CD & Deployment, Data Storage (+7 more)
 
 ### Community 290 - "AKIRA — PHASE 0 BASELINE FREEZE & PROTECTION SPECIFICATION"
 Cohesion: 0.18
 Nodes (10): 1. Baseline Metadata & Metrics, 2. Protected Foundation Inventory (INVIOLABLE), 3. Exact Files Targeted for Phase 1 Archival, 4. Exact Files Being Preserved / Adapted in Later Phases, 5. Expected Test Changes Caused Only by Legacy Archival, A. Legacy Platform Runtime (`src/runtime/` — 30 files), AKIRA — PHASE 0 BASELINE FREEZE & PROTECTION SPECIFICATION, B. Legacy Plugin SDK (`src/sdk/` — 13 files) (+2 more)
 
-### Community 291 - "provider-manager.ts"
-Cohesion: 0.29
-Nodes (5): applyUnedited(), ProviderMetrics, ProviderStatus, freshManager(), store
-
-### Community 292 - "Severance S4 — Dead Story and Importance Builders"
-Cohesion: 0.07
-Nodes (26): initializeGenesis Explicit Registration, Reachability Test Class, Candidate Rule Engine, AKIRA Changelog, Keep a Changelog, Semantic Versioning, v2.0.0-architecture Release, AKIRA Engineering Report: Adaptive Memory Engine Sprints (+18 more)
+### Community 292 - "Identity Graph"
+Cohesion: 0.18
+Nodes (11): Identity Engine (Sprint 6), Memory Relationship Engine (Sprint 4), Memory Validation Engine (Sprint 3), Story Engine (Sprint 5), Evidence Engine, Evolution Engine, IdentityEdge, Identity Graph (+3 more)
 
 ### Community 293 - "AKIRA Tier-2 Activation Clarification"
-Cohesion: 0.11
-Nodes (18): 15.1 Placement (DECISION), 15.2 MCP and VAJRA (DECISION), 15.3 MCP v0 scope (DECISION), 15. MCP Boundary, 7.1 The boundary, 7.2 Illustrative capabilities, 7.3 Relationship to existing registries, 7. Capability-Oriented Architecture (+10 more)
+Cohesion: 0.22
+Nodes (9): 1. Ambiguity, 3. Interpretation A — VAJRA is one valid requirement source, 4. Interpretation B — VAJRA is the exclusive Tier 2 trigger, 5. Determination, 6. Minimal Clarification, 7. Impact, 8. Preservation, AKIRA Tier-2 Activation Clarification (+1 more)
 
 ### Community 295 - "Codebase Concerns"
 Cohesion: 0.18
@@ -1449,7 +1460,7 @@ Cohesion: 0.18
 Nodes (10): Overview, Phase 1: Dynamic Analytics Dashboard, Phase 2: TITAN Background Processor, Phase 3: Migration Hub & Diagnostics, Phase 4: Voice Brain Dump Integration, Phase 5: VAJRA Executive Reasoning, Phase Details, Phases (+2 more)
 
 ### Community 297 - "sdk-errors.ts"
-Cohesion: 0.28
+Cohesion: 0.38
 Nodes (3): SDKError, SDKVersionMismatchError, UnsupportedFeatureError
 
 ### Community 298 - "VAJRA Phase 1 → Phase 2 Handoff Report"
@@ -1460,13 +1471,17 @@ Nodes (10): 1. Frozen Baseline, 2. Verification Baseline, 3. Repository State Af
 Cohesion: 0.22
 Nodes (9): 16. SAFE DISPOSITION PLAN, ARCHIVE (Historical / Inactive But Retained Temporarily), KEEP AS INFRASTRUCTURE (Supporting Services), KEEP (Definitely Preserve As-Is), MERGE (Duplicate or Overlapping), MOVE INTO VAJRA (Belongs Under VAJRA), REFACTOR (Useful Implementation Requiring Architectural Changes), REMOVE (Only When Confirmed by Architect) (+1 more)
 
+### Community 300 - "SDKContext"
+Cohesion: 0.22
+Nodes (3): SDKContext, PermissionAPI, TimelineAPI
+
 ### Community 301 - "Project State"
 Cohesion: 0.18
 Nodes (10): Accumulated Context, Blockers/Concerns, Current Position, Decisions, Deferred Items, Pending Todos, Performance Metrics, Project Reference (+2 more)
 
-### Community 302 - "planAnalysisService"
-Cohesion: 0.27
-Nodes (3): planAnalysisService, PlanAnalysisResult, PlanDiagnostics
+### Community 302 - "MilestoneRepository"
+Cohesion: 0.16
+Nodes (10): BlockerRepository, DependencyRepository, InMemoryTaskRepository, MilestoneRepository, PlanRepository, TaskRepository, dependencyService, planAnalysisService (+2 more)
 
 ### Community 303 - "PART VIII: CONTROLLED LEARNING & AUDITABILITY"
 Cohesion: 0.67
@@ -1484,17 +1499,17 @@ Nodes (8): 19. FINAL EXECUTIVE SUMMARY, Biggest Architectural Risk, Current Real
 Cohesion: 0.33
 Nodes (6): Nine Local GENESIS Subsystem Emitters, Event Contract Drift and Orphan Constants, Goal Engine (Companion Intelligence Sprint 3), Habit Intelligence (Companion Intelligence Sprint 6), Knowledge Engine (Companion Intelligence Sprint 4), Identity Event Flow
 
-### Community 380 - "10. Idempotency Contract"
-Cohesion: 0.67
-Nodes (3): 10.1 Key Synthesis, 10.2 Responsibility Division, 10. Idempotency Contract
+### Community 380 - "chat-declaration-promoter.ts"
+Cohesion: 0.29
+Nodes (8): chatDeclarationPromoter, onEvent(), Declaration, parseDeclaration(), SENTENCES, withoutSiteThree(), withSiteThree(), WRAPPERS
 
 ### Community 381 - "5.1 Definitive Schema Inventory"
 Cohesion: 0.20
 Nodes (10): 5.1 Definitive Schema Inventory, 5.2 Schema Totals Summary (Definitive Metric Inventory), 5. SQLite Schema Design & Reconciled Inventory, Table 1: `vajra_operational_state` (Singleton), Table 2: `vajra_missions`, Table 3: `vajra_mission_steps`, Table 4: `vajra_beliefs`, Table 5: `vajra_escalations` (+2 more)
 
 ### Community 382 - "diagnostics-service.ts"
-Cohesion: 0.06
-Nodes (23): TelemetryValidator, DiagnosticRegistry, DiagnosticsService, CategoryRegistrationError, DiagnosticRegistrationError, DiagnosticsValidationError, LoggerConfigurationError, LoggerValidationError (+15 more)
+Cohesion: 0.05
+Nodes (27): TelemetryValidator, DiagnosticRegistry, DiagnosticsService, CategoryRegistrationError, DiagnosticRegistrationError, DiagnosticsValidationError, LoggerConfigurationError, LoggerValidationError (+19 more)
 
 ### Community 384 - "check-module-boundaries.mjs"
 Cohesion: 0.22
@@ -1504,21 +1519,17 @@ Nodes (6): files, FORBIDDEN, payload, report, UI_SURFACE, violations
 Cohesion: 0.09
 Nodes (11): LifecycleError, LifecycleHookError, LifecycleTimeoutError, LifecycleTransitionError, RestartError, RollbackError, LifecycleEvents, LifecycleHooks (+3 more)
 
-### Community 386 - "11. Concurrency Model & Single Running Mission Policy"
-Cohesion: 0.67
-Nodes (3): 11.1 Concurrency Rules, 11.2 Single Running Mission Policy (Phase 3 Concurrency Simplification), 11. Concurrency Model & Single Running Mission Policy
+### Community 386 - "Instrumentation Event Bus (globalEventBus)"
+Cohesion: 0.22
+Nodes (7): AnalyticsSubscriber (never registered), Instrumentation Event Bus (globalEventBus), Legacy-to-Instrumentation Bridge, Legacy Event Bus (SimpleEventBus), TimelineSubscriber, Companion State Engine (Companion Intelligence Sprint 2), Presence Engine (Companion Intelligence Sprint 1)
 
-### Community 387 - "tasks"
-Cohesion: 0.20
-Nodes (10): 1. Task reordering is silently discarded, Confirmed bugs, 4. Important Fixes Already Made (Detailed Audit), Executive Summary & Objective Realization, 2.2 Explicit Phase 3 Blast Doors (What Phase 3 Will NOT Do), 2. Phase 3 Scope & Boundaries, Architectural Constraints, Data Storage (+2 more)
+### Community 387 - "HistoricalRecallProvider"
+Cohesion: 0.13
+Nodes (14): 4. Important Fixes Already Made (Detailed Audit), 5. Context Engines, 8.1 Dead & Unused Code (Candidates for Deletion PRs), 8.2 Temporary Bridging Code (Must Be Preserved Until Phase Completion), 8. Legacy and Temporary Areas, 7.1 The boundary, 7.2 Illustrative capabilities, 7.3 Relationship to existing registries (+6 more)
 
-### Community 388 - "Codebase Structure"
-Cohesion: 0.29
-Nodes (6): Codebase Structure, Directory Layout, Directory Purposes, Key File Locations, Special Directories, Where to Add New Code
-
-### Community 389 - "state/service.ts"
-Cohesion: 0.10
-Nodes (27): buildCompanionState(), AMBIGUITY_CONFIDENCE_RECOVERY, CONFLICTING_EVIDENCE_CONFIDENCE, INITIAL_SNAPSHOT_CONFIDENCE, INSUFFICIENT_CONTEXT_CONFIDENCE, TOPIC_SHIFT_CONFIDENCE_DECAY, VERIFIED_EVIDENCE_CONFIDENCE, WORKSPACE_MATCH_CONFIDENCE (+19 more)
+### Community 389 - "state/constants.ts"
+Cohesion: 0.25
+Nodes (7): AMBIGUITY_CONFIDENCE_RECOVERY, CONFLICTING_EVIDENCE_CONFIDENCE, INITIAL_SNAPSHOT_CONFIDENCE, INSUFFICIENT_CONTEXT_CONFIDENCE, TOPIC_SHIFT_CONFIDENCE_DECAY, VERIFIED_EVIDENCE_CONFIDENCE, WORKSPACE_MATCH_CONFIDENCE
 
 ### Community 391 - "6. Evidence Model & Taxonomy"
 Cohesion: 0.33
@@ -1605,8 +1616,8 @@ Cohesion: 0.67
 Nodes (3): 8.1 The Completion Gating Barrier, 8.2 Mission Result Construction, 8. Mission Completion Authority
 
 ### Community 413 - "vitest"
-Cohesion: 0.03
-Nodes (101): 4. Important Preserved Foundations, vite-tsconfig-paths, vitest, createCanonicalRegistry(), getCapabilityRegistry(), resetCapabilityRegistry(), projectListDescriptor, projectListHandler() (+93 more)
+Cohesion: 0.02
+Nodes (133): 4. Important Preserved Foundations, vite-tsconfig-paths, vitest, assert(), cleanupTestDb(), failures, realisticPayload, runTests() (+125 more)
 
 ### Community 414 - "Ingest Synthesis Summary"
 Cohesion: 0.29
@@ -1629,12 +1640,12 @@ Cohesion: 0.67
 Nodes (3): 17.1 Failure Classification, 17.2 Bounded Retry & Replay Rules (Anti-Loop Blast Doors), 17. Failure Handling & Bounded Retry
 
 ### Community 419 - "PermissionRequiredError"
-Cohesion: 0.23
-Nodes (4): PermissionRequiredError, EventAPI, TimelineAPI, 5.1 Reachability (FACT)
+Cohesion: 0.19
+Nodes (5): PermissionRequiredError, EventAPI, StorageAPI, 5.1 Reachability (FACT), 7. Communication Map
 
 ### Community 420 - "getDatabasePath"
-Cohesion: 0.11
-Nodes (14): F2 — Production Artefact Is Not Self-Hostable, CF-5 — No Boundary Violation in Any Diagnostics Implementation, CF-9 — A Fresh Install Writes to Live User Data by Default, Stage 1C — Summary, getDatabasePath, check_real_db.ts Resolver Bypass, Stage 1C Part B — Test Database Safety, AKIRA Architecture Constitution (+6 more)
+Cohesion: 0.29
+Nodes (5): CF-9 — A Fresh Install Writes to Live User Data by Default, Stage 1C — Summary, getDatabasePath, check_real_db.ts Resolver Bypass, Stage 1C Part B — Test Database Safety
 
 ### Community 421 - "16. Idempotency & Replay Safety Model"
 Cohesion: 0.33
@@ -1652,33 +1663,57 @@ Nodes (3): 6.1 Admission Gates, 6.2 Explicit Admission Outcome Contract, 6. Miss
 Cohesion: 0.25
 Nodes (7): Configuration, Frameworks, Key Dependencies, Languages, Platform Requirements, Runtime, Technology Stack
 
-### Community 426 - "IOperationalStateStore"
-Cohesion: 0.02
-Nodes (87): 18. Updated Test & Verification Strategy, Verification Gate Checklist (Post-Implementation):, 10.2 Capability-Aware Safe Fallback Semantics, 10. Adaptive Strategy Model & Capability-Aware Fallback, 11.1 Pure Reasoning Output Contract (`StrategyReasoningOutput`), 11. Strategy Capability Contracts, 12.1 The `IModelCoprocessorPort` Boundary, 12.2 Coprocessor Invariants: (+79 more)
+### Community 426 - "ExecutiveAction"
+Cohesion: 0.04
+Nodes (56): 21.1 Clean Contract Separation, 21. Phase 5 Decision-Arbiter Handoff Contract, 1. Executive Summary, 2.2 Test Architecture, 2. Implemented Components, 3. Invariant Verification Matrix, 4. Verification Gates Report, 5. Handoff to Phase 6 (Mission Runtime & Planning Engine) (+48 more)
 
 ### Community 427 - "Onboarding Summary"
 Cohesion: 0.33
 Nodes (5): Codebase Context, Docs Context, Onboarding Summary, Project State, Recommended Next Step
 
+### Community 434 - "navigation-menu.tsx"
+Cohesion: 0.28
+Nodes (8): @radix-ui/react-navigation-menu, NavigationMenu, NavigationMenuContent, NavigationMenuIndicator, NavigationMenuList, NavigationMenuTrigger, navigationMenuTriggerStyle, NavigationMenuViewport
+
 ### Community 435 - "Conflict Detection Report"
 Cohesion: 0.40
 Nodes (4): BLOCKERS (0), Conflict Detection Report, INFO (0), WARNINGS (0)
+
+### Community 436 - "relationships/constants.ts"
+Cohesion: 0.22
+Nodes (8): CONFIDENCE_PERSON_OBSERVED, CONFIDENCE_RELATIONSHIP_ARCHIVED, CONFIDENCE_RELATIONSHIP_EVOLVED, CONFIDENCE_RELATIONSHIP_IDENTIFIED, CONFIDENCE_RELATIONSHIP_REFINED, CONFIDENCE_RELATIONSHIP_UNDERSTOOD, CONFIDENCE_RELATIONSHIP_VERIFIED, INITIAL_RELATIONSHIP_SIGNIFICANCE
 
 ### Community 437 - "Synthesized Constraints"
 Cohesion: 0.50
 Nodes (3): AKIRA OS Observability Performance Specification, AKIRA OS Observability Security Specification, Synthesized Constraints
 
-### Community 449 - "7. Transaction Boundaries & The Two-Phase Dispatch Model"
-Cohesion: 0.50
-Nodes (4): 7.1 Golden Invariant: Zero External Execution in Transactions, 7.2 The Two-Phase Operational Dispatch Model, 7.3 Specific Transaction Boundaries, 7. Transaction Boundaries & The Two-Phase Dispatch Model
+### Community 438 - "AKIRA Changelog"
+Cohesion: 0.25
+Nodes (7): Candidate Rule Engine, AKIRA Changelog, Keep a Changelog, Semantic Versioning, v2.0.0-architecture Release, AKIRA Engineering Report: Adaptive Memory Engine Sprints, Memory Candidate Engine (Sprint 2)
 
-### Community 453 - "14. Human Approval Persistence"
-Cohesion: 0.67
-Nodes (3): 14.1 Lifecycle States, 14.2 Persistence Across Process Restarts, 14. Human Approval Persistence
+### Community 442 - "21. Contract Examples"
+Cohesion: 0.29
+Nodes (7): 21. Contract Examples, Example A: Cognitive Query, Example B: External execution and verification, Example C: Capability activation, Example D: MCP v0 read, Example E: A goal declaration becomes evidence, not a Goal, Example F: New Chat
 
-### Community 454 - "8. Crash Recovery Boundary"
-Cohesion: 0.67
-Nodes (3): 8.1 Strict Phase 3 Boundary Separation, 8.2 What Phase 3 Hydration Actually Executes, 8. Crash Recovery Boundary
+### Community 443 - "Stage 1B — Clean Installation Verification"
+Cohesion: 0.29
+Nodes (7): Stage 1B — Clean Installation Verification, E1 — Clean Clone of Committed HEAD, E2 — Clean Copy of the Recovered Working Tree, F1 — Clean Clone of main Does Not Build, Undeclared Toolchain Expectations, CF-1 — Stage 1A Build Recovery Is Not Committed, CF-6 — The Recovered Source Is Genuinely Reproducible
+
+### Community 444 - "glass-dialog.tsx"
+Cohesion: 0.52
+Nodes (5): DialogContent, DialogDescription, DialogHeader(), DialogOverlay, DialogTitle
+
+### Community 446 - "2. Core Communication Primitives"
+Cohesion: 0.33
+Nodes (6): 2.1 Command (K1), 2.2 Query (K2), 2.3 Event (K3), 2.4 Observation (K4), 2.5 Result: Execution Result (K5) and Mission Result (K6), 2. Core Communication Primitives
+
+### Community 449 - ".query"
+Cohesion: 0.40
+Nodes (4): 11.1 Principles (PROPOSAL), 11.2 Candidate capability surface, 11.4 Server-function inventory (FACT, 47), 11. MCP Boundary Candidates
+
+### Community 450 - "1. System Boundaries"
+Cohesion: 0.40
+Nodes (5): 1.1 GENESIS, 1.2 VAJRA, 1.3 HANDS, 1.4 AKIRA OS, 1. System Boundaries
 
 ## Ambiguous Edges - Review These
 - `Event Contract Drift and Orphan Constants` → `Identity Event Flow`  [AMBIGUOUS]
@@ -1687,9 +1722,9 @@ Nodes (3): 8.1 Strict Phase 3 Boundary Separation, 8.2 What Phase 3 Hydration Ac
   docs/audits/06-data-integrity.md · relation: conceptually_related_to
 
 ## Knowledge Gaps
-- **1804 isolated node(s):** `context7`, `MemoryEntity`, `ProjectRecord`, `sqliteProjectRepository`, `sessionService` (+1799 more)
-  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 3079 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
-- **132 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **1804 isolated node(s):** `Available Skills & Commands`, `Steps:`, `ComponentHealthOptions`, `ComponentHealthStatus`, `ComponentState` (+1799 more)
+  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 3068 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
+- **136 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
@@ -1698,12 +1733,12 @@ _Questions this graph is uniquely positioned to answer:_
   _Edge tagged AMBIGUOUS (relation: conceptually_related_to) - confidence is low._
 - **What is the exact relationship between `DAT-007 No Schema Evolution Path; Two Vault Schema Sources` and `DAT-011 Test Artefacts And Scratch Databases Committed`?**
   _Edge tagged AMBIGUOUS (relation: conceptually_related_to) - confidence is low._
-- **Why does `vitest` connect `vitest` to `observability/composition.ts`, `lifecycle-manager.ts`, `event-bus.ts`, `reflection/engine/index.ts`, `genesis/reasoning/index.ts`, `context-resolution/service.ts`, `vajra/composition.ts`, `story-service.ts`, `events/event-service.ts`, `genesis/index.ts`, `routeTree.gen.ts`, `store-types.ts`, `telemetry.test.ts`, `vajra/reasoning/types.ts`, `TelemetryError`, `shutdown-restart.test.ts`, `tests/capability-registry.test.ts`, `dependency-resolver.test.ts`, `readiness.test.ts`, `genesis-planning.test.ts`, `manifest.test.ts`, `PresenceContext`, `genesis-production-composition.test.ts`, `provider-manager.ts`, `react`, `CorrelationMetadata`, `event-contract.test.ts`, `context-rules.ts`, `runtime-manager.ts`, `context-engine.ts`, `MemoryEvent`, `AkiraEvent`, `package.json`, `retention/policy.ts`, `SelfModel`, `Observation`, `akira-sdk.test.ts`, `relationship-service.ts`, `recall-rules.ts`, `genesis-decision-engine.test.ts`, `instrumentation.test.ts`, `understanding/engine.ts`, `historical-search-intent.ts`, `timeline.tsx`, `akira-store.ts`, `session-history-retention.test.ts`, `genesis-identity.test.ts`, `vault-security.test.ts`, `tools/registry.ts`, `vault.test.ts`, `session-outcomes.ts`?**
-  _High betweenness centrality (0.207) - this node is a cross-community bridge._
-- **Why does `react` connect `react` to `provider-manager.ts`, `timeline.tsx`, `chart.tsx`, `akira-store.ts`, `cn`, `form.tsx`, `chat.tsx`, `Stage 1 Controlled Behavioral Evaluation Report`, `RendererRegistry.ts`, `genesis/index.ts`, `command.tsx`, `carousel.tsx`, `akira-os/index.ts`, `__root.tsx`, `search.tsx`, `tools/registry.ts`, `package.json`?**
-  _High betweenness centrality (0.057) - this node is a cross-community bridge._
-- **Why does `AkiraEvent` connect `AkiraEvent` to `event-bus.ts`, `vajra/composition.ts`, `context-resolution/service.ts`, `AnalyticsRepository`, `state/service.ts`, `Observation`, `3. Repository Archaeology & Fact Base`, `analytics-service.ts`, `AnalyticsEngine.ts`, `instrumentation.test.ts`, `AKIRA Architecture Disposition`, `MemoryEvent`, `shutdown-restart.test.ts`, `vault.test.ts`, `event-translation.ts`?**
-  _High betweenness centrality (0.027) - this node is a cross-community bridge._
+- **Why does `vitest` connect `vitest` to `observability/composition.ts`, `lifecycle-manager.ts`, `event-bus.ts`, `reflection/engine/index.ts`, `genesis/reasoning/index.ts`, `controller.ts`, `genesis/index.ts`, `AkiraState`, `routeTree.gen.ts`, `store-types.ts`, `telemetry.test.ts`, `sqlite-operational-state-store.ts`, `telemetry.ts`, `vajra/reasoning/types.ts`, `genesis-planning.test.ts`, `tests/capability-registry.test.ts`, `ModuleManifest`, `aiProviderManager`, `vajra/composition.ts`, `manifest.test.ts`, `presence.test.ts`, `genesis-production-composition.test.ts`, `VaultWorkspace.tsx`, `CorrelationMetadata`, `event-contract.test.ts`, `context-rules.ts`, `runtime-manager.ts`, `context-engine.ts`, `MemoryEvent`, `package.json`, `retention/policy.ts`, `SelfModel`, `Observation`, `akira-sdk.test.ts`, `relationship-service.ts`, `recall-rules.ts`, `analytics.test.ts`, `instrumentation.test.ts`, `genesis-relationship-engine.test.ts`, `timeline.tsx`, `akira-store.ts`, `genesis-identity.test.ts`, `vault-security.test.ts`, `chat-declaration-promoter.ts`, `tools.index.tsx`, `vault.test.ts`, `sessions.tsx`?**
+  _High betweenness centrality (0.255) - this node is a cross-community bridge._
+- **Why does `react` connect `react` to `cn`, `form.tsx`, `brain.tsx`, `Stage 1 Controlled Behavioral Evaluation Report`, `RendererRegistry.ts`, `routeTree.gen.ts`, `akira-os/index.ts`, `lucide-react`, `aiProviderManager`, `VaultFile`, `VaultWorkspace.tsx`, `chart.tsx`, `useAkira`, `navigation-menu.tsx`, `glass-dialog.tsx`, `package.json`, `VaultFolder`, `__root.tsx`, `Thumbnail.tsx`, `chat.tsx`, `timeline.tsx`, `akira-store.ts`, `sidebar.tsx`, `class-variance-authority`, `tools.index.tsx`, `sessions.tsx`?**
+  _High betweenness centrality (0.066) - this node is a cross-community bridge._
+- **Why does `RuntimeManager` connect `RuntimeManager` to `manifest.test.ts`, `.events`, `PermissionRequiredError`, `Synthesized Decisions`, `AnalyticsEngine.ts`, `20.2 Still OPEN`, `PermissionManager`, `useAkira`, `runtime-manager.ts`, `IModuleInstance`, `AKIRA Architecture Disposition`, `AKIRA Target Architecture`, `tests/capability-registry.test.ts`, `ModuleManifest`?**
+  _High betweenness centrality (0.031) - this node is a cross-community bridge._
 - **Are the 6 inferred relationships involving `CorrelationMetadata` (e.g. with `2. RECENT VAJRA / MISSION WORK` and `What We Already Have`) actually correct?**
   _`CorrelationMetadata` has 6 INFERRED edges - model-reasoned connections that need verification._
 - **Are the 2 inferred relationships involving `InMemoryIdentityRepository` (e.g. with `4.3 Identity` and `4. Identity System`) actually correct?**
