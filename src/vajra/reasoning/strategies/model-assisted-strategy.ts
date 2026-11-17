@@ -82,19 +82,19 @@ export class ModelAssistedReasoningStrategy implements IVajraReasoningStrategy {
         mode: context.operationalContext.mode,
         health: context.operationalContext.systemHealthStatus,
       },
-      relevantBeliefs: context.relevantBeliefs.map(b => ({
+      relevantBeliefs: context.relevantBeliefs.map((b) => ({
         id: b.id,
         proposition: b.proposition,
         confidence: b.confidence,
         state: b.verificationState,
       })),
-      recentObservations: context.recentObservations.slice(0, 10).map(o => ({
+      recentObservations: context.recentObservations.slice(0, 10).map((o) => ({
         id: o.id,
         producer: o.producer,
         subject: o.subject,
         confidence: o.confidence,
       })),
-      genesisMemories: context.genesisContext?.memories.slice(0, 5).map(m => ({
+      genesisMemories: context.genesisContext?.memories.slice(0, 5).map((m) => ({
         id: m.id,
         content: m.content,
         relevance: m.relevance,
@@ -102,15 +102,16 @@ export class ModelAssistedReasoningStrategy implements IVajraReasoningStrategy {
       knownUnknowns: context.selfModelLimits.knownUnknowns,
     };
 
-    const coprocessorResult = await this.coprocessorPort.invokeStructuredCoprocessor<ModelReasoningPayload>({
-      systemPrompt,
-      structuredContext,
-      outputSchema: ModelReasoningPayloadSchema,
-      temperature: 0.2,
-      maxTokens: 1500,
-      timeoutMs: this.defaultTimeoutMs,
-      correlation,
-    });
+    const coprocessorResult =
+      await this.coprocessorPort.invokeStructuredCoprocessor<ModelReasoningPayload>({
+        systemPrompt,
+        structuredContext,
+        outputSchema: ModelReasoningPayloadSchema,
+        temperature: 0.2,
+        maxTokens: 1500,
+        timeoutMs: this.defaultTimeoutMs,
+        correlation,
+      });
 
     if (!coprocessorResult.ok) {
       return {
@@ -125,7 +126,7 @@ export class ModelAssistedReasoningStrategy implements IVajraReasoningStrategy {
       strategyId: this.id,
       problemClass,
       hypotheses: Object.freeze(
-        payload.hypotheses.map(h =>
+        payload.hypotheses.map((h) =>
           Object.freeze({
             id: h.id,
             description: h.description,

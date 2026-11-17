@@ -1,22 +1,17 @@
 // Pure result mapping for extract-structure.mjs.
 // Kept separate from the CLI entrypoint so unit tests do not import a shebang script.
-const REQUIRED_STRUCTURE_ARRAY_FIELDS = [
-  'functions',
-  'classes',
-  'imports',
-  'exports',
-];
+const REQUIRED_STRUCTURE_ARRAY_FIELDS = ["functions", "classes", "imports", "exports"];
 const OPTIONAL_STRUCTURE_ARRAY_FIELDS = [
-  'sections',
-  'definitions',
-  'services',
-  'endpoints',
-  'steps',
-  'resources',
+  "sections",
+  "definitions",
+  "services",
+  "endpoints",
+  "steps",
+  "resources",
 ];
 
 function isPlainObject(value) {
-  if (value === null || typeof value !== 'object' || Array.isArray(value)) {
+  if (value === null || typeof value !== "object" || Array.isArray(value)) {
     return false;
   }
 
@@ -25,19 +20,15 @@ function isPlainObject(value) {
 }
 
 function isStringArray(value) {
-  return Array.isArray(value) && value.every(item => typeof item === 'string');
+  return Array.isArray(value) && value.every((item) => typeof item === "string");
 }
 
 function isFiniteInteger(value) {
-  return typeof value === 'number' &&
-    Number.isFinite(value) &&
-    Number.isInteger(value);
+  return typeof value === "number" && Number.isFinite(value) && Number.isInteger(value);
 }
 
 function isLineRange(value) {
-  return Array.isArray(value) &&
-    value.length === 2 &&
-    value.every(isFiniteInteger);
+  return Array.isArray(value) && value.length === 2 && value.every(isFiniteInteger);
 }
 
 function hasValidOptionalField(value, field, validator) {
@@ -45,54 +36,49 @@ function hasValidOptionalField(value, field, validator) {
 }
 
 function isValidEntryArray(value, validator) {
-  return Array.isArray(value) &&
-    value.every(entry => isPlainObject(entry) && validator(entry));
+  return Array.isArray(value) && value.every((entry) => isPlainObject(entry) && validator(entry));
 }
 
 const STRUCTURE_ENTRY_VALIDATORS = {
-  functions: entry =>
-    typeof entry.name === 'string' &&
+  functions: (entry) =>
+    typeof entry.name === "string" &&
     isLineRange(entry.lineRange) &&
     isStringArray(entry.params) &&
-    hasValidOptionalField(entry, 'returnType', value => typeof value === 'string'),
-  classes: entry =>
-    typeof entry.name === 'string' &&
+    hasValidOptionalField(entry, "returnType", (value) => typeof value === "string"),
+  classes: (entry) =>
+    typeof entry.name === "string" &&
     isLineRange(entry.lineRange) &&
     isStringArray(entry.methods) &&
     isStringArray(entry.properties),
-  imports: entry =>
-    typeof entry.source === 'string' &&
+  imports: (entry) =>
+    typeof entry.source === "string" &&
     isStringArray(entry.specifiers) &&
     isFiniteInteger(entry.lineNumber),
-  exports: entry =>
-    typeof entry.name === 'string' &&
+  exports: (entry) =>
+    typeof entry.name === "string" &&
     isFiniteInteger(entry.lineNumber) &&
-    hasValidOptionalField(entry, 'isDefault', value => typeof value === 'boolean'),
-  sections: entry =>
-    typeof entry.name === 'string' &&
-    isFiniteInteger(entry.level) &&
-    isLineRange(entry.lineRange),
-  definitions: entry =>
-    typeof entry.name === 'string' &&
-    typeof entry.kind === 'string' &&
+    hasValidOptionalField(entry, "isDefault", (value) => typeof value === "boolean"),
+  sections: (entry) =>
+    typeof entry.name === "string" && isFiniteInteger(entry.level) && isLineRange(entry.lineRange),
+  definitions: (entry) =>
+    typeof entry.name === "string" &&
+    typeof entry.kind === "string" &&
     isLineRange(entry.lineRange) &&
     isStringArray(entry.fields),
-  services: entry =>
-    typeof entry.name === 'string' &&
-    hasValidOptionalField(entry, 'image', value => typeof value === 'string') &&
+  services: (entry) =>
+    typeof entry.name === "string" &&
+    hasValidOptionalField(entry, "image", (value) => typeof value === "string") &&
     Array.isArray(entry.ports) &&
     entry.ports.every(isFiniteInteger) &&
-    hasValidOptionalField(entry, 'lineRange', isLineRange),
-  endpoints: entry =>
-    hasValidOptionalField(entry, 'method', value => typeof value === 'string') &&
-    typeof entry.path === 'string' &&
+    hasValidOptionalField(entry, "lineRange", isLineRange),
+  endpoints: (entry) =>
+    hasValidOptionalField(entry, "method", (value) => typeof value === "string") &&
+    typeof entry.path === "string" &&
     isLineRange(entry.lineRange),
-  steps: entry =>
-    typeof entry.name === 'string' &&
-    isLineRange(entry.lineRange),
-  resources: entry =>
-    typeof entry.name === 'string' &&
-    typeof entry.kind === 'string' &&
+  steps: (entry) => typeof entry.name === "string" && isLineRange(entry.lineRange),
+  resources: (entry) =>
+    typeof entry.name === "string" &&
+    typeof entry.kind === "string" &&
     isLineRange(entry.lineRange),
 };
 
@@ -101,27 +87,34 @@ function isValidStructuralAnalysis(analysis) {
     return false;
   }
 
-  return REQUIRED_STRUCTURE_ARRAY_FIELDS.every(field =>
-    isValidEntryArray(analysis[field], STRUCTURE_ENTRY_VALIDATORS[field])) &&
-    OPTIONAL_STRUCTURE_ARRAY_FIELDS.every(field =>
-      hasValidOptionalField(
-        analysis,
-        field,
-        value => isValidEntryArray(value, STRUCTURE_ENTRY_VALIDATORS[field]),
-      ));
+  return (
+    REQUIRED_STRUCTURE_ARRAY_FIELDS.every((field) =>
+      isValidEntryArray(analysis[field], STRUCTURE_ENTRY_VALIDATORS[field]),
+    ) &&
+    OPTIONAL_STRUCTURE_ARRAY_FIELDS.every((field) =>
+      hasValidOptionalField(analysis, field, (value) =>
+        isValidEntryArray(value, STRUCTURE_ENTRY_VALIDATORS[field]),
+      ),
+    )
+  );
 }
 
 function isValidCallGraph(callGraph) {
-  return Array.isArray(callGraph) && callGraph.every(entry =>
-    isPlainObject(entry) &&
-    typeof entry.caller === 'string' &&
-    typeof entry.callee === 'string' &&
-    isFiniteInteger(entry.lineNumber));
+  return (
+    Array.isArray(callGraph) &&
+    callGraph.every(
+      (entry) =>
+        isPlainObject(entry) &&
+        typeof entry.caller === "string" &&
+        typeof entry.callee === "string" &&
+        isFiniteInteger(entry.lineNumber),
+    )
+  );
 }
 
 function mapCallGraph(callGraph) {
   return callGraph && callGraph.length > 0
-    ? callGraph.map(entry => ({
+    ? callGraph.map((entry) => ({
         caller: entry.caller,
         callee: entry.callee,
         lineNumber: entry.lineNumber,
@@ -130,25 +123,23 @@ function mapCallGraph(callGraph) {
 }
 
 export function analyzeFileWithOutcomes(registry, file, content) {
-  const wantsCallGraph =
-    file.fileCategory === 'code' || file.fileCategory === 'script';
-  const selectedPlugin = typeof registry.getPluginForFile === 'function'
-    ? registry.getPluginForFile(file.path)
-    : registry;
+  const wantsCallGraph = file.fileCategory === "code" || file.fileCategory === "script";
+  const selectedPlugin =
+    typeof registry.getPluginForFile === "function"
+      ? registry.getPluginForFile(file.path)
+      : registry;
 
   if (selectedPlugin === null) {
     return {
       analysis: null,
       callGraph: null,
-      structureOutcome: 'skipped',
-      callGraphOutcome: 'skipped',
+      structureOutcome: "skipped",
+      callGraphOutcome: "skipped",
     };
   }
 
-  const supportsFullAnalysis =
-    typeof selectedPlugin?.analyzeFileFull === 'function';
-  const supportsSeparateCallGraph =
-    typeof selectedPlugin?.extractCallGraph === 'function';
+  const supportsFullAnalysis = typeof selectedPlugin?.analyzeFileFull === "function";
+  const supportsSeparateCallGraph = typeof selectedPlugin?.extractCallGraph === "function";
 
   if (wantsCallGraph && supportsFullAnalysis) {
     let full;
@@ -158,43 +149,37 @@ export function analyzeFileWithOutcomes(registry, file, content) {
       return {
         analysis: null,
         callGraph: null,
-        structureOutcome: 'failed',
-        callGraphOutcome: wantsCallGraph ? 'failed' : 'skipped',
+        structureOutcome: "failed",
+        callGraphOutcome: wantsCallGraph ? "failed" : "skipped",
       };
     }
 
-    const analysis = isValidStructuralAnalysis(full?.structure)
-      ? full.structure
-      : null;
+    const analysis = isValidStructuralAnalysis(full?.structure) ? full.structure : null;
     const hasValidCallGraph = wantsCallGraph && isValidCallGraph(full?.callGraph);
     const callGraph = hasValidCallGraph ? mapCallGraph(full.callGraph) : null;
 
     return {
       analysis,
       callGraph,
-      structureOutcome: analysis === null ? 'failed' : 'succeeded',
-      callGraphOutcome: wantsCallGraph
-        ? hasValidCallGraph ? 'succeeded' : 'failed'
-        : 'skipped',
+      structureOutcome: analysis === null ? "failed" : "succeeded",
+      callGraphOutcome: wantsCallGraph ? (hasValidCallGraph ? "succeeded" : "failed") : "skipped",
     };
   }
 
   let analysis = null;
   let callGraph = null;
-  let structureOutcome = 'failed';
-  let callGraphOutcome = wantsCallGraph && supportsSeparateCallGraph
-    ? 'failed'
-    : 'skipped';
+  let structureOutcome = "failed";
+  let callGraphOutcome = wantsCallGraph && supportsSeparateCallGraph ? "failed" : "skipped";
 
   try {
     const extractedAnalysis = registry.analyzeFile(file.path, content);
     if (isValidStructuralAnalysis(extractedAnalysis)) {
       analysis = extractedAnalysis;
-      structureOutcome = 'succeeded';
+      structureOutcome = "succeeded";
     }
   } catch {
     analysis = null;
-    structureOutcome = 'failed';
+    structureOutcome = "failed";
   }
 
   if (wantsCallGraph && supportsSeparateCallGraph) {
@@ -202,11 +187,11 @@ export function analyzeFileWithOutcomes(registry, file, content) {
       const extractedCallGraph = registry.extractCallGraph(file.path, content);
       if (isValidCallGraph(extractedCallGraph)) {
         callGraph = mapCallGraph(extractedCallGraph);
-        callGraphOutcome = 'succeeded';
+        callGraphOutcome = "succeeded";
       }
     } catch {
       callGraph = null;
-      callGraphOutcome = 'failed';
+      callGraphOutcome = "failed";
     }
   }
 
@@ -228,7 +213,7 @@ export function buildResult(file, totalLines, nonEmptyLines, analysis, callGraph
   }
 
   if (analysis.functions && analysis.functions.length > 0) {
-    base.functions = analysis.functions.map(fn => ({
+    base.functions = analysis.functions.map((fn) => ({
       name: fn.name,
       startLine: fn.lineRange[0],
       endLine: fn.lineRange[1],
@@ -237,7 +222,7 @@ export function buildResult(file, totalLines, nonEmptyLines, analysis, callGraph
   }
 
   if (analysis.classes && analysis.classes.length > 0) {
-    base.classes = analysis.classes.map(cls => ({
+    base.classes = analysis.classes.map((cls) => ({
       name: cls.name,
       startLine: cls.lineRange[0],
       endLine: cls.lineRange[1],
@@ -247,7 +232,7 @@ export function buildResult(file, totalLines, nonEmptyLines, analysis, callGraph
   }
 
   if (analysis.exports && analysis.exports.length > 0) {
-    base.exports = analysis.exports.map(exp => ({
+    base.exports = analysis.exports.map((exp) => ({
       name: exp.name,
       line: exp.lineNumber,
       isDefault: exp.isDefault === true,
@@ -255,7 +240,7 @@ export function buildResult(file, totalLines, nonEmptyLines, analysis, callGraph
   }
 
   if (analysis.sections && analysis.sections.length > 0) {
-    base.sections = analysis.sections.map(s => ({
+    base.sections = analysis.sections.map((s) => ({
       heading: s.name,
       level: s.level,
       line: s.lineRange[0],
@@ -263,7 +248,7 @@ export function buildResult(file, totalLines, nonEmptyLines, analysis, callGraph
   }
 
   if (analysis.definitions && analysis.definitions.length > 0) {
-    base.definitions = analysis.definitions.map(d => ({
+    base.definitions = analysis.definitions.map((d) => ({
       name: d.name,
       kind: d.kind,
       fields: d.fields || [],
@@ -273,7 +258,7 @@ export function buildResult(file, totalLines, nonEmptyLines, analysis, callGraph
   }
 
   if (analysis.services && analysis.services.length > 0) {
-    base.services = analysis.services.map(s => ({
+    base.services = analysis.services.map((s) => ({
       name: s.name,
       image: s.image,
       ports: s.ports || [],
@@ -282,7 +267,7 @@ export function buildResult(file, totalLines, nonEmptyLines, analysis, callGraph
   }
 
   if (analysis.endpoints && analysis.endpoints.length > 0) {
-    base.endpoints = analysis.endpoints.map(e => ({
+    base.endpoints = analysis.endpoints.map((e) => ({
       method: e.method,
       path: e.path,
       startLine: e.lineRange[0],
@@ -291,7 +276,7 @@ export function buildResult(file, totalLines, nonEmptyLines, analysis, callGraph
   }
 
   if (analysis.steps && analysis.steps.length > 0) {
-    base.steps = analysis.steps.map(s => ({
+    base.steps = analysis.steps.map((s) => ({
       name: s.name,
       startLine: s.lineRange[0],
       endLine: s.lineRange[1],
@@ -299,7 +284,7 @@ export function buildResult(file, totalLines, nonEmptyLines, analysis, callGraph
   }
 
   if (analysis.resources && analysis.resources.length > 0) {
-    base.resources = analysis.resources.map(r => ({
+    base.resources = analysis.resources.map((r) => ({
       name: r.name,
       kind: r.kind,
       startLine: r.lineRange[0],
@@ -317,9 +302,9 @@ export function buildResult(file, totalLines, nonEmptyLines, analysis, callGraph
   if (importPaths && importPaths.length > 0) {
     metrics.importCount = importPaths.length;
   } else if (analysis.imports) {
-    const internal = analysis.imports.filter(imp => {
-      const src = imp?.source ?? '';
-      return src.startsWith('.');
+    const internal = analysis.imports.filter((imp) => {
+      const src = imp?.source ?? "";
+      return src.startsWith(".");
     });
     metrics.importCount = internal.length;
   }

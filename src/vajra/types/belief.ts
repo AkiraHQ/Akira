@@ -2,10 +2,10 @@
  * Verification state of an epistemic belief held by VAJRA.
  */
 export type VerificationState =
-  | "UNVERIFIED"    // Hypothesis or assumption without decisive evidence
-  | "VERIFIED"      // Backed by consistent, verified observations
-  | "CONTRADICTED"  // Contradicted by incoming observations (requires reconciliation)
-  | "STALE";        // Validated previously, but expired or superseded by time
+  | "UNVERIFIED" // Hypothesis or assumption without decisive evidence
+  | "VERIFIED" // Backed by consistent, verified observations
+  | "CONTRADICTED" // Contradicted by incoming observations (requires reconciliation)
+  | "STALE"; // Validated previously, but expired or superseded by time
 
 /**
  * Epistemic Belief held within VAJRA's internal cognitive model.
@@ -22,10 +22,10 @@ export interface EpistemicBelief {
   readonly proposition: string;
   readonly confidence: number;
   readonly verificationState: VerificationState;
-  readonly supportingEvidenceIds: readonly string[];   // References Contract K4 Observation IDs
+  readonly supportingEvidenceIds: readonly string[]; // References Contract K4 Observation IDs
   readonly contradictingEvidenceIds: readonly string[]; // References Contract K4 Observation IDs
-  readonly lastEvaluatedAt: string;                    // ISO-8601 timestamp
-  readonly ttlMs?: number;                             // Optional time-to-live before transitioning to STALE
+  readonly lastEvaluatedAt: string; // ISO-8601 timestamp
+  readonly ttlMs?: number; // Optional time-to-live before transitioning to STALE
 }
 
 /**

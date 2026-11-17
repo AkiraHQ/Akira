@@ -2,11 +2,7 @@ import { describe, it, expect } from "vitest";
 import { DecisionArbiter } from "../../../src/vajra/decision/arbiter";
 import { createInitialOperationalContext } from "../../../src/vajra/types/operational-context";
 import { ApprovalManager } from "../../../src/vajra/decision/approval-manager";
-import {
-  createMockReasoningResult,
-  createMockSelfModel,
-  createMockStateStore,
-} from "./fixtures";
+import { createMockReasoningResult, createMockSelfModel, createMockStateStore } from "./fixtures";
 
 describe("Strict Persistence Gate & Failure Semantics (Phase 5 §19)", () => {
   it("HALTS decision emission when appendAuditTrace fails (Zero unpersisted actions released)", async () => {

@@ -1,8 +1,4 @@
-import {
-  IVajraReasoningStrategy,
-  ProblemClass,
-  ReasoningContext,
-} from "./types";
+import { IVajraReasoningStrategy, ProblemClass, ReasoningContext } from "./types";
 
 export interface StrategySelection {
   readonly strategy: IVajraReasoningStrategy;
@@ -52,7 +48,7 @@ export class AdaptiveStrategyRouter {
 
     // 2. Active contradictions or inconsistent observations mandate OBSERVATION_CONSISTENCY
     const hasContradiction = context.relevantBeliefs.some(
-      b => b.verificationState === "CONTRADICTED" || b.contradictingEvidenceIds.length > 0,
+      (b) => b.verificationState === "CONTRADICTED" || b.contradictingEvidenceIds.length > 0,
     );
     if (hasContradiction) {
       return "OBSERVATION_CONSISTENCY";
@@ -60,9 +56,10 @@ export class AdaptiveStrategyRouter {
 
     // 3. User messages with semantic ambiguity or known unknowns require semantic interpretation
     if (context.stimulus.kind === "human_prompt") {
-      const payloadStr = typeof context.stimulus.payload === "string"
-        ? context.stimulus.payload
-        : JSON.stringify(context.stimulus.payload ?? "");
+      const payloadStr =
+        typeof context.stimulus.payload === "string"
+          ? context.stimulus.payload
+          : JSON.stringify(context.stimulus.payload ?? "");
 
       // If prompt has significant unknowns or length, classify as semantic interpretation
       if (context.selfModelLimits.knownUnknowns.length > 0 || payloadStr.length > 30) {

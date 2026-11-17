@@ -20,8 +20,14 @@ import { CapabilityDescriptor } from "../../src/contracts/capabilities/descripto
 import { EventBus } from "../../src/instrumentation/event-bus";
 import { InMemoryGenesisAdapter } from "../../src/vajra/boundaries/genesis-port";
 import { SqliteOperationalStateStore } from "../../src/persistence/vajra/sqlite-operational-state-store";
-import { createVajraMissionRecord, createVajraStepRecord } from "../../src/vajra/types/mission-record";
-import { createMissionDefinition, createMissionStep } from "../../src/contracts/mission/mission-definition";
+import {
+  createVajraMissionRecord,
+  createVajraStepRecord,
+} from "../../src/vajra/types/mission-record";
+import {
+  createMissionDefinition,
+  createMissionStep,
+} from "../../src/contracts/mission/mission-definition";
 import { createMissionState } from "../../src/contracts/mission/mission-state";
 import { UnavailableHandsAdapter, IHandsPort } from "../../src/vajra/boundaries/hands-port";
 import {
@@ -142,7 +148,9 @@ describe("VAJRA Production Composition Root (Phase 8A / Part B)", () => {
     expect(readiness.subsystems.recoveryCompleted).toBe(true);
 
     // Verify explicit degraded reasons
-    expect(readiness.degradedReasons).toContain("Model-assisted reasoning coprocessor is offline or unconfigured.");
+    expect(readiness.degradedReasons).toContain(
+      "Model-assisted reasoning coprocessor is offline or unconfigured.",
+    );
     expect(readiness.degradedReasons).toContain(
       "Physical sandbox execution (HANDS) is unavailable; capability execution is constrained to AKIRA OS.",
     );
@@ -347,25 +355,25 @@ describe("VAJRA Production Composition Root (Phase 8A / Part B)", () => {
   });
 
   it("fails closed when mandatory dependencies are null or undefined", async () => {
-    await expect(
-      initializeVajraRuntime({ stateStore: null as any }),
-    ).rejects.toThrow(/Mandatory dependency 'stateStore'/i);
+    await expect(initializeVajraRuntime({ stateStore: null as any })).rejects.toThrow(
+      /Mandatory dependency 'stateStore'/i,
+    );
 
-    await expect(
-      initializeVajraRuntime({ capabilityRegistry: null as any }),
-    ).rejects.toThrow(/Mandatory dependency 'capabilityRegistry'/i);
+    await expect(initializeVajraRuntime({ capabilityRegistry: null as any })).rejects.toThrow(
+      /Mandatory dependency 'capabilityRegistry'/i,
+    );
 
-    await expect(
-      initializeVajraRuntime({ akiraOSPort: null as any }),
-    ).rejects.toThrow(/Mandatory dependency 'akiraOSPort'/i);
+    await expect(initializeVajraRuntime({ akiraOSPort: null as any })).rejects.toThrow(
+      /Mandatory dependency 'akiraOSPort'/i,
+    );
 
-    await expect(
-      initializeVajraRuntime({ genesisPort: null as any }),
-    ).rejects.toThrow(/Mandatory dependency 'genesisPort'/i);
+    await expect(initializeVajraRuntime({ genesisPort: null as any })).rejects.toThrow(
+      /Mandatory dependency 'genesisPort'/i,
+    );
 
-    await expect(
-      initializeVajraRuntime({ escalationPort: null as any }),
-    ).rejects.toThrow(/Mandatory dependency 'escalationPort'/i);
+    await expect(initializeVajraRuntime({ escalationPort: null as any })).rejects.toThrow(
+      /Mandatory dependency 'escalationPort'/i,
+    );
 
     expect(isVajraInitialized()).toBe(false);
     expect(getVajraReadiness().status).toBe("FAILED");
@@ -426,7 +434,10 @@ describe("VAJRA Production Composition Root (Phase 8A / Part B)", () => {
         completionCriteria: { description: "done", requiredEvidence: [] },
         correlation: { requestId: "r", correlationId: "c", invocationId: "i" },
       }),
-      state: createMissionState({ missionId: "mission-durable-01", definitionId: "mission-durable-01" }),
+      state: createMissionState({
+        missionId: "mission-durable-01",
+        definitionId: "mission-durable-01",
+      }),
       allocatedBudget: { maxCostCents: 5, maxSteps: 2 },
       idempotencyKey: "idemp-durable-01",
       requestId: "r",

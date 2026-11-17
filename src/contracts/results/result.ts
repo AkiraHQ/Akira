@@ -2,11 +2,11 @@
  * Failure Categories per Contract K18.
  */
 export type FailureCategory =
-  | "invalid_request"        // Input schema validation failed
+  | "invalid_request" // Input schema validation failed
   | "capability_unavailable" // Capability is not registered or inactive
-  | "command_rejection"      // Permissions or authorization check failed
-  | "execution_failure"      // Subsystem handler execution failed (e.g. storage error)
-  | "timeout";               // Constraint deadline passed
+  | "command_rejection" // Permissions or authorization check failed
+  | "execution_failure" // Subsystem handler execution failed (e.g. storage error)
+  | "timeout"; // Constraint deadline passed
 
 /**
  * Capability Failure Details per Contract K18.

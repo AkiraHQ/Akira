@@ -2,10 +2,7 @@ import { describe, it, expect } from "vitest";
 import { DecisionEvaluator } from "../../../src/vajra/decision/evaluator";
 import { DecisionOption } from "../../../src/vajra/decision/types";
 import { DEFAULT_POLICY_ENVELOPE } from "../../../src/vajra/types/policy";
-import {
-  createMockReasoningResult,
-  createMockSelfModel,
-} from "./fixtures";
+import { createMockReasoningResult, createMockSelfModel } from "./fixtures";
 
 describe("DecisionEvaluator (Phase 5 §10 & §11)", () => {
   const evaluator = new DecisionEvaluator();

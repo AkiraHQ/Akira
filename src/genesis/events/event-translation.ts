@@ -67,9 +67,7 @@ interface VajraMissionCompletedPayload {
   outcome?: VajraMissionOutcome | unknown;
 }
 
-type MissionCompletedPayload =
-  | LegacyMissionCompletedPayload
-  | VajraMissionCompletedPayload;
+type MissionCompletedPayload = LegacyMissionCompletedPayload | VajraMissionCompletedPayload;
 
 interface NotePayload {
   id: string;
@@ -178,9 +176,11 @@ const TRANSLATORS: Record<string, (payload: never) => TranslatedEvent> = {
     // 1. Authoritative VAJRA Operational Mission Completion (Phase 7 Reality Closure)
     if (payload && "missionId" in payload && typeof payload.missionId === "string") {
       const vajraPayload = payload as VajraMissionCompletedPayload;
-      const outcome = (vajraPayload.outcome && typeof vajraPayload.outcome === "object"
-        ? vajraPayload.outcome
-        : undefined) as VajraMissionOutcome | undefined;
+      const outcome = (
+        vajraPayload.outcome && typeof vajraPayload.outcome === "object"
+          ? vajraPayload.outcome
+          : undefined
+      ) as VajraMissionOutcome | undefined;
 
       const objective = outcome?.objective?.trim();
       const title = objective

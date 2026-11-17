@@ -64,7 +64,10 @@ export class EvidenceContradictionStrategy implements IVajraReasoningStrategy {
     // 1. Audit active beliefs against recent observations
     for (const belief of context.relevantBeliefs) {
       // Direct contradiction marker on belief
-      if (belief.verificationState === "CONTRADICTED" || belief.contradictingEvidenceIds.length > 0) {
+      if (
+        belief.verificationState === "CONTRADICTED" ||
+        belief.contradictingEvidenceIds.length > 0
+      ) {
         contradictions.push({
           proposition: belief.proposition,
           conflictingEvidenceIds: belief.contradictingEvidenceIds,
@@ -89,7 +92,8 @@ export class EvidenceContradictionStrategy implements IVajraReasoningStrategy {
 
       // Check for opposing observations matching the proposition subject
       for (const obs of context.recentObservations) {
-        const payloadText = typeof obs.payload === "string" ? obs.payload : JSON.stringify(obs.payload);
+        const payloadText =
+          typeof obs.payload === "string" ? obs.payload : JSON.stringify(obs.payload);
         const lowerProp = belief.proposition.toLowerCase();
         const lowerPayload = payloadText.toLowerCase();
 
@@ -100,15 +104,18 @@ export class EvidenceContradictionStrategy implements IVajraReasoningStrategy {
           lowerPayload.includes("mismatch") ||
           lowerPayload.includes("contradiction");
 
-        const propTokens = lowerProp.split(/[^a-z0-9]+/).filter(t => t.length > 2);
-        const subjectTokens = obs.subject.toLowerCase().split(/[^a-z0-9]+/).filter(t => t.length > 2);
-        const payloadTokens = lowerPayload.split(/[^a-z0-9]+/).filter(t => t.length > 2);
+        const propTokens = lowerProp.split(/[^a-z0-9]+/).filter((t) => t.length > 2);
+        const subjectTokens = obs.subject
+          .toLowerCase()
+          .split(/[^a-z0-9]+/)
+          .filter((t) => t.length > 2);
+        const payloadTokens = lowerPayload.split(/[^a-z0-9]+/).filter((t) => t.length > 2);
 
-        const matchesSubject = subjectTokens.some(t => propTokens.includes(t));
-        const matchesPayload = propTokens.some(t => payloadTokens.includes(t));
+        const matchesSubject = subjectTokens.some((t) => propTokens.includes(t));
+        const matchesPayload = propTokens.some((t) => payloadTokens.includes(t));
 
         if (indicatesFailure && (matchesSubject || matchesPayload)) {
-          const alreadyTracked = contradictions.some(c => c.proposition === belief.proposition);
+          const alreadyTracked = contradictions.some((c) => c.proposition === belief.proposition);
           if (!alreadyTracked) {
             contradictions.push({
               proposition: belief.proposition,
@@ -144,13 +151,13 @@ export class EvidenceContradictionStrategy implements IVajraReasoningStrategy {
         id: "hyp-epistemic-contradiction",
         description: `Detected ${contradictions.length} epistemic contradiction(s) between active premises and observed telemetry`,
         confidence: 0.95,
-        supportingEvidenceIds: contradictions.flatMap(c => c.conflictingEvidenceIds),
+        supportingEvidenceIds: contradictions.flatMap((c) => c.conflictingEvidenceIds),
       });
       possibleConsequences.push(
         "Proceeding under current assumptions will cause operational error or state corruption",
       );
       unresolvedQuestions.push(
-        `Why do premises conflict with observed telemetry for: ${contradictions.map(c => c.proposition).join(", ")}?`,
+        `Why do premises conflict with observed telemetry for: ${contradictions.map((c) => c.proposition).join(", ")}?`,
       );
       rationale = `Critical evidence contradiction detected across ${contradictions.length} proposition(s). Uncertainty escalated to CRITICAL.`;
     } else {
@@ -159,7 +166,7 @@ export class EvidenceContradictionStrategy implements IVajraReasoningStrategy {
         id: "hyp-epistemic-consistent",
         description: "All active premises and verified observations are internally consistent",
         confidence: 0.9,
-        supportingEvidenceIds: context.recentObservations.map(o => o.id),
+        supportingEvidenceIds: context.recentObservations.map((o) => o.id),
       });
       possibleConsequences.push("Epistemic foundation is sound for next operational stage");
       rationale = `Evaluated ${context.relevantBeliefs.length} belief(s) against ${context.recentObservations.length} observation(s); zero contradictions detected.`;

@@ -4,10 +4,7 @@ import { DecisionOption } from "../../../src/vajra/decision/types";
 import { DEFAULT_POLICY_ENVELOPE, PolicyEnvelope } from "../../../src/vajra/types/policy";
 import { createInitialOperationalContext } from "../../../src/vajra/types/operational-context";
 import { InMemoryEscalationAdapter } from "../../../src/vajra/boundaries/escalation-port";
-import {
-  createMockCorrelation,
-  createMockStateStore,
-} from "./fixtures";
+import { createMockCorrelation, createMockStateStore } from "./fixtures";
 
 describe("ApprovalManager (Phase 5 §14)", () => {
   const option: DecisionOption = {
@@ -89,7 +86,11 @@ describe("ApprovalManager (Phase 5 §14)", () => {
     // Advance context version to 2
     const advancedContext = { ...context, version: 2 };
 
-    const validation = await manager.validateApproval(record.id, advancedContext, DEFAULT_POLICY_ENVELOPE);
+    const validation = await manager.validateApproval(
+      record.id,
+      advancedContext,
+      DEFAULT_POLICY_ENVELOPE,
+    );
     expect(validation.valid).toBe(false);
     expect(validation.status).toBe("STALE");
     expect(validation.reason).toContain("State version advanced mid-turn");

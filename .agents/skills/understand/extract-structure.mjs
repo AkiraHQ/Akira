@@ -21,24 +21,21 @@
  * a file skipped for having no registered parser is expected and benign.
  */
 
-import { createRequire } from 'node:module';
-import { dirname, resolve, join } from 'node:path';
-import { fileURLToPath, pathToFileURL } from 'node:url';
-import { existsSync, readFileSync, realpathSync, writeFileSync } from 'node:fs';
+import { createRequire } from "node:module";
+import { dirname, resolve, join } from "node:path";
+import { fileURLToPath, pathToFileURL } from "node:url";
+import { existsSync, readFileSync, realpathSync, writeFileSync } from "node:fs";
 import {
   analyzeFileWithOutcomes,
   buildResult as buildExtractResult,
-} from './extract-structure-result.mjs';
+} from "./extract-structure-result.mjs";
 
-export {
-  analyzeFileWithOutcomes,
-  buildResult,
-} from './extract-structure-result.mjs';
+export { analyzeFileWithOutcomes, buildResult } from "./extract-structure-result.mjs";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 // skills/understand/ -> plugin root is two dirs up
-const pluginRoot = resolve(__dirname, '../..');
-const require = createRequire(resolve(pluginRoot, 'package.json'));
+const pluginRoot = resolve(__dirname, "../..");
+const require = createRequire(resolve(pluginRoot, "package.json"));
 
 // ---------------------------------------------------------------------------
 // Resolve @understand-anything/core
@@ -49,10 +46,10 @@ const require = createRequire(resolve(pluginRoot, 'package.json'));
 // ---------------------------------------------------------------------------
 let core;
 try {
-  core = await import(pathToFileURL(require.resolve('@understand-anything/core')).href);
+  core = await import(pathToFileURL(require.resolve("@understand-anything/core")).href);
 } catch {
   // Fallback: direct path for installed plugin cache layouts
-  core = await import(pathToFileURL(resolve(pluginRoot, 'packages/core/dist/index.js')).href);
+  core = await import(pathToFileURL(resolve(pluginRoot, "packages/core/dist/index.js")).href);
 }
 
 const { TreeSitterPlugin, PluginRegistry, builtinLanguageConfigs, registerAllParsers } = core;
@@ -61,23 +58,23 @@ const { TreeSitterPlugin, PluginRegistry, builtinLanguageConfigs, registerAllPar
 // Main
 // ---------------------------------------------------------------------------
 async function main() {
-  const [,, inputPath, outputPath] = process.argv;
+  const [, , inputPath, outputPath] = process.argv;
   if (!inputPath || !outputPath) {
-    process.stderr.write('Usage: node extract-structure.mjs <input.json> <output.json>\n');
+    process.stderr.write("Usage: node extract-structure.mjs <input.json> <output.json>\n");
     process.exit(1);
   }
 
   // Read input
-  const inputRaw = readFileSync(inputPath, 'utf-8');
+  const inputRaw = readFileSync(inputPath, "utf-8");
   const input = JSON.parse(inputRaw);
   const { projectRoot, batchFiles, batchImportData } = input;
 
   if (!projectRoot || !Array.isArray(batchFiles)) {
-    throw new Error('Invalid input: must contain projectRoot and batchFiles array');
+    throw new Error("Invalid input: must contain projectRoot and batchFiles array");
   }
 
   // Create tree-sitter plugin with all configs that have WASM grammars
-  const tsConfigs = builtinLanguageConfigs.filter(c => c.treeSitter);
+  const tsConfigs = builtinLanguageConfigs.filter((c) => c.treeSitter);
   const tsPlugin = new TreeSitterPlugin(tsConfigs);
   await tsPlugin.init();
 
@@ -100,7 +97,7 @@ async function main() {
     // Read file content
     let content;
     try {
-      content = readFileSync(absolutePath, 'utf-8');
+      content = readFileSync(absolutePath, "utf-8");
     } catch (err) {
       // Keep the path in filesSkipped so "every batch file is accounted for"
       // still holds for callers that only read that field, but also record it
@@ -109,7 +106,7 @@ async function main() {
       filesSkipped.push(file.path);
       filesUnreadable.push({
         path: file.path,
-        code: typeof err?.code === 'string' ? err.code : null,
+        code: typeof err?.code === "string" ? err.code : null,
       });
       continue;
     }
@@ -117,14 +114,17 @@ async function main() {
     // Line counts. POSIX text files end in a trailing newline, which makes
     // `split('\n')` produce one extra empty element. Match `wc -l` semantics
     // (used by the project scanner for `sizeLines`) so the two counts agree.
-    const lines = content.split('\n');
-    const totalLines = content.endsWith('\n') ? Math.max(0, lines.length - 1) : lines.length;
-    const nonEmptyLines = lines.filter(l => l.trim().length > 0).length;
+    const lines = content.split("\n");
+    const totalLines = content.endsWith("\n") ? Math.max(0, lines.length - 1) : lines.length;
+    const nonEmptyLines = lines.filter((l) => l.trim().length > 0).length;
 
-    const { analysis, callGraph, structureOutcome, callGraphOutcome } =
-      analyzeFileWithOutcomes(registry, file, content);
+    const { analysis, callGraph, structureOutcome, callGraphOutcome } = analyzeFileWithOutcomes(
+      registry,
+      file,
+      content,
+    );
 
-    if (structureOutcome === 'skipped') {
+    if (structureOutcome === "skipped") {
       filesSkipped.push(file.path);
       continue;
     }
@@ -133,7 +133,14 @@ async function main() {
     analysisOutcomes.callGraph[callGraphOutcome] += 1;
 
     // Build result object
-    const result = buildExtractResult(file, totalLines, nonEmptyLines, analysis, callGraph, batchImportData);
+    const result = buildExtractResult(
+      file,
+      totalLines,
+      nonEmptyLines,
+      analysis,
+      callGraph,
+      batchImportData,
+    );
     results.push(result);
   }
 
@@ -147,7 +154,7 @@ async function main() {
     results,
   };
 
-  writeFileSync(outputPath, JSON.stringify(output, null, 2), 'utf-8');
+  writeFileSync(outputPath, JSON.stringify(output, null, 2), "utf-8");
 
   if (!existsSync(outputPath)) {
     throw new Error(`output file missing after write: ${outputPath}`);
@@ -156,8 +163,8 @@ async function main() {
   if (filesUnreadable.length > 0) {
     process.stderr.write(
       `extract-structure.mjs: ${filesUnreadable.length}/${batchFiles.length} batch file(s) could not be read ` +
-      `(e.g. ${filesUnreadable[0].path} [${filesUnreadable[0].code ?? 'unknown error'}]); ` +
-      `verify that projectRoot resolves: ${projectRoot}\n`,
+        `(e.g. ${filesUnreadable[0].path} [${filesUnreadable[0].code ?? "unknown error"}]); ` +
+        `verify that projectRoot resolves: ${projectRoot}\n`,
     );
   }
 
@@ -168,7 +175,7 @@ async function main() {
   if (batchFiles.length > 0 && filesUnreadable.length === batchFiles.length) {
     throw new Error(
       `no file in the batch could be read (${filesUnreadable.length}/${batchFiles.length}); ` +
-      `projectRoot is likely wrong: ${projectRoot}`,
+        `projectRoot is likely wrong: ${projectRoot}`,
     );
   }
 }

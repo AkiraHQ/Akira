@@ -1,6 +1,12 @@
 import { describe, it, expect } from "vitest";
-import { LiveAkiraOSAdapter, InMemoryAkiraOSAdapter } from "../../src/vajra/boundaries/akira-os-port";
-import { LiveGenesisAdapter, InMemoryGenesisAdapter } from "../../src/vajra/boundaries/genesis-port";
+import {
+  LiveAkiraOSAdapter,
+  InMemoryAkiraOSAdapter,
+} from "../../src/vajra/boundaries/akira-os-port";
+import {
+  LiveGenesisAdapter,
+  InMemoryGenesisAdapter,
+} from "../../src/vajra/boundaries/genesis-port";
 import { StubHandsAdapter } from "../../src/vajra/boundaries/hands-port";
 import { InMemoryEscalationAdapter } from "../../src/vajra/boundaries/escalation-port";
 import { CapabilityRegistry } from "../../src/contracts/capabilities/registry";

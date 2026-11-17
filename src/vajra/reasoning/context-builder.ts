@@ -44,7 +44,8 @@ export class ReasoningContextBuilder {
     // 1. Resolve Active Mission (if any)
     let activeMission: VajraMissionRecord | null = null;
     if (this.stateStore && operationalContext.activeMissionId) {
-      activeMission = (await this.stateStore.getMission(operationalContext.activeMissionId)) ?? null;
+      activeMission =
+        (await this.stateStore.getMission(operationalContext.activeMissionId)) ?? null;
     }
 
     // 2. Load and Filter Epistemic Beliefs
@@ -63,18 +64,18 @@ export class ReasoningContextBuilder {
         .toLowerCase()
         .replace(/[^a-z0-9\s]/g, " ")
         .split(/\s+/)
-        .filter(t => t.length > 2),
+        .filter((t) => t.length > 2),
     );
 
     const relevantBeliefs = allBeliefs
-      .filter(b => {
+      .filter((b) => {
         // Always include contradicted beliefs
         if (b.verificationState === "CONTRADICTED" || b.contradictingEvidenceIds.length > 0) {
           return true;
         }
         // Match proposition keywords
         const propWords = b.proposition.toLowerCase().split(/\s+/);
-        return propWords.some(w => filterTokens.has(w));
+        return propWords.some((w) => filterTokens.has(w));
       })
       .sort((a, b) => a.id.localeCompare(b.id));
 
@@ -82,7 +83,7 @@ export class ReasoningContextBuilder {
     const now = Date.now();
     const fifteenMinutesMs = 15 * 60 * 1000;
     const observations = (additionalObservations ?? [])
-      .filter(obs => {
+      .filter((obs) => {
         const obsTime = new Date(obs.observationTime).getTime();
         return now - obsTime <= fifteenMinutesMs;
       })
@@ -103,9 +104,7 @@ export class ReasoningContextBuilder {
           .sort((a, b) => a.id.localeCompare(b.id));
       }
 
-      const identityTraits = traitsResult.ok
-        ? traitsResult.value
-        : { traits: {} };
+      const identityTraits = traitsResult.ok ? traitsResult.value : { traits: {} };
 
       genesisContext = Object.freeze({
         memories: Object.freeze(memories),
@@ -180,7 +179,7 @@ export class ReasoningContextBuilder {
     // Step B: Prune observations older than 5 minutes
     const fiveMinutesAgo = Date.now() - 5 * 60 * 1000;
     const prunedObservations = ctx.recentObservations.filter(
-      obs => new Date(obs.observationTime).getTime() >= fiveMinutesAgo,
+      (obs) => new Date(obs.observationTime).getTime() >= fiveMinutesAgo,
     );
 
     ctx = Object.freeze({

@@ -97,7 +97,10 @@ describe("VAJRA Persistence Boundary Invariant Tests", () => {
       "vajra",
       "sqlite-operational-state-store.ts",
     );
-    expect(fs.existsSync(adapterPath), "SqliteOperationalStateStore file must exist in src/persistence/vajra/").toBe(true);
+    expect(
+      fs.existsSync(adapterPath),
+      "SqliteOperationalStateStore file must exist in src/persistence/vajra/",
+    ).toBe(true);
 
     const content = fs.readFileSync(adapterPath, "utf8");
     expect(content).toContain("implements IOperationalStateStore");

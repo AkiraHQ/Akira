@@ -2,10 +2,10 @@ import { CognitiveStimulus } from "../types/stimulus";
 import { Result } from "../../contracts/results/result";
 
 export type IntentClass =
-  | "informational_query"   // Simple query requiring no state changes
-  | "operational_command"   // Multi-step task or workspace mutation
-  | "clarification"         // Response to previous query or escalation
-  | "ambiguous";            // Unclear intent requiring clarification
+  | "informational_query" // Simple query requiring no state changes
+  | "operational_command" // Multi-step task or workspace mutation
+  | "clarification" // Response to previous query or escalation
+  | "ambiguous"; // Unclear intent requiring clarification
 
 export interface ParsedIntent {
   readonly intentClass: IntentClass;

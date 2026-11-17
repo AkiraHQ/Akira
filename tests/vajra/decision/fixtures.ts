@@ -1,6 +1,9 @@
 import { CorrelationMetadata } from "../../../src/contracts/results/result";
 import { ReasoningResult } from "../../../src/vajra/reasoning/types";
-import { OperationalContext, createInitialOperationalContext } from "../../../src/vajra/types/operational-context";
+import {
+  OperationalContext,
+  createInitialOperationalContext,
+} from "../../../src/vajra/types/operational-context";
 import { SelfModel } from "../../../src/vajra/self-model/self-model";
 import { DEFAULT_POLICY_ENVELOPE, PolicyEnvelope } from "../../../src/vajra/types/policy";
 import { IOperationalStateStore } from "../../../src/vajra/ports/state-store";

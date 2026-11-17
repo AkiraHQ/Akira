@@ -108,7 +108,7 @@ export class ReasoningEngine implements IReasoningEngine {
             output = {
               ...output,
               hypotheses: Object.freeze(
-                output.hypotheses.map(h =>
+                output.hypotheses.map((h) =>
                   Object.freeze({
                     ...h,
                     confidence: Math.min(h.confidence, 0.4),
@@ -170,13 +170,13 @@ export class ReasoningEngine implements IReasoningEngine {
       correlation,
       intentClass: problemClass,
       selectedOption: `concluded:${status.toLowerCase()}`,
-      consideredOptions: finalHypotheses.map(h => ({
+      consideredOptions: finalHypotheses.map((h) => ({
         action: h.description,
         risk: finalUncertainty === "CRITICAL" ? "HIGH" : "LOW",
         confidence: h.confidence,
       })),
       rationale: traceRationale,
-      evidenceReliedUpon: finalHypotheses.flatMap(h => h.supportingEvidenceIds),
+      evidenceReliedUpon: finalHypotheses.flatMap((h) => h.supportingEvidenceIds),
       escalationRequired: finalUncertainty === "CRITICAL",
     });
 

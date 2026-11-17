@@ -125,7 +125,7 @@ describe("EvidenceContradictionStrategy (Tier 2)", () => {
     if (result.ok) {
       expect(result.value.contradictions.length).toBe(0);
       expect(result.value.uncertaintyLevel).toBe("LOW");
-      expect(result.value.hypotheses.some(h => h.id === "hyp-epistemic-consistent")).toBe(true);
+      expect(result.value.hypotheses.some((h) => h.id === "hyp-epistemic-consistent")).toBe(true);
     }
   });
 });

@@ -42,9 +42,7 @@ export const taskReadDescriptor: CapabilityDescriptor<TaskReadInput, Task | null
  * Handler for task.read capability.
  * Adapts existing SqliteTaskRepository without modifying repository internals.
  */
-export async function taskReadHandler(
-  input: TaskReadInput,
-): Promise<Task | null> {
+export async function taskReadHandler(input: TaskReadInput): Promise<Task | null> {
   const { taskRepository } = await import("../../../persistence/repositories");
   const task = taskRepository.getById(input.id);
   return task ?? null;

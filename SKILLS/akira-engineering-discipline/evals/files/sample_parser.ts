@@ -27,7 +27,7 @@ export function parseConsolidatedMemoryOutput(rawOutput: string): MemoryEntity[]
           id: currentEntity.id || `mem_${Date.now()}_${results.length}`,
           concept: currentEntity.concept,
           salience: currentEntity.salience,
-          tags: currentEntity.tags || []
+          tags: currentEntity.tags || [],
         });
       }
       inEntityBlock = true;
@@ -39,7 +39,7 @@ export function parseConsolidatedMemoryOutput(rawOutput: string): MemoryEntity[]
       currentEntity.tags = trimmed
         .replace("TAGS:", "")
         .split(",")
-        .map(t => t.trim())
+        .map((t) => t.trim())
         .filter(Boolean);
     }
   }
@@ -49,7 +49,7 @@ export function parseConsolidatedMemoryOutput(rawOutput: string): MemoryEntity[]
       id: currentEntity.id || `mem_${Date.now()}_${results.length}`,
       concept: currentEntity.concept,
       salience: currentEntity.salience,
-      tags: currentEntity.tags || []
+      tags: currentEntity.tags || [],
     });
   }
 

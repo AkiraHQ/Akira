@@ -57,10 +57,10 @@
  * length-frames each UTF-8 relative path plus its raw file bytes.
  */
 
-import { createRequire } from 'node:module';
-import { createHash } from 'node:crypto';
-import { dirname, resolve, join, basename, extname, relative, sep } from 'node:path';
-import { fileURLToPath, pathToFileURL } from 'node:url';
+import { createRequire } from "node:module";
+import { createHash } from "node:crypto";
+import { dirname, resolve, join, basename, extname, relative, sep } from "node:path";
+import { fileURLToPath, pathToFileURL } from "node:url";
 import {
   existsSync,
   lstatSync,
@@ -69,13 +69,13 @@ import {
   realpathSync,
   statSync,
   writeFileSync,
-} from 'node:fs';
-import { spawnSync } from 'node:child_process';
+} from "node:fs";
+import { spawnSync } from "node:child_process";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 // skills/understand/ -> plugin root is two dirs up
-const pluginRoot = resolve(__dirname, '../..');
-const require = createRequire(resolve(pluginRoot, 'package.json'));
+const pluginRoot = resolve(__dirname, "../..");
+const require = createRequire(resolve(pluginRoot, "package.json"));
 
 // ---------------------------------------------------------------------------
 // Resolve @understand-anything/core
@@ -87,9 +87,9 @@ const require = createRequire(resolve(pluginRoot, 'package.json'));
 // ---------------------------------------------------------------------------
 let core;
 try {
-  core = await import(pathToFileURL(require.resolve('@understand-anything/core')).href);
+  core = await import(pathToFileURL(require.resolve("@understand-anything/core")).href);
 } catch {
-  core = await import(pathToFileURL(resolve(pluginRoot, 'packages/core/dist/index.js')).href);
+  core = await import(pathToFileURL(resolve(pluginRoot, "packages/core/dist/index.js")).href);
 }
 
 const { createIgnoreFilter, resolveUaDir } = core;
@@ -115,95 +115,95 @@ const { createIgnoreFilter, resolveUaDir } = core;
  */
 const LANGUAGE_BY_EXT = Object.freeze({
   // TypeScript / JavaScript
-  '.ts': 'typescript',
-  '.tsx': 'typescript',
-  '.js': 'javascript',
-  '.jsx': 'javascript',
-  '.mjs': 'javascript',
-  '.cjs': 'javascript',
+  ".ts": "typescript",
+  ".tsx": "typescript",
+  ".js": "javascript",
+  ".jsx": "javascript",
+  ".mjs": "javascript",
+  ".cjs": "javascript",
   // Python
-  '.py': 'python',
-  '.pyi': 'python',
+  ".py": "python",
+  ".pyi": "python",
   // Go / Rust / Java / Kotlin / Scala / C# / Swift / Lua
-  '.go': 'go',
-  '.rs': 'rust',
-  '.java': 'java',
-  '.kt': 'kotlin',
-  '.kts': 'kotlin',
-  '.scala': 'scala',
-  '.sc': 'scala',
-  '.sbt': 'scala',
-  '.cs': 'csharp',
-  '.swift': 'swift',
-  '.lua': 'lua',
+  ".go": "go",
+  ".rs": "rust",
+  ".java": "java",
+  ".kt": "kotlin",
+  ".kts": "kotlin",
+  ".scala": "scala",
+  ".sc": "scala",
+  ".sbt": "scala",
+  ".cs": "csharp",
+  ".swift": "swift",
+  ".lua": "lua",
   // Ruby / PHP
-  '.rb': 'ruby',
-  '.rake': 'ruby',
-  '.php': 'php',
+  ".rb": "ruby",
+  ".rake": "ruby",
+  ".php": "php",
   // C / C++
-  '.c': 'c',
-  '.h': 'c',
-  '.cpp': 'cpp',
-  '.cc': 'cpp',
-  '.cxx': 'cpp',
-  '.hpp': 'cpp',
-  '.hxx': 'cpp',
+  ".c": "c",
+  ".h": "c",
+  ".cpp": "cpp",
+  ".cc": "cpp",
+  ".cxx": "cpp",
+  ".hpp": "cpp",
+  ".hxx": "cpp",
   // Vue / Svelte (no tree-sitter extractor, but project-scanner contract
   // lists them as code languages — downstream import map will return [])
-  '.vue': 'vue',
-  '.svelte': 'svelte',
+  ".vue": "vue",
+  ".svelte": "svelte",
   // Shell / Batch / PowerShell
-  '.sh': 'shell',
-  '.bash': 'shell',
-  '.zsh': 'shell',
-  '.ps1': 'powershell',
-  '.psm1': 'powershell',
-  '.psd1': 'powershell',
-  '.bat': 'batch',
-  '.cmd': 'batch',
+  ".sh": "shell",
+  ".bash": "shell",
+  ".zsh": "shell",
+  ".ps1": "powershell",
+  ".psm1": "powershell",
+  ".psd1": "powershell",
+  ".bat": "batch",
+  ".cmd": "batch",
   // Markup / docs
-  '.html': 'html',
-  '.htm': 'html',
-  '.css': 'css',
-  '.scss': 'css',
-  '.sass': 'css',
-  '.less': 'css',
-  '.md': 'markdown',
-  '.mdx': 'markdown',
-  '.rst': 'markdown',
+  ".html": "html",
+  ".htm": "html",
+  ".css": "css",
+  ".scss": "css",
+  ".sass": "css",
+  ".less": "css",
+  ".md": "markdown",
+  ".mdx": "markdown",
+  ".rst": "markdown",
   // Config / data
-  '.yaml': 'yaml',
-  '.yml': 'yaml',
-  '.json': 'json',
-  '.jsonc': 'jsonc',
-  '.toml': 'toml',
-  '.xml': 'xml',
-  '.xsl': 'xml',
-  '.xsd': 'xml',
-  '.plist': 'xml',
-  '.cfg': 'config',
-  '.ini': 'config',
-  '.env': 'config',
+  ".yaml": "yaml",
+  ".yml": "yaml",
+  ".json": "json",
+  ".jsonc": "jsonc",
+  ".toml": "toml",
+  ".xml": "xml",
+  ".xsl": "xml",
+  ".xsd": "xml",
+  ".plist": "xml",
+  ".cfg": "config",
+  ".ini": "config",
+  ".env": "config",
   // Data / schema
-  '.sql': 'sql',
-  '.graphql': 'graphql',
-  '.gql': 'graphql',
-  '.proto': 'protobuf',
-  '.prisma': 'prisma',
-  '.csv': 'csv',
-  '.tsv': 'csv',
+  ".sql": "sql",
+  ".graphql": "graphql",
+  ".gql": "graphql",
+  ".proto": "protobuf",
+  ".prisma": "prisma",
+  ".csv": "csv",
+  ".tsv": "csv",
   // Infra
-  '.tf': 'terraform',
-  '.tfvars': 'terraform',
+  ".tf": "terraform",
+  ".tfvars": "terraform",
   // JVM build files (categorized via filename-or-extension)
-  '.gradle': 'gradle',
+  ".gradle": "gradle",
   // .NET project files (mapped to extension-derived ids; downstream
   // treats them as config — see CATEGORY_BY_EXT)
-  '.csproj': 'csproj',
-  '.sln': 'sln',
-  '.properties': 'properties',
-  '.mod': 'mod',
-  '.sum': 'sum',
+  ".csproj": "csproj",
+  ".sln": "sln",
+  ".properties": "properties",
+  ".mod": "mod",
+  ".sum": "sum",
 });
 
 /**
@@ -216,13 +216,13 @@ const LANGUAGE_BY_EXT = Object.freeze({
  * possible suffix.
  */
 const LANGUAGE_BY_FILENAME = Object.freeze({
-  Dockerfile: 'dockerfile',
-  Makefile: 'makefile',
-  GNUmakefile: 'makefile',
-  makefile: 'makefile',
-  Jenkinsfile: 'jenkinsfile',
-  Procfile: 'procfile',
-  Vagrantfile: 'vagrantfile',
+  Dockerfile: "dockerfile",
+  Makefile: "makefile",
+  GNUmakefile: "makefile",
+  makefile: "makefile",
+  Jenkinsfile: "jenkinsfile",
+  Procfile: "procfile",
+  Vagrantfile: "vagrantfile",
 });
 
 /**
@@ -237,7 +237,7 @@ export function detectLanguage(filePath) {
   const ext = extname(filePath).toLowerCase();
 
   // Dockerfile.dev, Dockerfile.prod, etc. — common variant form.
-  if (base === 'Dockerfile' || base.startsWith('Dockerfile.')) return 'dockerfile';
+  if (base === "Dockerfile" || base.startsWith("Dockerfile.")) return "dockerfile";
 
   // Dotfile names like .env, .env.local — path.extname returns '' for
   // single-segment dotfiles (e.g. '.env') and the SECOND segment for
@@ -258,7 +258,7 @@ export function detectLanguage(filePath) {
   const byFilename = LANGUAGE_BY_FILENAME[base];
   if (byFilename) return byFilename;
 
-  return 'unknown';
+  return "unknown";
 }
 
 /**
@@ -275,7 +275,7 @@ export function detectLanguage(filePath) {
  * to `unknown` / `code`.
  */
 function dotfileKey(base) {
-  if (!base.startsWith('.')) return null;
+  if (!base.startsWith(".")) return null;
   const m = base.match(/^(\.[a-z0-9]+)/i);
   return m ? m[1].toLowerCase() : null;
 }
@@ -298,58 +298,58 @@ function dotfileKey(base) {
  */
 const CATEGORY_BY_EXT = Object.freeze({
   // docs
-  '.md': 'docs',
-  '.mdx': 'docs',
-  '.rst': 'docs',
-  '.txt': 'docs',
-  '.text': 'docs',
+  ".md": "docs",
+  ".mdx": "docs",
+  ".rst": "docs",
+  ".txt": "docs",
+  ".text": "docs",
   // config
-  '.yaml': 'config',
-  '.yml': 'config',
-  '.json': 'config',
-  '.jsonc': 'config',
-  '.toml': 'config',
-  '.xml': 'config',
-  '.xsl': 'config',
-  '.xsd': 'config',
-  '.plist': 'config',
-  '.cfg': 'config',
-  '.ini': 'config',
-  '.env': 'config',
-  '.properties': 'config',
-  '.csproj': 'config',
-  '.sln': 'config',
-  '.mod': 'config',
-  '.sum': 'config',
-  '.gradle': 'config',
-  '.sbt': 'config',
+  ".yaml": "config",
+  ".yml": "config",
+  ".json": "config",
+  ".jsonc": "config",
+  ".toml": "config",
+  ".xml": "config",
+  ".xsl": "config",
+  ".xsd": "config",
+  ".plist": "config",
+  ".cfg": "config",
+  ".ini": "config",
+  ".env": "config",
+  ".properties": "config",
+  ".csproj": "config",
+  ".sln": "config",
+  ".mod": "config",
+  ".sum": "config",
+  ".gradle": "config",
+  ".sbt": "config",
   // infra
-  '.tf': 'infra',
-  '.tfvars': 'infra',
+  ".tf": "infra",
+  ".tfvars": "infra",
   // data
-  '.sql': 'data',
-  '.graphql': 'data',
-  '.gql': 'data',
-  '.proto': 'data',
-  '.prisma': 'data',
-  '.csv': 'data',
-  '.tsv': 'data',
+  ".sql": "data",
+  ".graphql": "data",
+  ".gql": "data",
+  ".proto": "data",
+  ".prisma": "data",
+  ".csv": "data",
+  ".tsv": "data",
   // script
-  '.sh': 'script',
-  '.bash': 'script',
-  '.zsh': 'script',
-  '.ps1': 'script',
-  '.psm1': 'script',
-  '.psd1': 'script',
-  '.bat': 'script',
-  '.cmd': 'script',
+  ".sh": "script",
+  ".bash": "script",
+  ".zsh": "script",
+  ".ps1": "script",
+  ".psm1": "script",
+  ".psd1": "script",
+  ".bat": "script",
+  ".cmd": "script",
   // markup
-  '.html': 'markup',
-  '.htm': 'markup',
-  '.css': 'markup',
-  '.scss': 'markup',
-  '.sass': 'markup',
-  '.less': 'markup',
+  ".html": "markup",
+  ".htm": "markup",
+  ".css": "markup",
+  ".scss": "markup",
+  ".sass": "markup",
+  ".less": "markup",
 });
 
 /**
@@ -358,15 +358,15 @@ const CATEGORY_BY_EXT = Object.freeze({
  * against basename(path).
  */
 const INFRA_FILENAMES = new Set([
-  'Dockerfile',
-  '.dockerignore',
-  'Makefile',
-  'GNUmakefile',
-  'makefile',
-  'Jenkinsfile',
-  'Procfile',
-  'Vagrantfile',
-  '.gitlab-ci.yml',
+  "Dockerfile",
+  ".dockerignore",
+  "Makefile",
+  "GNUmakefile",
+  "makefile",
+  "Jenkinsfile",
+  "Procfile",
+  "Vagrantfile",
+  ".gitlab-ci.yml",
 ]);
 
 /**
@@ -388,26 +388,26 @@ const INFRA_FILENAMES = new Set([
 export function detectCategory(filePath) {
   const base = basename(filePath);
   const ext = extname(filePath).toLowerCase();
-  const posix = filePath.split(sep).join('/');
+  const posix = filePath.split(sep).join("/");
 
   // Rule 1: LICENSE exception (project-scanner.md Step 4 table comment).
-  if (base === 'LICENSE') return 'code';
+  if (base === "LICENSE") return "code";
 
   // Rule 2: infra by filename — Dockerfile + variants, Makefile,
   // Jenkinsfile, docker-compose.*, Procfile, Vagrantfile, .gitlab-ci.yml,
   // .dockerignore.
-  if (INFRA_FILENAMES.has(base)) return 'infra';
-  if (base === 'Dockerfile' || base.startsWith('Dockerfile.')) return 'infra';
-  if (base.startsWith('docker-compose.')) return 'infra';
-  if (base === 'compose.yml' || base === 'compose.yaml') return 'infra';
+  if (INFRA_FILENAMES.has(base)) return "infra";
+  if (base === "Dockerfile" || base.startsWith("Dockerfile.")) return "infra";
+  if (base.startsWith("docker-compose.")) return "infra";
+  if (base === "compose.yml" || base === "compose.yaml") return "infra";
 
   // Rule 3: infra by path.
-  if (posix.startsWith('.github/workflows/')) return 'infra';
-  if (posix.startsWith('.circleci/')) return 'infra';
+  if (posix.startsWith(".github/workflows/")) return "infra";
+  if (posix.startsWith(".circleci/")) return "infra";
   // Match a `k8s/` or `kubernetes/` segment anywhere in the path.
-  if (/(^|\/)(k8s|kubernetes)\//.test(posix)) return 'infra';
+  if (/(^|\/)(k8s|kubernetes)\//.test(posix)) return "infra";
   // `*.k8s.yml` and `*.k8s.yaml` — Kubernetes-flavored YAML.
-  if (/\.k8s\.(ya?ml)$/i.test(base)) return 'infra';
+  if (/\.k8s\.(ya?ml)$/i.test(base)) return "infra";
 
   // Rule 4: extension-based lookup.
   if (ext) {
@@ -428,7 +428,7 @@ export function detectCategory(filePath) {
   // config). We don't enumerate every possible config filename here — that
   // gets handled by the language map's no-extension entries upstream.
   // Anything not matched falls through to `code`.
-  return 'code';
+  return "code";
 }
 
 // ---------------------------------------------------------------------------
@@ -448,10 +448,10 @@ export function detectCategory(filePath) {
  * a sentinel for "nothing to analyze" via `totalFiles`, not complexity.
  */
 export function estimateComplexity(totalFiles) {
-  if (totalFiles <= 30) return 'small';
-  if (totalFiles <= 150) return 'moderate';
-  if (totalFiles <= 500) return 'large';
-  return 'very-large';
+  if (totalFiles <= 30) return "small";
+  if (totalFiles <= 150) return "moderate";
+  if (totalFiles <= 500) return "large";
+  return "very-large";
 }
 
 // ---------------------------------------------------------------------------
@@ -464,7 +464,7 @@ export function estimateComplexity(totalFiles) {
  * Windows/macOS/Linux.
  */
 function toPosix(p) {
-  return p.split(sep).join('/');
+  return p.split(sep).join("/");
 }
 
 /**
@@ -499,18 +499,15 @@ function enumerateViaGit(projectRoot) {
   // dropped from the scan. The -z form emits raw bytes between NUL separators,
   // preserving every codepoint as-is. This is the same approach git itself
   // uses for `--null` everywhere downstream (xargs -0, etc.).
-  const result = spawnSync('git', ['ls-files', '-z', '-co', '--exclude-standard'], {
+  const result = spawnSync("git", ["ls-files", "-z", "-co", "--exclude-standard"], {
     cwd: projectRoot,
-    encoding: 'utf-8',
+    encoding: "utf-8",
     maxBuffer: 256 * 1024 * 1024, // 256MB — huge monorepos can produce >10MB of paths
   });
   if (result.status !== 0 || !result.stdout) return null;
   // Each NUL-separated chunk is one path, project-relative, already POSIX on
   // all platforms because git emits forward slashes regardless of OS.
-  return result.stdout
-    .split('\0')
-    .filter(Boolean)
-    .map(toPosix);
+  return result.stdout.split("\0").filter(Boolean).map(toPosix);
 }
 
 /**
@@ -527,13 +524,7 @@ function enumerateViaWalk(projectRoot) {
   // at the walker level avoids materializing thousands of node_modules
   // paths before the ignore filter drops them. The ignore filter still
   // runs on everything else.
-  const HARD_SKIP_DIRS = new Set([
-    'node_modules',
-    '.git',
-    '.svn',
-    '.hg',
-    '__pycache__',
-  ]);
+  const HARD_SKIP_DIRS = new Set(["node_modules", ".git", ".svn", ".hg", "__pycache__"]);
 
   const out = [];
 
@@ -543,8 +534,8 @@ function enumerateViaWalk(projectRoot) {
       entries = readdirSync(absDir, { withFileTypes: true });
     } catch (err) {
       process.stderr.write(
-        `Warning: scan-project: ${toPosix(relative(projectRoot, absDir)) || '.'} ` +
-        `— directory read failed (${err.message}) — subtree skipped\n`,
+        `Warning: scan-project: ${toPosix(relative(projectRoot, absDir)) || "."} ` +
+          `— directory read failed (${err.message}) — subtree skipped\n`,
       );
       return;
     }
@@ -578,9 +569,7 @@ function enumerateViaWalk(projectRoot) {
 function enumerateFiles(projectRoot) {
   const fromGit = enumerateViaGit(projectRoot);
   if (fromGit !== null) return fromGit;
-  process.stderr.write(
-    `scan-project: git ls-files unavailable — falling back to recursive walk\n`,
-  );
+  process.stderr.write(`scan-project: git ls-files unavailable — falling back to recursive walk\n`);
   return enumerateViaWalk(projectRoot);
 }
 
@@ -614,7 +603,7 @@ function buildDefaultsOnlyFilter() {
   // The directory doesn't need to exist on disk because createIgnoreFilter
   // only checks existsSync() before reading.
   const fakeProjectRoot = join(
-    require('node:os').tmpdir(),
+    require("node:os").tmpdir(),
     `ua-scan-defaults-${process.pid}-${Date.now()}`,
   );
   return createIgnoreFilter(fakeProjectRoot);
@@ -631,8 +620,8 @@ function buildDefaultsOnlyFilter() {
  */
 function hasUserIgnoreFile(projectRoot) {
   return (
-    existsSync(join(projectRoot, '.understandignore'))
-    || existsSync(join(resolveUaDir(projectRoot), '.understandignore'))
+    existsSync(join(projectRoot, ".understandignore")) ||
+    existsSync(join(resolveUaDir(projectRoot), ".understandignore"))
   );
 }
 
@@ -660,16 +649,16 @@ function readAndCountLines(absPath, posixPath, failures) {
     }
     return { bytes: buf, sizeLines: count };
   } catch (err) {
-    failures.push({ path: posixPath, stage: 'file-read', message: err.message });
+    failures.push({ path: posixPath, stage: "file-read", message: err.message });
     process.stderr.write(
       `Warning: scan-project: ${posixPath} — line count failed ` +
-      `(${err.message}) — file skipped from output\n`,
+        `(${err.message}) — file skipped from output\n`,
     );
     return null;
   }
 }
 
-const CONTENT_DIGEST_DOMAIN = Buffer.from('understand-anything:scan-content:v1\0', 'utf-8');
+const CONTENT_DIGEST_DOMAIN = Buffer.from("understand-anything:scan-content:v1\0", "utf-8");
 
 /**
  * Add one scanned regular file to the aggregate fingerprint. Entries arrive
@@ -679,7 +668,7 @@ const CONTENT_DIGEST_DOMAIN = Buffer.from('understand-anything:scan-content:v1\0
  * Length prefixes make path/content and adjacent-entry boundaries unambiguous.
  */
 function updateContentDigest(hash, posixPath, contentBytes) {
-  const pathBytes = Buffer.from(posixPath, 'utf-8');
+  const pathBytes = Buffer.from(posixPath, "utf-8");
   const lengths = Buffer.allocUnsafe(12);
   lengths.writeUInt32BE(pathBytes.length, 0);
   lengths.writeBigUInt64BE(BigInt(contentBytes.length), 4);
@@ -701,26 +690,26 @@ async function main() {
 
   for (let i = 0; i < args.length; i++) {
     const arg = args[i];
-    if (arg === '--exclude-analysis-data') {
+    if (arg === "--exclude-analysis-data") {
       excludeAnalysisData = true;
       continue;
     }
-    if (arg === '--exclude') {
+    if (arg === "--exclude") {
       const value = args[i + 1];
-      if (!value || value.startsWith('--')) {
-        process.stderr.write('scan-project.mjs failed: --exclude requires patterns\n');
+      if (!value || value.startsWith("--")) {
+        process.stderr.write("scan-project.mjs failed: --exclude requires patterns\n");
         process.exit(1);
       }
       excludePatterns.push(
         ...value
-          .split(',')
-          .map(pattern => pattern.trim())
+          .split(",")
+          .map((pattern) => pattern.trim())
           .filter(Boolean),
       );
       i++;
       continue;
     }
-    if (arg.startsWith('--')) {
+    if (arg.startsWith("--")) {
       process.stderr.write(`scan-project.mjs failed: unknown option: ${arg}\n`);
       process.exit(1);
     }
@@ -738,16 +727,14 @@ async function main() {
 
   if (!projectRoot || !outputPath) {
     process.stderr.write(
-      'Usage: node scan-project.mjs <projectRoot> <outputPath> ' +
-      '[--exclude <patterns>] [--exclude-analysis-data]\n',
+      "Usage: node scan-project.mjs <projectRoot> <outputPath> " +
+        "[--exclude <patterns>] [--exclude-analysis-data]\n",
     );
     process.exit(1);
   }
 
   if (!existsSync(projectRoot)) {
-    process.stderr.write(
-      `scan-project.mjs failed: projectRoot does not exist: ${projectRoot}\n`,
-    );
+    process.stderr.write(`scan-project.mjs failed: projectRoot does not exist: ${projectRoot}\n`);
     process.exit(1);
   }
   const projectRootStat = statSync(projectRoot);
@@ -762,9 +749,8 @@ async function main() {
 
   // 1. Enumerate. Either git ls-files or recursive walk.
   const candidates = enumerateFiles(projectRoot).filter(
-    rel =>
-      !excludeAnalysisData ||
-      (!rel.startsWith('.ua/') && !rel.startsWith('.understand-anything/')),
+    (rel) =>
+      !excludeAnalysisData || (!rel.startsWith(".ua/") && !rel.startsWith(".understand-anything/")),
   );
 
   // 2. Filter via createIgnoreFilter (defaults + .understandignore + CLI excludes).
@@ -797,7 +783,7 @@ async function main() {
   // 3. Per-file: language + category + line count.
   //    Drop files that fail line counting (per-file resilience).
   const fileEntries = [];
-  const contentHash = createHash('sha256');
+  const contentHash = createHash("sha256");
   contentHash.update(CONTENT_DIGEST_DOMAIN);
   for (const rel of kept) {
     const absPath = join(projectRoot, rel);
@@ -807,8 +793,7 @@ async function main() {
       const st = lstatSync(absPath);
       if (st.isSymbolicLink()) {
         process.stderr.write(
-          `Warning: scan-project: ${rel} — symbolic link skipped ` +
-          `— file skipped from output\n`,
+          `Warning: scan-project: ${rel} — symbolic link skipped ` + `— file skipped from output\n`,
         );
         continue;
       }
@@ -817,10 +802,10 @@ async function main() {
         continue;
       }
     } catch (err) {
-      failures.push({ path: rel, stage: 'file-lstat', message: err.message });
+      failures.push({ path: rel, stage: "file-lstat", message: err.message });
       process.stderr.write(
         `Warning: scan-project: ${rel} — lstat failed (${err.message}) ` +
-        `— file skipped from output\n`,
+          `— file skipped from output\n`,
       );
       continue;
     }
@@ -840,7 +825,7 @@ async function main() {
 
   // 4. Determinism: preserve the documented locale-independent path order.
   fileEntries.sort((a, b) => compareStableStrings(a.path, b.path));
-  const contentDigest = contentHash.digest('hex');
+  const contentDigest = contentHash.digest("hex");
 
   // 5. Stats.
   const byCategory = {};
@@ -867,7 +852,7 @@ async function main() {
     },
   };
 
-  writeFileSync(outputPath, JSON.stringify(output, null, 2), 'utf-8');
+  writeFileSync(outputPath, JSON.stringify(output, null, 2), "utf-8");
 
   if (!existsSync(outputPath)) {
     throw new Error(`output file missing after write: ${outputPath}`);
@@ -875,8 +860,8 @@ async function main() {
 
   process.stderr.write(
     `scan-project: filesScanned=${fileEntries.length} ` +
-    `filteredByIgnore=${filteredByIgnore} ` +
-    `complexity=${estimatedComplexity}\n`,
+      `filteredByIgnore=${filteredByIgnore} ` +
+      `complexity=${estimatedComplexity}\n`,
   );
 }
 

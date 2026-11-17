@@ -3,7 +3,10 @@ import {
   MockModelCoprocessorAdapter,
   AiProviderCoprocessorAdapter,
 } from "../../../src/vajra/boundaries/model-coprocessor-port";
-import { ModelReasoningPayloadSchema, ModelReasoningPayload } from "../../../src/vajra/reasoning/types";
+import {
+  ModelReasoningPayloadSchema,
+  ModelReasoningPayload,
+} from "../../../src/vajra/reasoning/types";
 import { AIProvider } from "../../../src/genesis/context/ai/provider-interface";
 
 describe("Model Coprocessor Boundary", () => {
@@ -40,7 +43,9 @@ describe("Model Coprocessor Boundary", () => {
 
     expect(result.ok).toBe(true);
     if (result.ok) {
-      expect(result.value.parsed.interpretedSituation).toBe("User requested automated release verification");
+      expect(result.value.parsed.interpretedSituation).toBe(
+        "User requested automated release verification",
+      );
       expect(result.value.parsed.hypotheses.length).toBe(1);
       expect(result.value.costCents).toBeGreaterThanOrEqual(0);
     }
@@ -99,25 +104,28 @@ describe("Model Coprocessor Boundary", () => {
           provider: "fake-llm",
           model: "fake-v1",
           // Simulating LLM attempting to declare itself as authority or include extra executable fields
-          content: "```json\n" + JSON.stringify({
-            interpretedSituation: "Ambiguous user query",
-            hypotheses: [
-              {
-                id: "h-1",
-                description: "User wants to format drive",
-                confidence: 0.5,
-                supportingEvidenceIds: [],
-              },
-            ],
-            possibleConsequences: ["Potential data loss"],
-            uncertaintyLevel: "HIGH",
-            unresolvedQuestions: ["Which drive?"],
-            verificationSuggestions: ["Confirm with human"],
-            rationale: "Requires clarification",
-            // Attempted injection of tier selection or execution command
-            selectedTier: 1,
-            executeCommand: "rm -rf /",
-          }) + "\n```",
+          content:
+            "```json\n" +
+            JSON.stringify({
+              interpretedSituation: "Ambiguous user query",
+              hypotheses: [
+                {
+                  id: "h-1",
+                  description: "User wants to format drive",
+                  confidence: 0.5,
+                  supportingEvidenceIds: [],
+                },
+              ],
+              possibleConsequences: ["Potential data loss"],
+              uncertaintyLevel: "HIGH",
+              unresolvedQuestions: ["Which drive?"],
+              verificationSuggestions: ["Confirm with human"],
+              rationale: "Requires clarification",
+              // Attempted injection of tier selection or execution command
+              selectedTier: 1,
+              executeCommand: "rm -rf /",
+            }) +
+            "\n```",
           finishReason: "stop",
           usage: { promptTokens: 100, completionTokens: 50, totalTokens: 150 },
           timestamp: new Date().toISOString(),

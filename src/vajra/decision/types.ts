@@ -9,15 +9,15 @@ export { DecisionApprovalState };
  * epistemic verification, human escalation, or a safe hold.
  */
 export type DecisionNecessityClass =
-  | "NO_ACTION_REQUIRED"           // Stimulus is informational ping; state is nominal
-  | "ANSWER_CONVERSATION"          // Direct conversational response to human query
-  | "REQUEST_CLARIFICATION"        // Ambiguous intent or missing parameters; ask user
-  | "REQUEST_VERIFICATION"         // Contradiction detected; observation probe needed
-  | "WAIT_AND_OBSERVE"             // External task in flight; await telemetry or timer
-  | "ESCALATE_TO_HUMAN"            // High-impact or irreversible action; mandatory approval
-  | "DISAGREE_AND_COUNTERPROPOSE"  // Human intent conflicts with facts; initiate protocol
-  | "START_MISSION"                // Multi-step operational objective requiring Phase 6
-  | "REJECT_SAFETY_VIOLATION";     // Prohibited action or attempt to breach blast doors
+  | "NO_ACTION_REQUIRED" // Stimulus is informational ping; state is nominal
+  | "ANSWER_CONVERSATION" // Direct conversational response to human query
+  | "REQUEST_CLARIFICATION" // Ambiguous intent or missing parameters; ask user
+  | "REQUEST_VERIFICATION" // Contradiction detected; observation probe needed
+  | "WAIT_AND_OBSERVE" // External task in flight; await telemetry or timer
+  | "ESCALATE_TO_HUMAN" // High-impact or irreversible action; mandatory approval
+  | "DISAGREE_AND_COUNTERPROPOSE" // Human intent conflicts with facts; initiate protocol
+  | "START_MISSION" // Multi-step operational objective requiring Phase 6
+  | "REJECT_SAFETY_VIOLATION"; // Prohibited action or attempt to breach blast doors
 
 /**
  * A concrete candidate option formulated during decision arbitration.
@@ -68,7 +68,7 @@ export interface OptionEvaluationResult {
  * Disagreement categorization in the Disagreement Protocol.
  */
 export type DisagreementType =
-  | "PREFERENCE_DISAGREEMENT"       // Human preference differs from optimal; safe override possible
+  | "PREFERENCE_DISAGREEMENT" // Human preference differs from optimal; safe override possible
   | "SAFETY_VIOLATION_DISAGREEMENT"; // Human directive breaches absolute safety; override prohibited
 
 /**

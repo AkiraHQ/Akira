@@ -23,7 +23,10 @@ import { initializeDatabase } from "../../src/persistence/initializer";
 import { getDatabaseConnection, closeDatabaseConnection } from "../../src/persistence/connection";
 import { eventBus } from "../../src/shared/infrastructure/event-bus";
 import { tasksService } from "../../src/akira-os/tasks/services";
-import { getCapabilityRegistry, resetCapabilityRegistry } from "../../src/akira-os/capabilities/host";
+import {
+  getCapabilityRegistry,
+  resetCapabilityRegistry,
+} from "../../src/akira-os/capabilities/host";
 import { taskRepository } from "../../src/persistence/repositories";
 
 describe("Phase 3G — Production Task Read Pipeline", () => {
@@ -51,9 +54,7 @@ describe("Phase 3G — Production Task Read Pipeline", () => {
     });
 
     // 2. Read the task via real application service
-    const task = await runWithStartContext({} as never, () =>
-      tasksService.getById(seededId),
-    );
+    const task = await runWithStartContext({} as never, () => tasksService.getById(seededId));
 
     // 3. Verify retrieved task shape and attributes
     expect(task).not.toBeNull();
@@ -75,9 +76,9 @@ describe("Phase 3G — Production Task Read Pipeline", () => {
   });
 
   it("enforces Zod input validation through CapabilityRegistry before touching SQLite on empty ID", async () => {
-    await expect(
-      runWithStartContext({} as never, () => tasksService.getById("")),
-    ).rejects.toThrow(/Failed to read task via capability/);
+    await expect(runWithStartContext({} as never, () => tasksService.getById(""))).rejects.toThrow(
+      /Failed to read task via capability/,
+    );
   });
 
   it("guarantees task.read Query causes zero SQLite mutations (row count remains identical)", async () => {
@@ -92,9 +93,7 @@ describe("Phase 3G — Production Task Read Pipeline", () => {
     ).count;
 
     // Execute query read
-    const task = await runWithStartContext({} as never, () =>
-      tasksService.getById(seededId),
-    );
+    const task = await runWithStartContext({} as never, () => tasksService.getById(seededId));
     expect(task).not.toBeNull();
 
     const countAfter = (
@@ -122,9 +121,7 @@ describe("Phase 3G — Production Task Read Pipeline", () => {
     });
 
     try {
-      const task = await runWithStartContext({} as never, () =>
-        tasksService.getById(seededId),
-      );
+      const task = await runWithStartContext({} as never, () => tasksService.getById(seededId));
       expect(task).not.toBeNull();
 
       // Queries must never emit DomainEvents
@@ -160,9 +157,9 @@ describe("Phase 3G — Production Task Read Pipeline", () => {
     expect(registry.has("task.list")).toBe(true);
   });
 
-
   it("proves persistGetTask server function exists, is configured as POST, and agrees on Task | null return contract", async () => {
-    const { persistGetTask, readTaskViaCapability } = await import("../../src/akira-os/tasks/server");
+    const { persistGetTask, readTaskViaCapability } =
+      await import("../../src/akira-os/tasks/server");
     expect(typeof persistGetTask).toBe("function");
     expect(persistGetTask.method).toBe("POST");
     expect(typeof readTaskViaCapability).toBe("function");
@@ -181,4 +178,3 @@ describe("Phase 3G — Production Task Read Pipeline", () => {
     expect(nonExistent).toBeNull();
   });
 });
-

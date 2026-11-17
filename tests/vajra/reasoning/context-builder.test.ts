@@ -25,7 +25,13 @@ describe("ReasoningContextBuilder", () => {
       owner: "AKIRA_OS",
       isAvailable: true,
       allowVajra: true,
-      limitations: { isReadOnly: true, isIdempotent: true, costClass: "FREE", activationTier: 1, requiresApproval: false },
+      limitations: {
+        isReadOnly: true,
+        isIdempotent: true,
+        costClass: "FREE",
+        activationTier: 1,
+        requiresApproval: false,
+      },
     });
     selfModel.registerCapability({
       name: "alpha_capability",
@@ -33,7 +39,13 @@ describe("ReasoningContextBuilder", () => {
       owner: "AKIRA_OS",
       isAvailable: true,
       allowVajra: true,
-      limitations: { isReadOnly: false, isIdempotent: false, costClass: "STANDARD", activationTier: 2, requiresApproval: true },
+      limitations: {
+        isReadOnly: false,
+        isIdempotent: false,
+        costClass: "STANDARD",
+        activationTier: 2,
+        requiresApproval: true,
+      },
     });
 
     const b2 = createBelief({ id: "b-02", proposition: "build compiles cleanly", confidence: 0.9 });
@@ -80,7 +92,9 @@ describe("ReasoningContextBuilder", () => {
     expect(context.relevantBeliefs[1].id).toBe("b-02");
 
     // Observations sorted by ID
-    expect(context.recentObservations[0].id.localeCompare(context.recentObservations[1].id)).toBeLessThanOrEqual(0);
+    expect(
+      context.recentObservations[0].id.localeCompare(context.recentObservations[1].id),
+    ).toBeLessThanOrEqual(0);
 
     // Context version captured
     expect(context.contextVersion).toBe(selfModel.getOperationalContext().version);
@@ -115,10 +129,30 @@ describe("ReasoningContextBuilder", () => {
     });
 
     genesisPort.setMemories([
-      { id: "mem-01", content: "Very long memory entry content that consumes lots of space in the JSON payload AAAAAAAAAAAAAAAAAAAAAA", relevance: 0.9 },
-      { id: "mem-02", content: "Another very long memory entry content BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB", relevance: 0.8 },
-      { id: "mem-03", content: "Third memory entry content CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC", relevance: 0.7 },
-      { id: "mem-04", content: "Fourth memory entry content DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD", relevance: 0.6 },
+      {
+        id: "mem-01",
+        content:
+          "Very long memory entry content that consumes lots of space in the JSON payload AAAAAAAAAAAAAAAAAAAAAA",
+        relevance: 0.9,
+      },
+      {
+        id: "mem-02",
+        content:
+          "Another very long memory entry content BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB",
+        relevance: 0.8,
+      },
+      {
+        id: "mem-03",
+        content:
+          "Third memory entry content CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC",
+        relevance: 0.7,
+      },
+      {
+        id: "mem-04",
+        content:
+          "Fourth memory entry content DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD",
+        relevance: 0.6,
+      },
     ]);
 
     const stimulus = createStimulus({

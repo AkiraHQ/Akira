@@ -117,7 +117,11 @@ describe("VAJRA Cross-Phase Integration Proof (Phases 5 → 6 → 7 → GENESIS)
     });
 
     akiraOSPort = {
-      executeCapability: async <TIn, TOut>(name: string, input: TIn, correlation: CorrelationMetadata) => {
+      executeCapability: async <TIn, TOut>(
+        name: string,
+        input: TIn,
+        correlation: CorrelationMetadata,
+      ) => {
         const res = await registry.invoke(name, input, correlation, { isVajra: true });
         if (!res.ok) {
           return Result.failure(res.error, correlation);
@@ -364,8 +368,12 @@ describe("VAJRA Cross-Phase Integration Proof (Phases 5 → 6 → 7 → GENESIS)
     expect(recordedMemories.length).toBe(1);
     const memory = recordedMemories[0];
     expect(memory.eventType).toBe("mission_completed");
-    expect(memory.title).toBe("Mission Completed: Execute operational mission: Accomplish user objective");
-    expect(memory.description).toContain('Completed operational mission: "Execute operational mission: Accomplish user objective"');
+    expect(memory.title).toBe(
+      "Mission Completed: Execute operational mission: Accomplish user objective",
+    );
+    expect(memory.description).toContain(
+      'Completed operational mission: "Execute operational mission: Accomplish user objective"',
+    );
     expect(memory.description).toContain("Status: completed.");
     expect(memory.description).not.toContain("undefined");
     expect(memory.description).not.toContain("Daily Tasks");
@@ -381,6 +389,8 @@ describe("VAJRA Cross-Phase Integration Proof (Phases 5 → 6 → 7 → GENESIS)
     expect(vr.evidenceIds).toContain(obs.id);
     expect(lastResult?.verificationRecordId).toBe(vr.id);
     expect(memory.metadata.platformEvent).toBeDefined();
-    expect((memory.metadata.platformEvent as any).correlationId).toBe(stimulusCorrelation.correlationId);
+    expect((memory.metadata.platformEvent as any).correlationId).toBe(
+      stimulusCorrelation.correlationId,
+    );
   });
 });

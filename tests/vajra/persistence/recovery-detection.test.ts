@@ -62,11 +62,13 @@ describe("Crash Recovery & Interruption Detection Tests", () => {
       "003_vajra_operational_state.sql",
     );
     db.exec(fs.readFileSync(migPath, "utf8"));
-    db.prepare(`
+    db.prepare(
+      `
       INSERT OR IGNORE INTO vajra_operational_state (
         id, current_focus, operational_mode, human_presence, system_health_status, version, updated_at
       ) VALUES ('singleton', 'Awaiting human directive', 'REQUEST_DRIVEN', 'FOCUSED_ACTIVE', 'NOMINAL', 1, ?)
-    `).run(new Date().toISOString());
+    `,
+    ).run(new Date().toISOString());
     db.prepare("INSERT INTO schema_version (version, applied_at) VALUES (3, ?)").run(
       new Date().toISOString(),
     );

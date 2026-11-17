@@ -1,10 +1,7 @@
 /**
  * Outcome of evaluating accumulated evidence against completion criteria.
  */
-export type VerificationOutcome =
-  | "criteria_satisfied"
-  | "criteria_not_satisfied"
-  | "inconclusive";
+export type VerificationOutcome = "criteria_satisfied" | "criteria_not_satisfied" | "inconclusive";
 
 /**
  * Durable record of a cognitive verification judgment (Contract K6).

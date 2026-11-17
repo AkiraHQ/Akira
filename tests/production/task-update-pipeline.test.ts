@@ -27,7 +27,10 @@ import { initializeDatabase } from "../../src/persistence/initializer";
 import { getDatabaseConnection, closeDatabaseConnection } from "../../src/persistence/connection";
 import { eventBus } from "../../src/shared/infrastructure/event-bus";
 import { tasksService } from "../../src/akira-os/tasks/services";
-import { getCapabilityRegistry, resetCapabilityRegistry } from "../../src/akira-os/capabilities/host";
+import {
+  getCapabilityRegistry,
+  resetCapabilityRegistry,
+} from "../../src/akira-os/capabilities/host";
 import { taskRepository } from "../../src/persistence/repositories";
 import type { DomainEvent } from "../../src/contracts/events/domain-event";
 
@@ -131,7 +134,6 @@ describe("Phase 3H — Production Task Update Pipeline", () => {
     } finally {
       unsubscribe();
     }
-
   });
 
   it("enforces Zod input validation through CapabilityRegistry before touching SQLite on empty patch", async () => {
@@ -144,9 +146,7 @@ describe("Phase 3H — Production Task Update Pipeline", () => {
 
     // Empty patch violates taskUpdateInputSchema refine (must contain at least one field)
     await expect(
-      runWithStartContext({} as never, () =>
-        tasksService.update(seededId, {} as never),
-      ),
+      runWithStartContext({} as never, () => tasksService.update(seededId, {} as never)),
     ).rejects.toThrow(/Failed to update task via capability/);
 
     // Repository must NOT have been called
@@ -161,9 +161,7 @@ describe("Phase 3H — Production Task Update Pipeline", () => {
     const updateSpy = vi.spyOn(taskRepository, "update");
 
     await expect(
-      runWithStartContext({} as never, () =>
-        tasksService.update("", { title: "New Title" }),
-      ),
+      runWithStartContext({} as never, () => tasksService.update("", { title: "New Title" })),
     ).rejects.toThrow(/Failed to update task via capability/);
 
     expect(updateSpy).not.toHaveBeenCalled();
@@ -203,7 +201,8 @@ describe("Phase 3H — Production Task Update Pipeline", () => {
   });
 
   it("proves persistUpdateTask server function exists, is configured as POST, and agrees on contract", async () => {
-    const { persistUpdateTask, updateTaskViaCapability } = await import("../../src/akira-os/tasks/server");
+    const { persistUpdateTask, updateTaskViaCapability } =
+      await import("../../src/akira-os/tasks/server");
     expect(typeof persistUpdateTask).toBe("function");
     expect(persistUpdateTask.method).toBe("POST");
     expect(typeof updateTaskViaCapability).toBe("function");

@@ -21,7 +21,10 @@ import { initializeDatabase } from "../../src/persistence/initializer";
 import { getDatabaseConnection, closeDatabaseConnection } from "../../src/persistence/connection";
 import { eventBus } from "../../src/shared/infrastructure/event-bus";
 import { tasksService } from "../../src/akira-os/tasks/services";
-import { getCapabilityRegistry, resetCapabilityRegistry } from "../../src/akira-os/capabilities/host";
+import {
+  getCapabilityRegistry,
+  resetCapabilityRegistry,
+} from "../../src/akira-os/capabilities/host";
 import { taskRepository } from "../../src/persistence/repositories";
 import { DomainEvent } from "../../src/contracts/events/domain-event";
 
@@ -129,4 +132,3 @@ describe("Phase 3F — Production Task Creation Pipeline", () => {
     expect(registry.has("task.list")).toBe(true);
   });
 });
-

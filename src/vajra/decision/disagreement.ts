@@ -32,7 +32,7 @@ export class DisagreementHandler {
       evidenceCitations: Object.freeze([...opts.evidenceCitations]),
       counterProposal: Object.freeze({ ...opts.counterProposal }),
       alternativeOptions: opts.alternativeOptions
-        ? Object.freeze(opts.alternativeOptions.map(o => Object.freeze({ ...o })))
+        ? Object.freeze(opts.alternativeOptions.map((o) => Object.freeze({ ...o })))
         : undefined,
     });
   }
@@ -51,7 +51,8 @@ export class DisagreementHandler {
     const lower = reaffirmedDirective.toLowerCase();
 
     // Check non-negotiable blast doors
-    const isProhibitedCapability = targetCapability && policy.prohibitedCapabilities.includes(targetCapability);
+    const isProhibitedCapability =
+      targetCapability && policy.prohibitedCapabilities.includes(targetCapability);
     const hasBlastDoorPattern =
       lower.includes("wipe") ||
       lower.includes("format disk") ||

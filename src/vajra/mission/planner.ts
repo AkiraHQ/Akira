@@ -68,7 +68,8 @@ export class PlanningEngine implements IPlanningEngine {
         description: `Execute ${templateStep.targetCapability}`,
         targetCapability: templateStep.targetCapability,
         input: parsedInput.data,
-        expectedEvidence: templateStep.expectedEvidence ?? `evidence.${templateStep.targetCapability}.ok`,
+        expectedEvidence:
+          templateStep.expectedEvidence ?? `evidence.${templateStep.targetCapability}.ok`,
       });
 
       const definition = createMissionDefinition({
@@ -263,7 +264,11 @@ export class PlanningEngine implements IPlanningEngine {
     }
 
     const entry = this.capabilityRegistry.get(alternativeStep.targetCapability);
-    if (!entry || !entry.descriptor.isAvailable || entry.descriptor.permissions.allowVajra === false) {
+    if (
+      !entry ||
+      !entry.descriptor.isAvailable ||
+      entry.descriptor.permissions.allowVajra === false
+    ) {
       return Result.failure(
         `REPLAN_REJECTED: Alternative capability '${alternativeStep.targetCapability}' is unavailable or disallowed.`,
         correlation,
@@ -284,7 +289,8 @@ export class PlanningEngine implements IPlanningEngine {
       description: `Replanned step: ${alternativeStep.targetCapability}`,
       targetCapability: alternativeStep.targetCapability,
       input: parsedInput.data,
-      expectedEvidence: alternativeStep.expectedEvidence ?? `evidence.${alternativeStep.targetCapability}.ok`,
+      expectedEvidence:
+        alternativeStep.expectedEvidence ?? `evidence.${alternativeStep.targetCapability}.ok`,
     });
 
     const previousStepInstances: MissionStep[] = completedSteps.map((s) =>

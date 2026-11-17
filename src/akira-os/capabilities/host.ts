@@ -30,10 +30,7 @@ import {
   taskListDescriptor,
   taskListHandler,
 } from "../tasks/capabilities/task-read";
-import {
-  recallSearchDescriptor,
-  recallSearchHandler,
-} from "../search/capabilities/recall-search";
+import { recallSearchDescriptor, recallSearchHandler } from "../search/capabilities/recall-search";
 
 let canonicalRegistry: CapabilityRegistry | null = null;
 

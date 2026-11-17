@@ -80,9 +80,15 @@ export class AiProviderCoprocessorAdapter implements IModelCoprocessorPort {
 
       let cleanedText = response.content.trim();
       if (cleanedText.startsWith("```json")) {
-        cleanedText = cleanedText.replace(/^```json\s*/i, "").replace(/\s*```$/, "").trim();
+        cleanedText = cleanedText
+          .replace(/^```json\s*/i, "")
+          .replace(/\s*```$/, "")
+          .trim();
       } else if (cleanedText.startsWith("```")) {
-        cleanedText = cleanedText.replace(/^```\s*/, "").replace(/\s*```$/, "").trim();
+        cleanedText = cleanedText
+          .replace(/^```\s*/, "")
+          .replace(/\s*```$/, "")
+          .trim();
       }
 
       let parsedJson: unknown;
@@ -107,7 +113,7 @@ export class AiProviderCoprocessorAdapter implements IModelCoprocessorPort {
       const completionTokens = response.usage?.completionTokens ?? 0;
       // Rough cost estimation: 0.1 cents per 1k input tokens, 0.4 cents per 1k output tokens
       const estimatedCostCents = Number(
-        ((promptTokens * 0.0001) + (completionTokens * 0.0004)).toFixed(4),
+        (promptTokens * 0.0001 + completionTokens * 0.0004).toFixed(4),
       );
 
       const coprocessorResponse: ModelCoprocessorResponse<TResponse> = {

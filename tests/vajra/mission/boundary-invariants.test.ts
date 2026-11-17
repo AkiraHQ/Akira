@@ -63,7 +63,13 @@ describe("Mission Subsystem Boundary Invariants (Phase 6 Architecture Blast Door
   });
 
   it("Preserves DAG-free Foundation Contracts (no dependsOn, predecessors, successors, callbacks)", () => {
-    const contractsPath = path.join(process.cwd(), "src", "contracts", "mission", "mission-definition.ts");
+    const contractsPath = path.join(
+      process.cwd(),
+      "src",
+      "contracts",
+      "mission",
+      "mission-definition.ts",
+    );
     const content = fs.readFileSync(contractsPath, "utf8");
 
     // Strip comments to test actual code declarations

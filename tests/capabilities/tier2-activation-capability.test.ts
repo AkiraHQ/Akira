@@ -148,12 +148,9 @@ describe("Tier-2 Capability Lifecycle & Rule N2 On-Demand Activation Semantics",
     expect(registry.getActivationState("restricted.tier2")).toBe("inactive");
 
     // Disallowed invocation attempt from external MCP caller
-    const res = await registry.invoke(
-      "restricted.tier2",
-      { query: "secret" },
-      sampleCorrelation,
-      { isExternalMcp: true },
-    );
+    const res = await registry.invoke("restricted.tier2", { query: "secret" }, sampleCorrelation, {
+      isExternalMcp: true,
+    });
 
     // Permission check MUST reject BEFORE activation attempt
     expect(onActivateHook).not.toHaveBeenCalled();
@@ -188,12 +185,9 @@ describe("Tier-2 Capability Lifecycle & Rule N2 On-Demand Activation Semantics",
 
     expect(registry.getActivationState("unavailable.tier2")).toBe("inactive");
 
-    const res = await registry.invoke(
-      "unavailable.tier2",
-      { query: "test" },
-      sampleCorrelation,
-      { isInternal: true },
-    );
+    const res = await registry.invoke("unavailable.tier2", { query: "test" }, sampleCorrelation, {
+      isInternal: true,
+    });
 
     // Unavailable capability MUST NOT activate on demand
     expect(onActivateHook).not.toHaveBeenCalled();
@@ -215,12 +209,9 @@ describe("Tier-2 Capability Lifecycle & Rule N2 On-Demand Activation Semantics",
     });
 
     // Activate via invocation
-    await registry.invoke(
-      "recall.search",
-      { terms: ["test"], limit: 1 },
-      sampleCorrelation,
-      { isInternal: true },
-    );
+    await registry.invoke("recall.search", { terms: ["test"], limit: 1 }, sampleCorrelation, {
+      isInternal: true,
+    });
 
     expect(registry.getActivationState("recall.search")).toBe("activated");
 

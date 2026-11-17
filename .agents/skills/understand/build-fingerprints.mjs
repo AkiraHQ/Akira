@@ -28,15 +28,15 @@
  * Exit code: 0 on success (including 0 files analyzed); non-zero on error.
  */
 
-import { createRequire } from 'node:module';
-import { dirname, resolve } from 'node:path';
-import { fileURLToPath, pathToFileURL } from 'node:url';
-import { readFileSync } from 'node:fs';
+import { createRequire } from "node:module";
+import { dirname, resolve } from "node:path";
+import { fileURLToPath, pathToFileURL } from "node:url";
+import { readFileSync } from "node:fs";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 // skills/understand/ -> plugin root is two dirs up
-const pluginRoot = resolve(__dirname, '../..');
-const require = createRequire(resolve(pluginRoot, 'package.json'));
+const pluginRoot = resolve(__dirname, "../..");
+const require = createRequire(resolve(pluginRoot, "package.json"));
 
 // ---------------------------------------------------------------------------
 // Resolve @understand-anything/core (matches extract-structure.mjs).
@@ -45,9 +45,9 @@ const require = createRequire(resolve(pluginRoot, 'package.json'));
 // ---------------------------------------------------------------------------
 let core;
 try {
-  core = await import(pathToFileURL(require.resolve('@understand-anything/core')).href);
+  core = await import(pathToFileURL(require.resolve("@understand-anything/core")).href);
 } catch {
-  core = await import(pathToFileURL(resolve(pluginRoot, 'packages/core/dist/index.js')).href);
+  core = await import(pathToFileURL(resolve(pluginRoot, "packages/core/dist/index.js")).href);
 }
 
 const {
@@ -62,19 +62,17 @@ const {
 async function main() {
   const [, , inputPath] = process.argv;
   if (!inputPath) {
-    process.stderr.write('Usage: node build-fingerprints.mjs <input.json>\n');
+    process.stderr.write("Usage: node build-fingerprints.mjs <input.json>\n");
     process.exit(1);
   }
 
-  const input = JSON.parse(
-    readFileSync(inputPath, 'utf-8'),
-  );
+  const input = JSON.parse(readFileSync(inputPath, "utf-8"));
   const { projectRoot, gitCommitHash } = input;
   const filePaths = input.filePaths ?? input.sourceFilePaths;
 
-  if (!projectRoot || !Array.isArray(filePaths) || typeof gitCommitHash !== 'string') {
+  if (!projectRoot || !Array.isArray(filePaths) || typeof gitCommitHash !== "string") {
     throw new Error(
-      'Invalid input: requires { projectRoot: string, filePaths: string[], gitCommitHash: string }',
+      "Invalid input: requires { projectRoot: string, filePaths: string[], gitCommitHash: string }",
     );
   }
 
@@ -89,7 +87,7 @@ async function main() {
   registry.register(tsPlugin);
   registerAllParsers(registry);
 
-  const structuralFingerprintLanguages = new Set(tsConfigs.map(config => config.id));
+  const structuralFingerprintLanguages = new Set(tsConfigs.map((config) => config.id));
   const store = buildFingerprintStore(projectRoot, filePaths, registry, gitCommitHash, {
     structuralFingerprintLanguages,
   });

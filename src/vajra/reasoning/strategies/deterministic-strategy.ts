@@ -58,24 +58,29 @@ export class DeterministicPolicyStrategy implements IVajraReasoningStrategy {
       uncertainty = "CRITICAL";
       hypotheses.push({
         id: "hyp-crit-health",
-        description: "System health is CRITICAL; operational safety mandates halt on non-essential tasks",
+        description:
+          "System health is CRITICAL; operational safety mandates halt on non-essential tasks",
         confidence: 1.0,
         supportingEvidenceIds: [],
       });
       possibleConsequences.push("Any further capability execution risks cascading system failure");
-      rationale = "System health check failed with status CRITICAL. In accordance with safety policies, operations are restrained.";
+      rationale =
+        "System health check failed with status CRITICAL. In accordance with safety policies, operations are restrained.";
     }
     // 2. Evaluate Degraded State
     else if (context.selfModelLimits.isDegraded) {
       uncertainty = "MEDIUM";
-      const reasons = context.selfModelLimits.degradedReasons.join("; ") || "unspecified degradation";
+      const reasons =
+        context.selfModelLimits.degradedReasons.join("; ") || "unspecified degradation";
       hypotheses.push({
         id: "hyp-degraded-state",
         description: `System is operating in a degraded mode: ${reasons}`,
         confidence: 0.9,
         supportingEvidenceIds: [],
       });
-      possibleConsequences.push("Subsystem limitations apply; capability invocations must be restricted");
+      possibleConsequences.push(
+        "Subsystem limitations apply; capability invocations must be restricted",
+      );
       rationale = `Self-model reported degraded state. Active degradation reasons: ${reasons}.`;
     }
     // 3. Evaluate Scheduled Timer Stimulus

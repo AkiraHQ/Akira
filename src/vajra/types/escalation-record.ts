@@ -4,11 +4,7 @@ import { ImpactClass } from "./policy";
  * Status of an escalation frame presented to the human.
  */
 export type EscalationStatus =
-  | "PENDING_APPROVAL"
-  | "APPROVED"
-  | "REJECTED"
-  | "EXPIRED"
-  | "CANCELLED";
+  "PENDING_APPROVAL" | "APPROVED" | "REJECTED" | "EXPIRED" | "CANCELLED";
 
 /**
  * Durable record of an escalation gate requiring human intervention or approval.

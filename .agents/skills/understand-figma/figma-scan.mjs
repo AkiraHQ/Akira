@@ -1,11 +1,20 @@
 #!/usr/bin/env node
 import { writeFileSync, mkdirSync, readFileSync, existsSync } from "node:fs";
 import { join } from "node:path";
-import { parseFileKey, FigmaApiSource, parseDocument, extractTokens, applyScreenThumbnails } from "@understand-anything/core/figma";
+import {
+  parseFileKey,
+  FigmaApiSource,
+  parseDocument,
+  extractTokens,
+  applyScreenThumbnails,
+} from "@understand-anything/core/figma";
 
 // Mirror core's resolveUaDir: the legacy `.understand-anything/` dir wins for
 // both reads and writes when it already exists; otherwise use `.ua/`.
-const uaDir = (root) => { const legacy = join(root, ".understand-anything"); return existsSync(legacy) ? legacy : join(root, ".ua"); };
+const uaDir = (root) => {
+  const legacy = join(root, ".understand-anything");
+  return existsSync(legacy) ? legacy : join(root, ".ua");
+};
 
 const [, , projectRoot, urlOrKey] = process.argv;
 if (!projectRoot || !urlOrKey) {
@@ -75,8 +84,8 @@ writeFileSync(join(interDir, "scan-manifest.json"), JSON.stringify(manifest, nul
 const count = (t) => nodes.filter((n) => n.type === t).length;
 console.error(
   `Figma scan: ${count("page")} pages, ${count("screen")} screens, ` +
-  `${count("component")} components, ${count("componentSet")} sets, ` +
-  `${count("instance")} instances, ${count("token")} tokens`,
+    `${count("component")} components, ${count("componentSet")} sets, ` +
+    `${count("instance")} instances, ${count("token")} tokens`,
 );
 
 /**
@@ -91,9 +100,7 @@ async function refreshThumbnailsInPlace(projectRoot, source) {
   if (!existsSync(graphPath)) return;
   try {
     const graph = JSON.parse(readFileSync(graphPath, "utf8"));
-    const screens = (graph.nodes ?? []).filter(
-      (n) => n.type === "screen" && n.figmaMeta?.nodeId,
-    );
+    const screens = (graph.nodes ?? []).filter((n) => n.type === "screen" && n.figmaMeta?.nodeId);
     if (screens.length === 0) return;
     const images = await source.renderImages(screens.map((n) => n.figmaMeta.nodeId));
     if (applyScreenThumbnails(graph.nodes, images) > 0) {

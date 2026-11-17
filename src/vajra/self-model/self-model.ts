@@ -5,10 +5,7 @@ import {
   ImpactClass,
   ReversibilityClass,
 } from "../types/policy";
-import {
-  OperationalContext,
-  createInitialOperationalContext,
-} from "../types/operational-context";
+import { OperationalContext, createInitialOperationalContext } from "../types/operational-context";
 import {
   StructuralIdentity,
   AuthorityBoundary,
@@ -97,7 +94,8 @@ export class SelfModel {
       ...DEFAULT_POLICY_ENVELOPE,
       ...(initialPolicy ?? {}),
       prohibitedCapabilities: Object.freeze([
-        ...(initialPolicy?.prohibitedCapabilities ?? DEFAULT_POLICY_ENVELOPE.prohibitedCapabilities),
+        ...(initialPolicy?.prohibitedCapabilities ??
+          DEFAULT_POLICY_ENVELOPE.prohibitedCapabilities),
       ]),
     });
     this.operationalContext = createInitialOperationalContext();
@@ -164,7 +162,8 @@ export class SelfModel {
     descriptor: CapabilityDescriptor<any, any>,
     limitationsPatch?: Partial<CapabilityLimitation>,
   ): void {
-    const isReadOnly = descriptor.kind === "Query" || descriptor.executionCharacteristics?.isReadOnly === true;
+    const isReadOnly =
+      descriptor.kind === "Query" || descriptor.executionCharacteristics?.isReadOnly === true;
     const isIdempotent = descriptor.executionCharacteristics?.isIdempotent === true;
     const allowVajra = descriptor.permissions?.allowVajra === true;
     const isAvailable = descriptor.isAvailable !== false;

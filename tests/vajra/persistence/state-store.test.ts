@@ -289,11 +289,7 @@ describe("SqliteOperationalStateStore — CRUD & Operations", () => {
       expect(pending.length).toBe(1);
       expect(pending[0].id).toBe("esc-01");
 
-      await store.resolveEscalation(
-        "esc-01",
-        "APPROVED",
-        "User confirmed via modal",
-      );
+      await store.resolveEscalation("esc-01", "APPROVED", "User confirmed via modal");
 
       const resolved = await store.getEscalation("esc-01");
       expect(resolved?.status).toBe("APPROVED");

@@ -157,14 +157,14 @@ describe("Phase 3J — Production Historical Recall Pipeline (First Cross-Domain
     const repoSpy = vi.spyOn(conversationRepository, "searchMessages");
 
     // A. Empty terms array violates inputSchema min(1)
-    await expect(
-      historicalRecall.search({ terms: [], limit: 5 }),
-    ).rejects.toThrow(/Failed to search historical recall via capability/);
+    await expect(historicalRecall.search({ terms: [], limit: 5 })).rejects.toThrow(
+      /Failed to search historical recall via capability/,
+    );
 
     // B. Term with empty string violates term schema min(1)
-    await expect(
-      historicalRecall.search({ terms: [""], limit: 5 }),
-    ).rejects.toThrow(/Failed to search historical recall via capability/);
+    await expect(historicalRecall.search({ terms: [""], limit: 5 })).rejects.toThrow(
+      /Failed to search historical recall via capability/,
+    );
 
     // Repository must NOT have been called on validation failure
     expect(repoSpy).not.toHaveBeenCalled();
@@ -238,10 +238,17 @@ describe("Phase 3J — Production Historical Recall Pipeline (First Cross-Domain
     ]);
 
     // Snapshot database table row counts before query
-    const countMessagesBefore = (db.prepare("SELECT COUNT(*) as c FROM chat_messages").get() as { c: number }).c;
-    const countConvsBefore = (db.prepare("SELECT COUNT(*) as c FROM conversations").get() as { c: number }).c;
-    const countTasksBefore = (db.prepare("SELECT COUNT(*) as c FROM tasks").get() as { c: number }).c;
-    const countEventsBefore = (db.prepare("SELECT COUNT(*) as c FROM timeline_events").get() as { c: number }).c;
+    const countMessagesBefore = (
+      db.prepare("SELECT COUNT(*) as c FROM chat_messages").get() as { c: number }
+    ).c;
+    const countConvsBefore = (
+      db.prepare("SELECT COUNT(*) as c FROM conversations").get() as { c: number }
+    ).c;
+    const countTasksBefore = (db.prepare("SELECT COUNT(*) as c FROM tasks").get() as { c: number })
+      .c;
+    const countEventsBefore = (
+      db.prepare("SELECT COUNT(*) as c FROM timeline_events").get() as { c: number }
+    ).c;
 
     // Spy on Contract K3 eventBus
     const eventBusSpy = vi.spyOn(eventBus, "publish");
@@ -254,10 +261,17 @@ describe("Phase 3J — Production Historical Recall Pipeline (First Cross-Domain
     expect(results.length).toBe(1);
 
     // Verify row counts are 100% unchanged
-    const countMessagesAfter = (db.prepare("SELECT COUNT(*) as c FROM chat_messages").get() as { c: number }).c;
-    const countConvsAfter = (db.prepare("SELECT COUNT(*) as c FROM conversations").get() as { c: number }).c;
-    const countTasksAfter = (db.prepare("SELECT COUNT(*) as c FROM tasks").get() as { c: number }).c;
-    const countEventsAfter = (db.prepare("SELECT COUNT(*) as c FROM timeline_events").get() as { c: number }).c;
+    const countMessagesAfter = (
+      db.prepare("SELECT COUNT(*) as c FROM chat_messages").get() as { c: number }
+    ).c;
+    const countConvsAfter = (
+      db.prepare("SELECT COUNT(*) as c FROM conversations").get() as { c: number }
+    ).c;
+    const countTasksAfter = (db.prepare("SELECT COUNT(*) as c FROM tasks").get() as { c: number })
+      .c;
+    const countEventsAfter = (
+      db.prepare("SELECT COUNT(*) as c FROM timeline_events").get() as { c: number }
+    ).c;
 
     expect(countMessagesAfter).toBe(countMessagesBefore);
     expect(countConvsAfter).toBe(countConvsBefore);
@@ -298,9 +312,8 @@ describe("Phase 3J — Production Historical Recall Pipeline (First Cross-Domain
   });
 
   it("Test 8 — Proves querySearchMessages server function exists, is configured as POST, and agrees on contract", async () => {
-    const { querySearchMessages, searchRecallViaCapability } = await import(
-      "../../src/akira-os/conversations/server"
-    );
+    const { querySearchMessages, searchRecallViaCapability } =
+      await import("../../src/akira-os/conversations/server");
 
     expect(typeof querySearchMessages).toBe("function");
     expect(querySearchMessages.method).toBe("POST");

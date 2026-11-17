@@ -26,7 +26,10 @@ import { initializeDatabase } from "../../src/persistence/initializer";
 import { getDatabaseConnection, closeDatabaseConnection } from "../../src/persistence/connection";
 import { eventBus } from "../../src/shared/infrastructure/event-bus";
 import { tasksService } from "../../src/akira-os/tasks/services";
-import { getCapabilityRegistry, resetCapabilityRegistry } from "../../src/akira-os/capabilities/host";
+import {
+  getCapabilityRegistry,
+  resetCapabilityRegistry,
+} from "../../src/akira-os/capabilities/host";
 import { taskRepository } from "../../src/persistence/repositories";
 import { getInitialState } from "../../src/persistence/store-init";
 import { persistListTasks, listTasksViaCapability } from "../../src/akira-os/tasks/server";
@@ -98,14 +101,16 @@ describe("Phase 3K — Production Task List Pipeline", () => {
     const db = getDatabaseConnection();
 
     // Insert tasks with explicit positions and timestamps to verify deterministic ordering
-    db.prepare(`
+    db.prepare(
+      `
       INSERT INTO tasks (id, title, priority, position, created_at, updated_at)
       VALUES 
         ('t-pos-2', 'Pos 2 Task', 'Low', 2, '2026-10-01T10:00:00.000Z', '2026-10-01T10:00:00.000Z'),
         ('t-pos-0', 'Pos 0 Task', 'High', 0, '2026-10-01T10:00:00.000Z', '2026-10-01T10:00:00.000Z'),
         ('t-pos-1-early', 'Pos 1 Early Task', 'Medium', 1, '2026-10-01T09:00:00.000Z', '2026-10-01T09:00:00.000Z'),
         ('t-pos-1-late', 'Pos 1 Late Task', 'Medium', 1, '2026-10-01T11:00:00.000Z', '2026-10-01T11:00:00.000Z')
-    `).run();
+    `,
+    ).run();
 
     const tasks = await tasksService.list();
 
@@ -124,7 +129,9 @@ describe("Phase 3K — Production Task List Pipeline", () => {
 
     const tasksBefore = db.prepare("SELECT * FROM tasks ORDER BY id ASC").all();
     const countTasksBefore = db.prepare("SELECT COUNT(*) as c FROM tasks").get() as { c: number };
-    const countEventsBefore = db.prepare("SELECT COUNT(*) as c FROM timeline_events").get() as { c: number };
+    const countEventsBefore = db.prepare("SELECT COUNT(*) as c FROM timeline_events").get() as {
+      c: number;
+    };
 
     // Execute list query
     const listed = await tasksService.list();
@@ -132,7 +139,9 @@ describe("Phase 3K — Production Task List Pipeline", () => {
 
     const tasksAfter = db.prepare("SELECT * FROM tasks ORDER BY id ASC").all();
     const countTasksAfter = db.prepare("SELECT COUNT(*) as c FROM tasks").get() as { c: number };
-    const countEventsAfter = db.prepare("SELECT COUNT(*) as c FROM timeline_events").get() as { c: number };
+    const countEventsAfter = db.prepare("SELECT COUNT(*) as c FROM timeline_events").get() as {
+      c: number;
+    };
 
     expect(countTasksAfter.c).toBe(countTasksBefore.c);
     expect(countEventsAfter.c).toBe(countEventsBefore.c);
@@ -143,9 +152,15 @@ describe("Phase 3K — Production Task List Pipeline", () => {
     taskRepository.add({ title: "Event Test Task", priority: "Medium" });
 
     const emittedEvents: string[] = [];
-    const unsubscribeCreated = eventBus.subscribe("task.created", () => emittedEvents.push("task.created"));
-    const unsubscribeUpdated = eventBus.subscribe("task.updated", () => emittedEvents.push("task.updated"));
-    const unsubscribeDeleted = eventBus.subscribe("task.deleted", () => emittedEvents.push("task.deleted"));
+    const unsubscribeCreated = eventBus.subscribe("task.created", () =>
+      emittedEvents.push("task.created"),
+    );
+    const unsubscribeUpdated = eventBus.subscribe("task.updated", () =>
+      emittedEvents.push("task.updated"),
+    );
+    const unsubscribeDeleted = eventBus.subscribe("task.deleted", () =>
+      emittedEvents.push("task.deleted"),
+    );
 
     try {
       const tasks = await tasksService.list();

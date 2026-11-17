@@ -1,12 +1,7 @@
 /**
  * Operational stages participating in K19 correlation provenance reconstruction.
  */
-export type ProvenanceStage =
-  | "deliberation"
-  | "mission"
-  | "step"
-  | "escalation"
-  | "verification";
+export type ProvenanceStage = "deliberation" | "mission" | "step" | "escalation" | "verification";
 
 /**
  * Reconstructed unified provenance node representing a historical event in an execution trail.

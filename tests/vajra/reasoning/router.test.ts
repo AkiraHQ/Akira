@@ -102,7 +102,8 @@ describe("AdaptiveStrategyRouter", () => {
       stimulus: {
         id: "stim-ambiguous",
         kind: "human_prompt",
-        payload: "I need to completely reorganize our architectural database schemas and review tests",
+        payload:
+          "I need to completely reorganize our architectural database schemas and review tests",
         correlation: { requestId: "req-1", correlationId: "corr-1", invocationId: "inv-1" },
         timestamp: new Date().toISOString(),
       },

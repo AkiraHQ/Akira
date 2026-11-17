@@ -21,5 +21,5 @@ export const sessionService = {
     const totalSec = this.calculateTotalDuration(logs);
     const mins = Math.floor(totalSec / 60);
     return `Total session duration: ${mins} minutes`;
-  }
+  },
 };

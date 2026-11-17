@@ -24,10 +24,10 @@ export type ProblemClass =
 export type UncertaintyLevel = "LOW" | "MEDIUM" | "HIGH" | "CRITICAL";
 
 export type ReasoningStatus =
-  | "SUCCESS"           // Strategy produced valid result within declared capability
-  | "DEGRADED"          // Fallback strategy produced valid result within reduced capability
-  | "INCONCLUSIVE"      // No capable strategy could sufficiently support reasoning
-  | "STALE_INVALIDATED";// State version changed mid-deliberation; result invalidated
+  | "SUCCESS" // Strategy produced valid result within declared capability
+  | "DEGRADED" // Fallback strategy produced valid result within reduced capability
+  | "INCONCLUSIVE" // No capable strategy could sufficiently support reasoning
+  | "STALE_INVALIDATED"; // State version changed mid-deliberation; result invalidated
 
 // ============================================================================
 // Strategy Capability Declaration
@@ -101,10 +101,7 @@ export interface FallbackProvenance {
   readonly intendedTier: 1 | 2 | 3;
   readonly actualTier: 1 | 2 | 3;
   readonly fallbackReason:
-    | "MODEL_TIMEOUT"
-    | "MODEL_ERROR"
-    | "SCHEMA_INVALID"
-    | "CAPABILITY_UNSUPPORTED";
+    "MODEL_TIMEOUT" | "MODEL_ERROR" | "SCHEMA_INVALID" | "CAPABILITY_UNSUPPORTED";
 }
 
 export interface ModelCoprocessorMetadata {
@@ -193,14 +190,16 @@ export interface ModelReasoningPayload {
 
 export const ModelReasoningPayloadSchema: z.ZodType<ModelReasoningPayload> = z.object({
   interpretedSituation: z.string().min(1),
-  hypotheses: z.array(
-    z.object({
-      id: z.string().min(1),
-      description: z.string().min(1),
-      confidence: z.number().min(0).max(1),
-      supportingEvidenceIds: z.array(z.string()),
-    }),
-  ).min(1),
+  hypotheses: z
+    .array(
+      z.object({
+        id: z.string().min(1),
+        description: z.string().min(1),
+        confidence: z.number().min(0).max(1),
+        supportingEvidenceIds: z.array(z.string()),
+      }),
+    )
+    .min(1),
   possibleConsequences: z.array(z.string()),
   uncertaintyLevel: z.enum(["LOW", "MEDIUM", "HIGH", "CRITICAL"]),
   unresolvedQuestions: z.array(z.string()),

@@ -1,11 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { DecisionArbiter } from "../../../src/vajra/decision/arbiter";
 import { createInitialOperationalContext } from "../../../src/vajra/types/operational-context";
-import {
-  createMockReasoningResult,
-  createMockSelfModel,
-  createMockStateStore,
-} from "./fixtures";
+import { createMockReasoningResult, createMockSelfModel, createMockStateStore } from "./fixtures";
 
 describe("Decision Necessity Classification (Phase 5 §8)", () => {
   it("Scenario 1: Classifies ANSWER_CONVERSATION for informational human query", async () => {

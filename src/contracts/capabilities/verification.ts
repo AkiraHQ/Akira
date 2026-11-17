@@ -42,9 +42,9 @@ import { CorrelationMetadata } from "../results/result";
  *    it relied on (conceptual; whether it is persisted is not decided, K15)"
  */
 export type VerificationOutcome =
-  | "criteria_satisfied"     // Completion criteria are met → produces a successful MissionResult
+  | "criteria_satisfied" // Completion criteria are met → produces a successful MissionResult
   | "criteria_not_satisfied" // Evidence is insufficient or contradicts criteria
-  | "inconclusive";          // Evidence is missing or indeterminate (K18 "observation failure")
+  | "inconclusive"; // Evidence is missing or indeterminate (K18 "observation failure")
 
 export interface VerificationRecord {
   /** Unique identifier for this verification judgement (K19) */
@@ -121,7 +121,7 @@ export interface VerificationRecord {
  * No additional statuses are introduced here.
  */
 export type MissionOutcomeStatus =
-  | "completed"      // Verified successful: VAJRA confirmed completion criteria satisfied
+  | "completed" // Verified successful: VAJRA confirmed completion criteria satisfied
   | "not_completed"; // Not a successful MissionResult: failed, or criteria not satisfied
 
 export interface MissionResult<TOutcome = unknown> {

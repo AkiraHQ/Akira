@@ -59,4 +59,3 @@ export const querySearchMessages = createServerFn({ method: "POST" })
   .handler(async ({ data: request }): Promise<HistoricalEvidence[]> => {
     return searchRecallViaCapability(request);
   });
-

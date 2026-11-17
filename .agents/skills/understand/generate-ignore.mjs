@@ -28,36 +28,36 @@
  * parent is not the plugin checkout.
  */
 
-import { createRequire } from 'node:module';
-import { dirname, join, resolve } from 'node:path';
-import { fileURLToPath, pathToFileURL } from 'node:url';
-import { existsSync, mkdirSync, writeFileSync } from 'node:fs';
+import { createRequire } from "node:module";
+import { dirname, join, resolve } from "node:path";
+import { fileURLToPath, pathToFileURL } from "node:url";
+import { existsSync, mkdirSync, writeFileSync } from "node:fs";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 function resolvePluginRoot() {
   const envRoot = process.env.PLUGIN_ROOT;
-  if (envRoot && existsSync(join(envRoot, 'package.json'))) {
+  if (envRoot && existsSync(join(envRoot, "package.json"))) {
     return envRoot;
   }
-  return resolve(__dirname, '../..');
+  return resolve(__dirname, "../..");
 }
 
 const pluginRoot = resolvePluginRoot();
-const require = createRequire(resolve(pluginRoot, 'package.json'));
+const require = createRequire(resolve(pluginRoot, "package.json"));
 
 let core;
 try {
-  core = await import(pathToFileURL(require.resolve('@understand-anything/core')).href);
+  core = await import(pathToFileURL(require.resolve("@understand-anything/core")).href);
 } catch {
-  core = await import(pathToFileURL(resolve(pluginRoot, 'packages/core/dist/index.js')).href);
+  core = await import(pathToFileURL(resolve(pluginRoot, "packages/core/dist/index.js")).href);
 }
 
 const { generateStarterIgnoreFile, resolveUaDir } = core;
 
 const projectRoot = resolve(process.argv[2] ?? process.cwd());
 const outDir = resolveUaDir(projectRoot);
-const outPath = join(outDir, '.understandignore');
+const outPath = join(outDir, ".understandignore");
 
 if (existsSync(outPath)) {
   console.error(`generate-ignore: ${outPath} already exists — skipping`);

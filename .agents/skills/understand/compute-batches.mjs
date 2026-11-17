@@ -20,17 +20,11 @@
  * analyzed project. Omitting them preserves the normal /understand paths.
  */
 
-import {
-  existsSync,
-  mkdirSync,
-  readFileSync,
-  realpathSync,
-  writeFileSync,
-} from 'node:fs';
-import { readFile } from 'node:fs/promises';
-import { dirname, join, resolve } from 'node:path';
-import { fileURLToPath, pathToFileURL } from 'node:url';
-import { createRequire } from 'node:module';
+import { existsSync, mkdirSync, readFileSync, realpathSync, writeFileSync } from "node:fs";
+import { readFile } from "node:fs/promises";
+import { dirname, join, resolve } from "node:path";
+import { fileURLToPath, pathToFileURL } from "node:url";
+import { createRequire } from "node:module";
 
 /**
  * Chunk size for parallel file I/O. Bounded so a 15k-file repo doesn't try
@@ -41,19 +35,25 @@ import { createRequire } from 'node:module';
 const IO_PARALLELISM = 64;
 
 const __filename = fileURLToPath(import.meta.url);
-const PLUGIN_ROOT = resolve(dirname(__filename), '../..');
-const require = createRequire(resolve(PLUGIN_ROOT, 'package.json'));
+const PLUGIN_ROOT = resolve(dirname(__filename), "../..");
+const require = createRequire(resolve(PLUGIN_ROOT, "package.json"));
 
 let core;
 try {
-  core = await import(pathToFileURL(require.resolve('@understand-anything/core')).href);
+  core = await import(pathToFileURL(require.resolve("@understand-anything/core")).href);
 } catch {
-  core = await import(pathToFileURL(resolve(PLUGIN_ROOT, 'packages/core/dist/index.js')).href);
+  core = await import(pathToFileURL(resolve(PLUGIN_ROOT, "packages/core/dist/index.js")).href);
 }
-const { TreeSitterPlugin, PluginRegistry, builtinLanguageConfigs, registerAllParsers, resolveUaDir } = core;
+const {
+  TreeSitterPlugin,
+  PluginRegistry,
+  builtinLanguageConfigs,
+  registerAllParsers,
+  resolveUaDir,
+} = core;
 
-import Graph from 'graphology';
-import louvain from 'graphology-communities-louvain';
+import Graph from "graphology";
+import louvain from "graphology-communities-louvain";
 
 /**
  * For each code file, returns its top-level exported symbol names (functions,
@@ -65,7 +65,7 @@ import louvain from 'graphology-communities-louvain';
 async function extractExports(projectRoot, codeFiles) {
   let registry;
   try {
-    const tsConfigs = builtinLanguageConfigs.filter(c => c.treeSitter);
+    const tsConfigs = builtinLanguageConfigs.filter((c) => c.treeSitter);
     const tsPlugin = new TreeSitterPlugin(tsConfigs);
     await tsPlugin.init();
     registry = new PluginRegistry();
@@ -74,9 +74,9 @@ async function extractExports(projectRoot, codeFiles) {
   } catch (err) {
     process.stderr.write(
       `Warning: compute-batches: tree-sitter init failed (${err.message}) ` +
-      `— all symbols=[] in neighborMap — cross-batch edges limited to file-level\n`,
+        `— all symbols=[] in neighborMap — cross-batch edges limited to file-level\n`,
     );
-    return new Map(codeFiles.map(f => [f.path, []]));
+    return new Map(codeFiles.map((f) => [f.path, []]));
   }
 
   const exportsByPath = new Map();
@@ -96,7 +96,7 @@ async function extractExports(projectRoot, codeFiles) {
       slice.map(async (file) => {
         const abs = join(projectRoot, file.path);
         try {
-          const content = await readFile(abs, 'utf-8');
+          const content = await readFile(abs, "utf-8");
           return { file, content, readError: null };
         } catch (err) {
           return { file, content: null, readError: err };
@@ -111,21 +111,21 @@ async function extractExports(projectRoot, codeFiles) {
       if (readError) {
         process.stderr.write(
           `Warning: compute-batches: exports extraction failed for ${file.path} ` +
-          `(read error: ${readError.message}) — symbols=[] in neighborMap — ` +
-          `cross-batch edges to this file limited to file-level\n`,
+            `(read error: ${readError.message}) — symbols=[] in neighborMap — ` +
+            `cross-batch edges to this file limited to file-level\n`,
         );
         exportsByPath.set(file.path, []);
         continue;
       }
       try {
         const analysis = registry.analyzeFile(file.path, content);
-        const names = (analysis?.exports || []).map(e => e.name).filter(Boolean);
+        const names = (analysis?.exports || []).map((e) => e.name).filter(Boolean);
         exportsByPath.set(file.path, names);
       } catch (err) {
         process.stderr.write(
           `Warning: compute-batches: exports extraction failed for ${file.path} ` +
-          `(analyze error: ${err.message}) — symbols=[] in neighborMap — ` +
-          `cross-batch edges to this file limited to file-level\n`,
+            `(analyze error: ${err.message}) — symbols=[] in neighborMap — ` +
+            `cross-batch edges to this file limited to file-level\n`,
         );
         exportsByPath.set(file.path, []);
       }
@@ -143,12 +143,12 @@ async function extractExports(projectRoot, codeFiles) {
  * grouping) is `mergeable=true` so its tiny singletons can be pooled.
  */
 function buildNonCodeBatches(nonCodeFiles) {
-  const byPath = new Map(nonCodeFiles.map(f => [f.path, f]));
+  const byPath = new Map(nonCodeFiles.map((f) => [f.path, f]));
   const consumed = new Set();
   const groups = [];
 
-  const dirOf = p => p.includes('/') ? p.slice(0, p.lastIndexOf('/')) : '';
-  const baseOf = p => p.includes('/') ? p.slice(p.lastIndexOf('/') + 1) : p;
+  const dirOf = (p) => (p.includes("/") ? p.slice(0, p.lastIndexOf("/")) : "");
+  const baseOf = (p) => (p.includes("/") ? p.slice(p.lastIndexOf("/") + 1) : p);
 
   // Hoist the path list once (it was re-materialized via [...byPath.keys()]
   // seven times below) and index paths by parent dir a single time. Groups A
@@ -161,46 +161,48 @@ function buildNonCodeBatches(nonCodeFiles) {
   for (const p of allPaths) {
     const d = dirOf(p);
     let arr = pathsByDir.get(d);
-    if (!arr) { arr = []; pathsByDir.set(d, arr); }
+    if (!arr) {
+      arr = [];
+      pathsByDir.set(d, arr);
+    }
     arr.push(p);
   }
 
   // Group A: per-directory Dockerfile clusters.
   const dirsWithDockerfile = new Set();
   for (const p of allPaths) {
-    if (baseOf(p) === 'Dockerfile') dirsWithDockerfile.add(dirOf(p));
+    if (baseOf(p) === "Dockerfile") dirsWithDockerfile.add(dirOf(p));
   }
   for (const dir of [...dirsWithDockerfile].sort()) {
     const inDir = pathsByDir.get(dir) ?? [];
-    const cluster = inDir.filter(p => {
+    const cluster = inDir.filter((p) => {
       const b = baseOf(p);
-      return b === 'Dockerfile'
-        || b === '.dockerignore'
-        || b.startsWith('docker-compose.');
+      return b === "Dockerfile" || b === ".dockerignore" || b.startsWith("docker-compose.");
     });
     if (cluster.length) {
-      groups.push({ files: cluster.map(p => byPath.get(p)), mergeable: false });
-      cluster.forEach(p => consumed.add(p));
+      groups.push({ files: cluster.map((p) => byPath.get(p)), mergeable: false });
+      cluster.forEach((p) => consumed.add(p));
     }
   }
 
   // Group B: .github/workflows/*
-  const ghWorkflows = allPaths.filter(
-    p => p.startsWith('.github/workflows/') && (p.endsWith('.yml') || p.endsWith('.yaml')),
-  ).filter(p => !consumed.has(p));
+  const ghWorkflows = allPaths
+    .filter(
+      (p) => p.startsWith(".github/workflows/") && (p.endsWith(".yml") || p.endsWith(".yaml")),
+    )
+    .filter((p) => !consumed.has(p));
   if (ghWorkflows.length) {
-    groups.push({ files: ghWorkflows.map(p => byPath.get(p)), mergeable: false });
-    ghWorkflows.forEach(p => consumed.add(p));
+    groups.push({ files: ghWorkflows.map((p) => byPath.get(p)), mergeable: false });
+    ghWorkflows.forEach((p) => consumed.add(p));
   }
 
   // Group C: .gitlab-ci.yml + .circleci/*
   const ciFiles = allPaths.filter(
-    p => (p === '.gitlab-ci.yml' || p.startsWith('.circleci/'))
-      && !consumed.has(p),
+    (p) => (p === ".gitlab-ci.yml" || p.startsWith(".circleci/")) && !consumed.has(p),
   );
   if (ciFiles.length) {
-    groups.push({ files: ciFiles.map(p => byPath.get(p)), mergeable: false });
-    ciFiles.forEach(p => consumed.add(p));
+    groups.push({ files: ciFiles.map((p) => byPath.get(p)), mergeable: false });
+    ciFiles.forEach((p) => consumed.add(p));
   }
 
   // Group D: SQL migrations per migrations/ or migration/ directory.
@@ -208,18 +210,18 @@ function buildNonCodeBatches(nonCodeFiles) {
   // future Group additions could; keep the check for forward-compat.
   const migrationDirs = new Set();
   for (const p of allPaths) {
-    if (p.endsWith('.sql')) {
+    if (p.endsWith(".sql")) {
       const d = dirOf(p);
       if (/(^|\/)migrations?$/.test(d)) migrationDirs.add(d);
     }
   }
   for (const dir of migrationDirs) {
     const sqls = (pathsByDir.get(dir) ?? [])
-      .filter(p => p.endsWith('.sql') && !consumed.has(p))
+      .filter((p) => p.endsWith(".sql") && !consumed.has(p))
       .sort();
     if (sqls.length) {
-      groups.push({ files: sqls.map(p => byPath.get(p)), mergeable: false });
-      sqls.forEach(p => consumed.add(p));
+      groups.push({ files: sqls.map((p) => byPath.get(p)), mergeable: false });
+      sqls.forEach((p) => consumed.add(p));
     }
   }
 
@@ -236,7 +238,7 @@ function buildNonCodeBatches(nonCodeFiles) {
   for (const [, paths] of remainingByDir) {
     for (let i = 0; i < paths.length; i += MAX_E) {
       const slice = paths.slice(i, i + MAX_E);
-      groups.push({ files: slice.map(p => byPath.get(p)), mergeable: true });
+      groups.push({ files: slice.map((p) => byPath.get(p)), mergeable: true });
     }
   }
 
@@ -256,18 +258,16 @@ function buildBatchOfMap(allBatches) {
 }
 
 function normalizeRelativePathForMatch(pathText) {
-  if (typeof pathText !== 'string') return '';
-  const platformPath = process.platform === 'win32' ? pathText.replace(/\\/g, '/') : pathText;
-  return platformPath
-    .replace(/^\.\/+/, '')
-    .replace(/\/+/g, '/');
+  if (typeof pathText !== "string") return "";
+  const platformPath = process.platform === "win32" ? pathText.replace(/\\/g, "/") : pathText;
+  return platformPath.replace(/^\.\/+/, "").replace(/\/+/g, "/");
 }
 
 function parseChangedFileList(content, filePath) {
-  if (filePath.toLowerCase().endsWith('.json') || content.trimStart().startsWith('[')) {
+  if (filePath.toLowerCase().endsWith(".json") || content.trimStart().startsWith("[")) {
     const parsed = JSON.parse(content);
-    if (!Array.isArray(parsed) || parsed.some(path => typeof path !== 'string')) {
-      throw new Error('JSON changed-file list must be an array of strings');
+    if (!Array.isArray(parsed) || parsed.some((path) => typeof path !== "string")) {
+      throw new Error("JSON changed-file list must be an array of strings");
     }
     return parsed.map(normalizeRelativePathForMatch).filter(Boolean);
   }
@@ -289,14 +289,13 @@ function comparePaths(a, b) {
  * to allow tests to exercise the fallback path.
  */
 function runLouvain(codeFiles, importMap) {
-  if (process.env.UA_COMPUTE_BATCHES_FORCE_LOUVAIN_THROW === '1') {
-    throw new Error('forced throw via UA_COMPUTE_BATCHES_FORCE_LOUVAIN_THROW');
+  if (process.env.UA_COMPUTE_BATCHES_FORCE_LOUVAIN_THROW === "1") {
+    throw new Error("forced throw via UA_COMPUTE_BATCHES_FORCE_LOUVAIN_THROW");
   }
-  const g = new Graph({ type: 'undirected', allowSelfLoops: false });
-  const sortedCodePaths = codeFiles.map(f => f.path).sort(comparePaths);
+  const g = new Graph({ type: "undirected", allowSelfLoops: false });
+  const sortedCodePaths = codeFiles.map((f) => f.path).sort(comparePaths);
   for (const path of sortedCodePaths) g.addNode(path);
-  const sortedImports = Object.entries(importMap)
-    .sort(([a], [b]) => comparePaths(a, b));
+  const sortedImports = Object.entries(importMap).sort(([a], [b]) => comparePaths(a, b));
   for (const [src, targets] of sortedImports) {
     if (!g.hasNode(src)) continue;
     for (const tgt of [...targets].sort(comparePaths)) {
@@ -304,7 +303,7 @@ function runLouvain(codeFiles, importMap) {
       g.addEdge(src, tgt);
     }
   }
-  const cs = louvain(g, { randomWalk: false });  // { nodeId: communityId }
+  const cs = louvain(g, { randomWalk: false }); // { nodeId: communityId }
   return new Map(Object.entries(cs));
 }
 
@@ -314,7 +313,7 @@ function runLouvain(codeFiles, importMap) {
  */
 function countBasedAssignment(codeFiles, batchSize = 12) {
   const out = new Map();
-  const sorted = [...codeFiles].map(f => f.path).sort();
+  const sorted = [...codeFiles].map((f) => f.path).sort();
   for (let i = 0; i < sorted.length; i++) {
     out.set(sorted[i], `count_${Math.floor(i / batchSize)}`);
   }
@@ -364,7 +363,7 @@ function mergeSmallBatches(bareBatches) {
 
   // Pool and sort deterministically by path so repeated runs match byte-for-byte.
   const pooledFiles = smallMergeable
-    .flatMap(b => b.files)
+    .flatMap((b) => b.files)
     .sort((a, b) => comparePaths(a.path, b.path));
 
   const miscBatches = [];
@@ -380,8 +379,8 @@ function mergeSmallBatches(bareBatches) {
   // a Warning: line.
   process.stderr.write(
     `Info: compute-batches: merged ${smallMergeable.length} small batches ` +
-    `(${pooledFiles.length} files) into ${miscBatches.length} misc batches ` +
-    `— singletons and orphans consolidated\n`,
+      `(${pooledFiles.length} files) into ${miscBatches.length} misc batches ` +
+      `— singletons and orphans consolidated\n`,
   );
 
   const final = [...keepers, ...miscBatches];
@@ -396,8 +395,8 @@ async function main() {
   const projectRoot = process.argv[2];
   if (!projectRoot) {
     process.stderr.write(
-      'Usage: node compute-batches.mjs <project-root> [--changed-files=<path>] ' +
-      '[--scan-result=<path>] [--output=<path>]\n',
+      "Usage: node compute-batches.mjs <project-root> [--changed-files=<path>] " +
+        "[--scan-result=<path>] [--output=<path>]\n",
     );
     process.exit(1);
   }
@@ -418,15 +417,15 @@ async function main() {
   }
 
   let changedFiles = null;
-  const changedFilesPath = helperOptions.get('changed-files');
+  const changedFilesPath = helperOptions.get("changed-files");
   if (changedFilesPath) {
     let content;
     try {
-      content = readFileSync(changedFilesPath, 'utf-8');
+      content = readFileSync(changedFilesPath, "utf-8");
     } catch (err) {
       process.stderr.write(
         `Error: compute-batches: --changed-files path not readable: ${changedFilesPath} ` +
-        `(${err.message})\n`,
+          `(${err.message})\n`,
       );
       process.exit(1);
     }
@@ -435,46 +434,46 @@ async function main() {
     } catch (err) {
       process.stderr.write(
         `Error: compute-batches: --changed-files contents invalid: ${changedFilesPath} ` +
-        `(${err.message})\n`,
+          `(${err.message})\n`,
       );
       process.exit(1);
     }
   }
 
-  const scanResultValue = helperOptions.get('scan-result');
-  const outputValue = helperOptions.get('output');
+  const scanResultValue = helperOptions.get("scan-result");
+  const outputValue = helperOptions.get("output");
   const scanResultPath = scanResultValue ? resolve(scanResultValue) : null;
   const outputPath = outputValue ? resolve(outputValue) : null;
 
   const uaDir = resolveUaDir(projectRoot);
-  const scanPath = scanResultPath ?? join(uaDir, 'intermediate', 'scan-result.json');
+  const scanPath = scanResultPath ?? join(uaDir, "intermediate", "scan-result.json");
   if (!existsSync(scanPath)) {
     process.stderr.write(`Error: scan-result.json not found at ${scanPath}\n`);
     process.exit(1);
   }
 
-  const scan = JSON.parse(readFileSync(scanPath, 'utf-8'));
+  const scan = JSON.parse(readFileSync(scanPath, "utf-8"));
   const files = scan.files || [];
-  const codeFiles = files.filter(f => f.fileCategory === 'code');
-  const nonCodeFiles = files.filter(f => f.fileCategory !== 'code');
+  const codeFiles = files.filter((f) => f.fileCategory === "code");
+  const nonCodeFiles = files.filter((f) => f.fileCategory !== "code");
   const importMap = scan.importMap || {};
 
   process.stderr.write(`Loaded ${files.length} files (${codeFiles.length} code).\n`);
 
   const exportsByPath = await extractExports(projectRoot, codeFiles);
 
-  let algorithm = 'louvain';
+  let algorithm = "louvain";
   let perFileCommunity;
   try {
     perFileCommunity = runLouvain(codeFiles, importMap);
   } catch (err) {
     process.stderr.write(
       `Warning: compute-batches: Louvain failed (${err.message}) ` +
-      `— falling back to count-based grouping (12 files/batch) ` +
-      `— module semantic boundaries lost\n`,
+        `— falling back to count-based grouping (12 files/batch) ` +
+        `— module semantic boundaries lost\n`,
     );
     perFileCommunity = countBasedAssignment(codeFiles, 12);
-    algorithm = 'count-fallback';
+    algorithm = "count-fallback";
   }
 
   // Group files by community id
@@ -488,7 +487,7 @@ async function main() {
   const MAX_COMMUNITY_SIZE = 35;
   const splitCommunities = new Map();
   let nextSyntheticId = 0;
-  if (algorithm === 'louvain') {
+  if (algorithm === "louvain") {
     for (const [cid, paths] of filesByCommunity) {
       if (paths.length <= MAX_COMMUNITY_SIZE) {
         splitCommunities.set(cid, paths);
@@ -496,7 +495,7 @@ async function main() {
       }
       process.stderr.write(
         `Warning: compute-batches: community size ${paths.length} > max ${MAX_COMMUNITY_SIZE} ` +
-        `— splitting via alphabetical chunking — modularity may decrease\n`,
+          `— splitting via alphabetical chunking — modularity may decrease\n`,
       );
       const sorted = [...paths].sort();
       const parts = Math.ceil(paths.length / MAX_COMMUNITY_SIZE);
@@ -512,16 +511,15 @@ async function main() {
   }
 
   // Sort communities by size desc, then by min-path asc for determinism
-  const sortedCommunities = [...splitCommunities.entries()]
-    .sort((a, b) => {
-      if (b[1].length !== a[1].length) return b[1].length - a[1].length;
-      const minA = [...a[1]].sort()[0];
-      const minB = [...b[1]].sort()[0];
-      return comparePaths(minA, minB);
-    });
+  const sortedCommunities = [...splitCommunities.entries()].sort((a, b) => {
+    if (b[1].length !== a[1].length) return b[1].length - a[1].length;
+    const minA = [...a[1]].sort()[0];
+    const minB = [...b[1]].sort()[0];
+    return comparePaths(minA, minB);
+  });
 
   // Build per-batch file list with full file metadata from scan
-  const fileMetaByPath = new Map(files.map(f => [f.path, f]));
+  const fileMetaByPath = new Map(files.map((f) => [f.path, f]));
   // Safe: every path in a community is a graph node, and graph nodes are a
   // subset of files (see addNode loop above). fileMetaByPath.get() can
   // never return undefined here.
@@ -533,7 +531,7 @@ async function main() {
   // true for Group E catch-all).
   const codeBatchObjsBare = sortedCommunities.map(([, paths], idx) => ({
     batchIndex: idx + 1,
-    files: paths.sort().map(p => fileMetaByPath.get(p)),
+    files: paths.sort().map((p) => fileMetaByPath.get(p)),
     mergeable: true,
   }));
   const nonCodeGroups = buildNonCodeBatches(nonCodeFiles);
@@ -570,7 +568,7 @@ async function main() {
   // `analysisFiles` is usually the full batch. In --changed-files mode, it is
   // only the changed target set, while batchOf remains the full-graph lookup.
   const buildBatchPayload = (b, analysisFiles = b.files) => {
-    const analysisPaths = new Set(analysisFiles.map(f => f.path));
+    const analysisPaths = new Set(analysisFiles.map((f) => f.path));
     const batchImportData = {};
     const neighborMap = {};
     for (const f of analysisFiles) {
@@ -589,24 +587,26 @@ async function main() {
       const inNeighbors = reverseImportMap.get(f.path) || [];
       const all = new Set([...outNeighbors, ...inNeighbors]);
       const rawCount = all.size;
-      const filtered = [...all].filter(p => batchOf.has(p) && !analysisPaths.has(p));
+      const filtered = [...all].filter((p) => batchOf.has(p) && !analysisPaths.has(p));
 
-      let kept = filtered.map(p => ({
+      let kept = filtered.map((p) => ({
         path: p,
         batchIndex: batchOf.get(p),
         symbols: exportsByPath.get(p) || [],
       }));
 
       if (rawCount > MAX_NEIGHBORS) {
-        kept.sort((a, b2) => (NEIGHBOR_DEGREE.get(b2.path) || 0)
-                            - (NEIGHBOR_DEGREE.get(a.path) || 0)
-                            || comparePaths(a.path, b2.path));  // deterministic tiebreak
+        kept.sort(
+          (a, b2) =>
+            (NEIGHBOR_DEGREE.get(b2.path) || 0) - (NEIGHBOR_DEGREE.get(a.path) || 0) ||
+            comparePaths(a.path, b2.path),
+        ); // deterministic tiebreak
         const beforeSlice = kept.length;
         kept = kept.slice(0, MAX_NEIGHBORS);
         process.stderr.write(
           `Warning: compute-batches: neighborMap for ${f.path} has high 1-hop degree ${rawCount} ` +
-          `— exceeds soft cap of ${MAX_NEIGHBORS} — keeping top ${kept.length} cross-batch entries ` +
-          `(${beforeSlice - kept.length} dropped by degree sort)\n`,
+            `— exceeds soft cap of ${MAX_NEIGHBORS} — keeping top ${kept.length} cross-batch entries ` +
+            `(${beforeSlice - kept.length} dropped by degree sort)\n`,
         );
       }
 
@@ -615,14 +615,15 @@ async function main() {
     return { batchIndex: b.batchIndex, files: analysisFiles, batchImportData, neighborMap };
   };
 
-  const batches = mergedBareBatches.map(b => buildBatchPayload(b));
+  const batches = mergedBareBatches.map((b) => buildBatchPayload(b));
 
   let finalBatches = batches;
   if (changedFiles) {
     finalBatches = mergedBareBatches
-      .map(b => {
-        const changedBatchFiles = b.files.filter(f =>
-          changedFiles.has(normalizeRelativePathForMatch(f.path)));
+      .map((b) => {
+        const changedBatchFiles = b.files.filter((f) =>
+          changedFiles.has(normalizeRelativePathForMatch(f.path)),
+        );
         if (changedBatchFiles.length === 0) return null;
         return buildBatchPayload(b, changedBatchFiles);
       })
@@ -645,10 +646,10 @@ async function main() {
     batches: finalBatches,
   };
 
-  const outPath = outputPath ?? join(uaDir, 'intermediate', 'batches.json');
+  const outPath = outputPath ?? join(uaDir, "intermediate", "batches.json");
   mkdirSync(dirname(outPath), { recursive: true });
-  writeFileSync(outPath, JSON.stringify(output, null, 2), 'utf-8');
-  const batchSizes = finalBatches.map(b => b.files.length);
+  writeFileSync(outPath, JSON.stringify(output, null, 2), "utf-8");
+  const batchSizes = finalBatches.map((b) => b.files.length);
   const maxSize = batchSizes.length ? Math.max(...batchSizes) : 0;
   const minSize = batchSizes.length ? Math.min(...batchSizes) : 0;
   process.stderr.write(

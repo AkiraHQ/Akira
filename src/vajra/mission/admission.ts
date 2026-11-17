@@ -57,7 +57,10 @@ export class MissionAdmissionGateway implements IMissionAdmissionGateway {
       !action.correlation.correlationId ||
       !action.correlation.invocationId
     ) {
-      return { status: "REJECTED", reason: "Action is missing required CorrelationMetadata (Contract K19)." };
+      return {
+        status: "REJECTED",
+        reason: "Action is missing required CorrelationMetadata (Contract K19).",
+      };
     }
 
     // Gate 3: Human Approval State Verification
@@ -98,10 +101,16 @@ export class MissionAdmissionGateway implements IMissionAdmissionGateway {
           };
         }
         if (validation.status === "REJECTED") {
-          return { status: "REJECTED", reason: validation.reason ?? "Human rejected proposed action." };
+          return {
+            status: "REJECTED",
+            reason: validation.reason ?? "Human rejected proposed action.",
+          };
         }
         if (validation.status === "EXPIRED") {
-          return { status: "EXPIRED", reason: validation.reason ?? "Human approval escalation has expired." };
+          return {
+            status: "EXPIRED",
+            reason: validation.reason ?? "Human approval escalation has expired.",
+          };
         }
         if (validation.status === "STALE") {
           return { status: "STALE", reason: validation.reason ?? "Approval state is stale." };
@@ -137,7 +146,8 @@ export class MissionAdmissionGateway implements IMissionAdmissionGateway {
     if (operationalContext?.systemHealthStatus === "CRITICAL") {
       return {
         status: "HEALTH_DEGRADED",
-        reason: "Operational context indicates CRITICAL system health. Operational admission blocked.",
+        reason:
+          "Operational context indicates CRITICAL system health. Operational admission blocked.",
       };
     }
 
@@ -189,8 +199,7 @@ export class MissionAdmissionGateway implements IMissionAdmissionGateway {
 
     // Gate 8: Idempotency De-duplication
     const idempotencyKey =
-      action.idempotencyKey ??
-      `idemp-mission-${action.id}-${action.stateVersion ?? 0}`;
+      action.idempotencyKey ?? `idemp-mission-${action.id}-${action.stateVersion ?? 0}`;
 
     // Query existing mission by id to detect duplicates
     const existingMission = await this.stateStore.getMission(action.id);

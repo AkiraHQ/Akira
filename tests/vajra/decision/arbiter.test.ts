@@ -2,11 +2,7 @@ import { describe, it, expect } from "vitest";
 import { DecisionArbiter } from "../../../src/vajra/decision/arbiter";
 import { createInitialOperationalContext } from "../../../src/vajra/types/operational-context";
 import { ApprovalManager } from "../../../src/vajra/decision/approval-manager";
-import {
-  createMockReasoningResult,
-  createMockSelfModel,
-  createMockStateStore,
-} from "./fixtures";
+import { createMockReasoningResult, createMockSelfModel, createMockStateStore } from "./fixtures";
 
 describe("DecisionArbiter End-to-End Arbitration (Phase 5 §7 & §17)", () => {
   it("Emits an authoritative, immutable ExecutiveAction with full decision provenance", async () => {

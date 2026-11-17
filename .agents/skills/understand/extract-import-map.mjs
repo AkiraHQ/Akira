@@ -39,11 +39,11 @@
  * set importMap[path] = [], they do not abort the script.
  */
 
-import { createRequire } from 'node:module';
-import { dirname, resolve, join, posix, isAbsolute } from 'node:path';
-import { fileURLToPath, pathToFileURL } from 'node:url';
-import { existsSync, readFileSync, realpathSync, writeFileSync } from 'node:fs';
-import { readFile } from 'node:fs/promises';
+import { createRequire } from "node:module";
+import { dirname, resolve, join, posix, isAbsolute } from "node:path";
+import { fileURLToPath, pathToFileURL } from "node:url";
+import { existsSync, readFileSync, realpathSync, writeFileSync } from "node:fs";
+import { readFile } from "node:fs/promises";
 
 /**
  * Read a list of files concurrently while preserving result order. Failures
@@ -58,7 +58,7 @@ async function readFilesParallel(paths) {
   return Promise.all(
     paths.map(async ({ key, absPath }) => {
       try {
-        const raw = await readFile(absPath, 'utf-8');
+        const raw = await readFile(absPath, "utf-8");
         return { key, raw, err: null };
       } catch (err) {
         return { key, raw: null, err };
@@ -69,8 +69,8 @@ async function readFilesParallel(paths) {
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 // skills/understand/ -> plugin root is two dirs up
-const pluginRoot = resolve(__dirname, '../..');
-const require = createRequire(resolve(pluginRoot, 'package.json'));
+const pluginRoot = resolve(__dirname, "../..");
+const require = createRequire(resolve(pluginRoot, "package.json"));
 
 // ---------------------------------------------------------------------------
 // Resolve @understand-anything/core
@@ -81,10 +81,10 @@ const require = createRequire(resolve(pluginRoot, 'package.json'));
 // ---------------------------------------------------------------------------
 let core;
 try {
-  core = await import(pathToFileURL(require.resolve('@understand-anything/core')).href);
+  core = await import(pathToFileURL(require.resolve("@understand-anything/core")).href);
 } catch {
   // Fallback: direct path for installed plugin cache layouts
-  core = await import(pathToFileURL(resolve(pluginRoot, 'packages/core/dist/index.js')).href);
+  core = await import(pathToFileURL(resolve(pluginRoot, "packages/core/dist/index.js")).href);
 }
 
 const { TreeSitterPlugin, PluginRegistry, builtinLanguageConfigs, registerAllParsers } = core;
@@ -99,8 +99,8 @@ const { TreeSitterPlugin, PluginRegistry, builtinLanguageConfigs, registerAllPar
  * cross-platform.
  */
 function toPosix(p) {
-  const separators = process.platform === 'win32' ? /[\\/]/ : /\//;
-  return p.split(separators).filter(Boolean).join('/');
+  const separators = process.platform === "win32" ? /[\\/]/ : /\//;
+  return p.split(separators).filter(Boolean).join("/");
 }
 
 /**
@@ -111,13 +111,13 @@ function toPosix(p) {
 function selectAnalysisFiles(files, analysisPaths) {
   if (analysisPaths === undefined) return files;
   if (!Array.isArray(analysisPaths)) {
-    throw new Error('Invalid input: analysisPaths must be an array when provided');
+    throw new Error("Invalid input: analysisPaths must be an array when provided");
   }
 
   const filesByPath = new Map();
   for (const file of files) {
-    if (!file || typeof file.path !== 'string' || file.path.length === 0) {
-      throw new Error('Invalid input: every files entry must contain a non-empty path');
+    if (!file || typeof file.path !== "string" || file.path.length === 0) {
+      throw new Error("Invalid input: every files entry must contain a non-empty path");
     }
     filesByPath.set(toPosix(file.path), file);
   }
@@ -125,8 +125,8 @@ function selectAnalysisFiles(files, analysisPaths) {
   const selected = [];
   const seen = new Set();
   for (const rawPath of analysisPaths) {
-    if (typeof rawPath !== 'string' || rawPath.length === 0) {
-      throw new Error('Invalid input: every analysisPaths entry must be a non-empty string');
+    if (typeof rawPath !== "string" || rawPath.length === 0) {
+      throw new Error("Invalid input: every analysisPaths entry must be a non-empty string");
     }
     // Use the host's path semantics here. On POSIX, backslashes and drive-like
     // prefixes are ordinary project-relative filename characters; on Windows,
@@ -135,7 +135,7 @@ function selectAnalysisFiles(files, analysisPaths) {
       throw new Error(`Invalid input: analysisPaths entry must be project-relative: ${rawPath}`);
     }
     const path = toPosix(rawPath);
-    if (!path || path.split('/').some(part => part === '..')) {
+    if (!path || path.split("/").some((part) => part === "..")) {
       throw new Error(`Invalid input: analysisPaths entry escapes projectRoot: ${rawPath}`);
     }
     const file = filesByPath.get(path);
@@ -163,20 +163,18 @@ function comparePaths(a, b) {
  * slash). Returns '' if the path walks above the project root.
  */
 function resolveRelative(dir, rel) {
-  const parts = (dir ? dir.split('/').filter(Boolean) : []).concat(
-    rel.split('/').filter(Boolean),
-  );
+  const parts = (dir ? dir.split("/").filter(Boolean) : []).concat(rel.split("/").filter(Boolean));
   const stack = [];
   for (const part of parts) {
-    if (part === '' || part === '.') continue;
-    if (part === '..') {
-      if (stack.length === 0) return '';
+    if (part === "" || part === ".") continue;
+    if (part === "..") {
+      if (stack.length === 0) return "";
       stack.pop();
     } else {
       stack.push(part);
     }
   }
-  return stack.join('/');
+  return stack.join("/");
 }
 
 /**
@@ -184,8 +182,8 @@ function resolveRelative(dir, rel) {
  * '' for top-level files).
  */
 function dirOf(p) {
-  const i = p.lastIndexOf('/');
-  return i === -1 ? '' : p.slice(0, i);
+  const i = p.lastIndexOf("/");
+  return i === -1 ? "" : p.slice(0, i);
 }
 
 // ---------------------------------------------------------------------------
@@ -208,7 +206,7 @@ function dirOf(p) {
  * conceal which file was at fault when many tsconfigs are loaded.
  */
 function normalizeJsonc(raw) {
-  let withoutComments = '';
+  let withoutComments = "";
   let inString = false;
   let escaped = false;
   for (let i = 0; i < raw.length; i++) {
@@ -217,7 +215,7 @@ function normalizeJsonc(raw) {
     if (inString) {
       withoutComments += ch;
       if (escaped) escaped = false;
-      else if (ch === '\\') escaped = true;
+      else if (ch === "\\") escaped = true;
       else if (ch === '"') inString = false;
       continue;
     }
@@ -226,15 +224,15 @@ function normalizeJsonc(raw) {
       withoutComments += ch;
       continue;
     }
-    if (ch === '/' && next === '/') {
-      while (i < raw.length && raw[i] !== '\n') i++;
-      if (i < raw.length) withoutComments += '\n';
+    if (ch === "/" && next === "/") {
+      while (i < raw.length && raw[i] !== "\n") i++;
+      if (i < raw.length) withoutComments += "\n";
       continue;
     }
-    if (ch === '/' && next === '*') {
+    if (ch === "/" && next === "*") {
       i += 2;
-      while (i < raw.length && !(raw[i] === '*' && raw[i + 1] === '/')) {
-        if (raw[i] === '\n') withoutComments += '\n';
+      while (i < raw.length && !(raw[i] === "*" && raw[i + 1] === "/")) {
+        if (raw[i] === "\n") withoutComments += "\n";
         i++;
       }
       i++;
@@ -243,7 +241,7 @@ function normalizeJsonc(raw) {
     withoutComments += ch;
   }
 
-  let normalized = '';
+  let normalized = "";
   inString = false;
   escaped = false;
   for (let i = 0; i < withoutComments.length; i++) {
@@ -251,7 +249,7 @@ function normalizeJsonc(raw) {
     if (inString) {
       normalized += ch;
       if (escaped) escaped = false;
-      else if (ch === '\\') escaped = true;
+      else if (ch === "\\") escaped = true;
       else if (ch === '"') inString = false;
       continue;
     }
@@ -260,14 +258,14 @@ function normalizeJsonc(raw) {
       normalized += ch;
       continue;
     }
-    if (ch === ',') {
+    if (ch === ",") {
       let nextIndex = i + 1;
-      while (/\s/.test(withoutComments[nextIndex] ?? '')) nextIndex++;
-      if (withoutComments[nextIndex] === '}' || withoutComments[nextIndex] === ']') continue;
+      while (/\s/.test(withoutComments[nextIndex] ?? "")) nextIndex++;
+      if (withoutComments[nextIndex] === "}" || withoutComments[nextIndex] === "]") continue;
     }
     normalized += ch;
   }
-  return normalized.replace(/^\uFEFF/, '');
+  return normalized.replace(/^\uFEFF/, "");
 }
 
 function parseTsConfigText(raw) {
@@ -283,9 +281,9 @@ function parseTsConfigText(raw) {
     }
   }
   const compilerOptions = parsed?.compilerOptions ?? {};
-  const baseUrl = compilerOptions.baseUrl ?? '.';
+  const baseUrl = compilerOptions.baseUrl ?? ".";
   const paths = new Map();
-  if (compilerOptions.paths && typeof compilerOptions.paths === 'object') {
+  if (compilerOptions.paths && typeof compilerOptions.paths === "object") {
     for (const [alias, targets] of Object.entries(compilerOptions.paths)) {
       if (Array.isArray(targets)) {
         paths.set(alias, targets);
@@ -331,8 +329,8 @@ async function loadTsConfigs(projectRoot, files) {
   const candidates = [];
   for (const f of files) {
     const p = toPosix(f.path);
-    const base = p.includes('/') ? p.slice(p.lastIndexOf('/') + 1) : p;
-    if (base !== 'tsconfig.json') continue;
+    const base = p.includes("/") ? p.slice(p.lastIndexOf("/") + 1) : p;
+    if (base !== "tsconfig.json") continue;
     const absPath = join(projectRoot, p);
     if (!existsSync(absPath)) continue;
     candidates.push({ key: p, absPath });
@@ -340,12 +338,12 @@ async function loadTsConfigs(projectRoot, files) {
   const reads = await readFilesParallel(candidates);
   for (const { key: p, raw, err } of reads) {
     if (err) {
-      failures.push({ path: p, stage: 'resolver-config-read', message: err.message });
+      failures.push({ path: p, stage: "resolver-config-read", message: err.message });
       // absPath isn't carried through the helper return shape; reconstruct it.
       warnings.push(
         `Warning: extract-import-map: tsconfig.json at ${join(projectRoot, p)} failed ` +
-        `to read (${err.message}) — path aliases from this config will ` +
-        `not be applied — relative imports unaffected\n`,
+          `to read (${err.message}) — path aliases from this config will ` +
+          `not be applied — relative imports unaffected\n`,
       );
       continue;
     }
@@ -353,13 +351,13 @@ async function loadTsConfigs(projectRoot, files) {
     if (!parsed) {
       failures.push({
         path: p,
-        stage: 'resolver-config-parse',
-        message: 'invalid tsconfig.json',
+        stage: "resolver-config-parse",
+        message: "invalid tsconfig.json",
       });
       warnings.push(
         `Warning: extract-import-map: tsconfig.json at ${join(projectRoot, p)} failed ` +
-        `to parse — path aliases from this config will not be applied ` +
-        `— relative imports unaffected\n`,
+          `to parse — path aliases from this config will not be applied ` +
+          `— relative imports unaffected\n`,
       );
       continue;
     }
@@ -404,8 +402,8 @@ async function loadGoModules(projectRoot, files) {
   const candidates = [];
   for (const f of files) {
     const p = toPosix(f.path);
-    const base = p.includes('/') ? p.slice(p.lastIndexOf('/') + 1) : p;
-    if (base !== 'go.mod') continue;
+    const base = p.includes("/") ? p.slice(p.lastIndexOf("/") + 1) : p;
+    if (base !== "go.mod") continue;
     const absPath = join(projectRoot, p);
     if (!existsSync(absPath)) continue;
     candidates.push({ key: p, absPath });
@@ -413,29 +411,29 @@ async function loadGoModules(projectRoot, files) {
   const reads = await readFilesParallel(candidates);
   for (const { key: p, raw, err } of reads) {
     if (err) {
-      failures.push({ path: p, stage: 'resolver-config-read', message: err.message });
+      failures.push({ path: p, stage: "resolver-config-read", message: err.message });
       warnings.push(
         `Warning: extract-import-map: go.mod at ${join(projectRoot, p)} failed ` +
-        `to read (${err.message}) — Go module imports may not resolve\n`,
+          `to read (${err.message}) — Go module imports may not resolve\n`,
       );
       continue;
     }
-    let moduleName = '';
+    let moduleName = "";
     for (const line of raw.split(/\r?\n/)) {
-      const trimmed = line.replace(/\/\/.*$/, '').trim();
-      if (!trimmed.startsWith('module ')) continue;
-      moduleName = trimmed.slice('module '.length).trim();
+      const trimmed = line.replace(/\/\/.*$/, "").trim();
+      if (!trimmed.startsWith("module ")) continue;
+      moduleName = trimmed.slice("module ".length).trim();
       break;
     }
     if (!moduleName) {
       failures.push({
         path: p,
-        stage: 'resolver-config-parse',
-        message: 'module directive missing',
+        stage: "resolver-config-parse",
+        message: "module directive missing",
       });
       warnings.push(
         `Warning: extract-import-map: go.mod at ${join(projectRoot, p)} has no ` +
-        `module directive — Go module imports may not resolve\n`,
+          `module directive — Go module imports may not resolve\n`,
       );
       continue;
     }
@@ -466,7 +464,7 @@ function parseSwiftPackageTargets(raw) {
     let depth = 1;
     let i = bodyStart;
     let inString = false;
-    let quote = '';
+    let quote = "";
     let escaped = false;
 
     for (; i < raw.length; i++) {
@@ -474,7 +472,7 @@ function parseSwiftPackageTargets(raw) {
       if (inString) {
         if (escaped) {
           escaped = false;
-        } else if (ch === '\\') {
+        } else if (ch === "\\") {
           escaped = true;
         } else if (ch === quote) {
           inString = false;
@@ -487,8 +485,8 @@ function parseSwiftPackageTargets(raw) {
         quote = ch;
         continue;
       }
-      if (ch === '(') depth += 1;
-      if (ch === ')') {
+      if (ch === "(") depth += 1;
+      if (ch === ")") {
         depth -= 1;
         if (depth === 0) break;
       }
@@ -500,7 +498,7 @@ function parseSwiftPackageTargets(raw) {
     const name = body.match(/\bname\s*:\s*"([^"]+)"/)?.[1];
     if (!name) continue;
     const explicitPath = body.match(/\bpath\s*:\s*"([^"]+)"/)?.[1];
-    const defaultRoot = kind === 'testTarget' ? 'Tests' : 'Sources';
+    const defaultRoot = kind === "testTarget" ? "Tests" : "Sources";
     targets.push({
       name,
       path: explicitPath || `${defaultRoot}/${name}`,
@@ -518,8 +516,8 @@ async function loadSwiftPackageTargets(projectRoot, files) {
 
   for (const f of files) {
     const p = toPosix(f.path);
-    const base = p.includes('/') ? p.slice(p.lastIndexOf('/') + 1) : p;
-    if (base !== 'Package.swift') continue;
+    const base = p.includes("/") ? p.slice(p.lastIndexOf("/") + 1) : p;
+    if (base !== "Package.swift") continue;
     const absPath = join(projectRoot, p);
     if (!existsSync(absPath)) continue;
     candidates.push({ key: p, absPath });
@@ -528,16 +526,16 @@ async function loadSwiftPackageTargets(projectRoot, files) {
   const reads = await readFilesParallel(candidates);
   for (const { key: p, raw, err } of reads) {
     if (err) {
-      failures.push({ path: p, stage: 'resolver-config-read', message: err.message });
+      failures.push({ path: p, stage: "resolver-config-read", message: err.message });
       warnings.push(
         `Warning: extract-import-map: Package.swift at ${join(projectRoot, p)} failed ` +
-        `to read (${err.message}) — Swift module imports may not resolve\n`,
+          `to read (${err.message}) — Swift module imports may not resolve\n`,
       );
       continue;
     }
     const packageDir = dirOf(p);
     for (const target of parseSwiftPackageTargets(raw)) {
-      const targetPath = resolveRelative(packageDir, target.path.replace(/\\/g, '/'));
+      const targetPath = resolveRelative(packageDir, target.path.replace(/\\/g, "/"));
       if (!targetPath) continue;
       if (!targets.has(target.name)) targets.set(target.name, new Set());
       targets.get(target.name).add(targetPath);
@@ -566,9 +564,9 @@ function findNearestConfigDir(startDir, configMap) {
   // Walk ancestors from the importer's directory up to the project root.
   // Slicing the parts array gives every prefix; we test each from longest
   // to shortest so the deepest match wins.
-  const parts = startDir ? startDir.split('/').filter(Boolean) : [];
+  const parts = startDir ? startDir.split("/").filter(Boolean) : [];
   for (let i = parts.length; i >= 0; i--) {
-    const ancestor = parts.slice(0, i).join('/');
+    const ancestor = parts.slice(0, i).join("/");
     if (configMap.has(ancestor)) return ancestor;
   }
   return undefined;
@@ -590,7 +588,7 @@ function findNearestConfigDir(startDir, configMap) {
  * Build once; pass everywhere.
  */
 async function buildResolutionContext(projectRoot, files) {
-  const fileSet = new Set(files.map(f => toPosix(f.path)));
+  const fileSet = new Set(files.map((f) => toPosix(f.path)));
 
   // These config-loader passes are independent and each does its own
   // batched parallel I/O; run them concurrently so the wait for a slow
@@ -622,7 +620,7 @@ async function buildResolutionContext(projectRoot, files) {
   // expand a package-level import to all member .go files in O(1).
   const goFilesByDir = new Map();
   for (const f of files) {
-    if (!f.path.endsWith('.go')) continue;
+    if (!f.path.endsWith(".go")) continue;
     const p = toPosix(f.path);
     const d = dirOf(p);
     if (!goFilesByDir.has(d)) goFilesByDir.set(d, []);
@@ -634,12 +632,12 @@ async function buildResolutionContext(projectRoot, files) {
 
   // Build per-extension suffix indices for dotted-FQN resolvers (Java,
   // Kotlin, Scala, C#). Indexed once; reused for every import dispatch.
-  const javaIndex = buildSuffixIndex(files, p => p.endsWith('.java'));
-  const kotlinIndex = buildSuffixIndex(files, p => p.endsWith('.kt'));
-  const scalaFilePredicate = p => p.endsWith('.scala') || p.endsWith('.sc');
+  const javaIndex = buildSuffixIndex(files, (p) => p.endsWith(".java"));
+  const kotlinIndex = buildSuffixIndex(files, (p) => p.endsWith(".kt"));
+  const scalaFilePredicate = (p) => p.endsWith(".scala") || p.endsWith(".sc");
   const scalaIndex = buildSuffixIndex(files, scalaFilePredicate);
   const scalaPackageIndex = buildPackageIndex(files, scalaFilePredicate);
-  const csIndex = buildSuffixIndex(files, p => p.endsWith('.cs'));
+  const csIndex = buildSuffixIndex(files, (p) => p.endsWith(".cs"));
   const swiftModuleIndex = buildSwiftModuleIndex(files, swiftResult.targets);
 
   return {
@@ -683,8 +681,16 @@ async function buildResolutionContext(projectRoot, files) {
 // Extensions probed when the import has no extension. The order mirrors the
 // historical project-scanner prose so behavior matches existing fixtures.
 const TS_EXT_PROBES = [
-  '.ts', '.tsx', '.js', '.jsx', '.mjs', '.cjs',
-  '/index.ts', '/index.tsx', '/index.js', '/index.jsx',
+  ".ts",
+  ".tsx",
+  ".js",
+  ".jsx",
+  ".mjs",
+  ".cjs",
+  "/index.ts",
+  "/index.tsx",
+  "/index.js",
+  "/index.jsx",
 ];
 
 /**
@@ -699,10 +705,10 @@ const TS_EXT_PROBES = [
  * project-internal import fails to resolve. (#294)
  */
 const NODENEXT_REWRITES = {
-  '.js': ['.ts', '.tsx', '.js', '.jsx'],
-  '.jsx': ['.tsx', '.jsx'],
-  '.mjs': ['.mts', '.mjs', '.ts'],
-  '.cjs': ['.cts', '.cjs', '.ts'],
+  ".js": [".ts", ".tsx", ".js", ".jsx"],
+  ".jsx": [".tsx", ".jsx"],
+  ".mjs": [".mts", ".mjs", ".ts"],
+  ".cjs": [".cts", ".cjs", ".ts"],
 };
 
 /**
@@ -753,14 +759,14 @@ function probeWithExtensions(basePath, fileSet) {
  * TypeScript compiler resolves nested project configs.
  */
 export function resolveTsJsImport(rawImport, file, ctx) {
-  if (!rawImport || typeof rawImport !== 'string') return null;
+  if (!rawImport || typeof rawImport !== "string") return null;
   const src = rawImport.trim();
   if (!src) return null;
 
   const importerDir = dirOf(toPosix(file.path));
 
   // Relative imports: ./foo, ../foo — tsconfig has no bearing here.
-  if (src.startsWith('./') || src.startsWith('../')) {
+  if (src.startsWith("./") || src.startsWith("../")) {
     const base = resolveRelative(importerDir, src);
     return probeWithExtensions(base, ctx.fileSet);
   }
@@ -782,24 +788,18 @@ export function resolveTsJsImport(rawImport, file, ctx) {
           // baseUrl is tsconfig-dir-relative; '.', './', '' all mean the
           // tsconfig's own directory. We anchor at tsConfigDir so a nested
           // tsconfig's `baseUrl: '.'` maps to its package, not project root.
-          const normalizedBase = baseUrl === '.' || baseUrl === ''
-            ? ''
-            : toPosix(baseUrl);
-          const relativeToConfig = normalizedBase
-            ? posix.join(normalizedBase, mapped)
-            : mapped;
+          const normalizedBase = baseUrl === "." || baseUrl === "" ? "" : toPosix(baseUrl);
+          const relativeToConfig = normalizedBase ? posix.join(normalizedBase, mapped) : mapped;
           // posix.normalize strips a leading "./" left over when both
           // tsConfigDir and normalizedBase are empty (root tsconfig with
           // `"@/*": ["./*"]`, the create-next-app default). Without this the
           // candidate stays as "./foo" while ctx.fileSet stores "foo", and
           // probeWithExtensions silently drops every cross-module edge.
           const candidate = posix.normalize(
-            tsConfigDir
-              ? posix.join(tsConfigDir, relativeToConfig)
-              : relativeToConfig,
+            tsConfigDir ? posix.join(tsConfigDir, relativeToConfig) : relativeToConfig,
           );
           // Defensive: tsconfig targets shouldn't escape the project root.
-          if (candidate.startsWith('..')) continue;
+          if (candidate.startsWith("..")) continue;
           const probed = probeWithExtensions(candidate, ctx.fileSet);
           if (probed) return probed;
         }
@@ -818,9 +818,9 @@ export function resolveTsJsImport(rawImport, file, ctx) {
  * (possibly '') on match, null on no match.
  */
 function matchTsAlias(alias, src) {
-  const starIdx = alias.indexOf('*');
+  const starIdx = alias.indexOf("*");
   if (starIdx === -1) {
-    return src === alias ? '' : null;
+    return src === alias ? "" : null;
   }
   const prefix = alias.slice(0, starIdx);
   const suffix = alias.slice(starIdx + 1);
@@ -836,7 +836,7 @@ function matchTsAlias(alias, src) {
  * matchTsAlias — if the target has no `*`, return it as-is (rare, but valid).
  */
 function applyTsAlias(target, wildcard) {
-  const starIdx = target.indexOf('*');
+  const starIdx = target.indexOf("*");
   if (starIdx === -1) return target;
   return target.slice(0, starIdx) + wildcard + target.slice(starIdx + 1);
 }
@@ -864,9 +864,7 @@ const REQUIRE_LITERAL_RE = /\brequire\(\s*(['"])([^'"`\n]+?)\1\s*\)/g;
  * comment-or-not heuristic applies uniformly to all matched literals.
  */
 function stripJsLikeComments(content) {
-  return content
-    .replace(/\/\*[\s\S]*?\*\//g, '')
-    .replace(/\/\/[^\n]*/g, '');
+  return content.replace(/\/\*[\s\S]*?\*\//g, "").replace(/\/\/[^\n]*/g, "");
 }
 
 function extractRequireSources(content) {
@@ -892,8 +890,7 @@ function extractRequireSources(content) {
  * `.*` for star-imports. The looser `[\w.*]+` form previously here would
  * match pathological inputs like `import ...` or `import .foo`.
  */
-const KOTLIN_IMPORT_RE =
-  /^\s*import\s+(\w+(?:\.\w+)*(?:\.\*)?)(?:\s+as\s+\w+)?\s*$/gm;
+const KOTLIN_IMPORT_RE = /^\s*import\s+(\w+(?:\.\w+)*(?:\.\*)?)(?:\s+as\s+\w+)?\s*$/gm;
 
 function extractKotlinSources(content) {
   const sources = [];
@@ -946,7 +943,7 @@ function extractKotlinSources(content) {
  * Returns empty array for external/unresolved packages.
  */
 export function resolvePythonImport(rawImport, specifiers, file, ctx) {
-  if (typeof rawImport !== 'string') return [];
+  if (typeof rawImport !== "string") return [];
   const src = rawImport;
   const importerDir = dirOf(toPosix(file.path));
 
@@ -954,7 +951,7 @@ export function resolvePythonImport(rawImport, specifiers, file, ctx) {
   let dots = 0;
   while (dots < src.length && src.charCodeAt(dots) === 0x2e /* '.' */) dots++;
   const tail = src.slice(dots);
-  const tailSegments = tail ? tail.split('.').filter(Boolean) : [];
+  const tailSegments = tail ? tail.split(".").filter(Boolean) : [];
 
   if (dots > 0) {
     // Relative import. `from . import x` (dots=1, tail='') walks up zero
@@ -962,7 +959,7 @@ export function resolvePythonImport(rawImport, specifiers, file, ctx) {
     // Relative imports are anchored at the importer's package, so we do
     // NOT do the per-root walk-up here — leading dots already encode the
     // exact anchor.
-    const importerParts = importerDir ? importerDir.split('/').filter(Boolean) : [];
+    const importerParts = importerDir ? importerDir.split("/").filter(Boolean) : [];
     const dropLevels = dots - 1;
     if (dropLevels > importerParts.length) {
       // Walked above the project root — unresolvable
@@ -977,17 +974,17 @@ export function resolvePythonImport(rawImport, specifiers, file, ctx) {
     // gate specifier resolution on the package marker and drop these imports.
     if (tailSegments.length === 0) {
       if (!Array.isArray(specifiers) || specifiers.length === 0) return [];
-      const base = baseParts.join('/');
-      const pkgInit = base ? `${base}/__init__.py` : '__init__.py';
+      const base = baseParts.join("/");
+      const pkgInit = base ? `${base}/__init__.py` : "__init__.py";
       const matches = [];
       for (const spec of specifiers) {
         // Qualified specifiers (`Foo.bar`) skip; the surface name is what
         // tree-sitter records for `from . import x`.
-        if (!spec || spec.includes('.')) continue;
+        if (!spec || spec.includes(".")) continue;
         const usePkgInit =
           ctx.fileSet.has(pkgInit) && pkgInit !== toPosix(file.path) && !matches.includes(pkgInit);
         // `from . import *` binds the package's own names from `__init__.py`.
-        if (spec === '*') {
+        if (spec === "*") {
           if (usePkgInit) matches.push(pkgInit);
           continue;
         }
@@ -1024,7 +1021,7 @@ export function resolvePythonImport(rawImport, specifiers, file, ctx) {
     return [];
   }
 
-  const importerParts = importerDir ? importerDir.split('/').filter(Boolean) : [];
+  const importerParts = importerDir ? importerDir.split("/").filter(Boolean) : [];
   for (let i = importerParts.length; i >= 0; i--) {
     const rootParts = importerParts.slice(0, i);
     const candidateModule = rootParts.concat(tailSegments);
@@ -1046,7 +1043,7 @@ function resolvePythonProbe(moduleParts, specifiers, ctx) {
     // each x is a sibling module to probe directly.
     return [];
   }
-  const base = moduleParts.join('/');
+  const base = moduleParts.join("/");
   const matches = [];
 
   const moduleFile = `${base}.py`;
@@ -1063,7 +1060,7 @@ function resolvePythonProbe(moduleParts, specifiers, ctx) {
       for (const spec of specifiers) {
         // Wildcard `*` and qualified specifiers (`Foo.bar`) skip; the
         // surface name is what tree-sitter records for `from pkg import x`.
-        if (!spec || spec === '*' || spec.includes('.')) continue;
+        if (!spec || spec === "*" || spec.includes(".")) continue;
         const subFile = `${base}/${spec}.py`;
         const subInit = `${base}/${spec}/__init__.py`;
         if (ctx.fileSet.has(subFile)) matches.push(subFile);
@@ -1103,7 +1100,7 @@ function resolvePythonProbe(moduleParts, specifiers, ctx) {
 // ---------------------------------------------------------------------------
 
 export function resolveGoImport(rawImport, file, ctx) {
-  if (!rawImport || typeof rawImport !== 'string') return [];
+  if (!rawImport || typeof rawImport !== "string") return [];
   const src = rawImport.trim();
   if (!src) return [];
 
@@ -1118,8 +1115,8 @@ export function resolveGoImport(rawImport, file, ctx) {
       ctx._warnedNoGoModule.add(importerPath);
       process.stderr.write(
         `Warning: extract-import-map: Go file ${importerPath} has no ` +
-        `ancestor go.mod — import ${src} unresolvable — module-prefix ` +
-        `imports skipped\n`,
+          `ancestor go.mod — import ${src} unresolvable — module-prefix ` +
+          `imports skipped\n`,
       );
     }
     return [];
@@ -1131,8 +1128,8 @@ export function resolveGoImport(rawImport, file, ctx) {
   // accidentally match 'github.com...'.
   let remainder;
   if (src === moduleName) {
-    remainder = '';
-  } else if (src.startsWith(moduleName + '/')) {
+    remainder = "";
+  } else if (src.startsWith(moduleName + "/")) {
     remainder = src.slice(moduleName.length + 1);
   } else {
     // External package (stdlib, 3rd-party module, OR a different in-tree
@@ -1146,7 +1143,9 @@ export function resolveGoImport(rawImport, file, ctx) {
   // module's tree rather than under project root.
   const subDir = toPosix(remainder);
   const targetDir = nearestModuleDir
-    ? (subDir ? `${nearestModuleDir}/${subDir}` : nearestModuleDir)
+    ? subDir
+      ? `${nearestModuleDir}/${subDir}`
+      : nearestModuleDir
     : subDir;
   const files = ctx.goFilesByDir.get(targetDir);
   return files ? [...files] : [];
@@ -1183,9 +1182,9 @@ function buildSuffixIndex(files, extPredicate) {
     const p = toPosix(f.path);
     if (!extPredicate(p)) continue;
     // Generate every "directory-bounded suffix" of the path
-    const parts = p.split('/');
+    const parts = p.split("/");
     for (let i = 0; i < parts.length; i++) {
-      const suffix = parts.slice(i).join('/');
+      const suffix = parts.slice(i).join("/");
       if (!idx.has(suffix)) idx.set(suffix, []);
       idx.get(suffix).push(p);
     }
@@ -1205,9 +1204,9 @@ function buildPackageIndex(files, extPredicate) {
     const dir = dirOf(p);
     if (!dir) continue;
 
-    const parts = dir.split('/');
+    const parts = dir.split("/");
     for (let i = 0; i < parts.length; i++) {
-      const suffix = parts.slice(i).join('/');
+      const suffix = parts.slice(i).join("/");
       if (!idx.has(suffix)) idx.set(suffix, []);
       idx.get(suffix).push(p);
     }
@@ -1218,14 +1217,14 @@ function buildPackageIndex(files, extPredicate) {
   return idx;
 }
 
-const SWIFT_SOURCE_ROOT_DIRS = new Set(['source', 'sources', 'test', 'tests']);
+const SWIFT_SOURCE_ROOT_DIRS = new Set(["source", "sources", "test", "tests"]);
 const SWIFT_MODULE_CONTAINER_DIRS = new Set([
-  'framework',
-  'frameworks',
-  'library',
-  'libraries',
-  'module',
-  'modules',
+  "framework",
+  "frameworks",
+  "library",
+  "libraries",
+  "module",
+  "modules",
 ]);
 
 function addSwiftModuleFile(index, moduleName, filePath) {
@@ -1236,16 +1235,13 @@ function addSwiftModuleFile(index, moduleName, filePath) {
 }
 
 function inferSwiftModulesFromPath(filePath) {
-  const parts = filePath.split('/');
+  const parts = filePath.split("/");
   const dirs = parts.slice(0, -1);
   const modules = new Set();
 
   for (let i = 0; i < dirs.length - 1; i++) {
     const lower = dirs[i].toLowerCase();
-    if (
-      SWIFT_SOURCE_ROOT_DIRS.has(lower) ||
-      SWIFT_MODULE_CONTAINER_DIRS.has(lower)
-    ) {
+    if (SWIFT_SOURCE_ROOT_DIRS.has(lower) || SWIFT_MODULE_CONTAINER_DIRS.has(lower)) {
       modules.add(dirs[i + 1]);
     }
   }
@@ -1275,8 +1271,8 @@ function buildSwiftModuleIndex(files, packageTargets) {
 
   for (const f of files) {
     const p = toPosix(f.path);
-    if (!p.endsWith('.swift')) continue;
-    if (p.endsWith('/Package.swift') || p === 'Package.swift') continue;
+    if (!p.endsWith(".swift")) continue;
+    if (p.endsWith("/Package.swift") || p === "Package.swift") continue;
 
     for (const [moduleName, targetPaths] of targetEntries) {
       for (const targetPath of targetPaths) {
@@ -1310,11 +1306,11 @@ function buildSwiftModuleIndex(files, packageTargets) {
  * appears in multiple source roots).
  */
 function resolveDottedFqn(fqn, ext, suffixIndex) {
-  if (!fqn || typeof fqn !== 'string') return [];
+  if (!fqn || typeof fqn !== "string") return [];
   // Strip trailing wildcard segments like `com.example.*`
-  const trimmed = fqn.replace(/\.\*$/, '');
+  const trimmed = fqn.replace(/\.\*$/, "");
   if (!trimmed) return [];
-  const filePart = trimmed.replace(/\./g, '/') + ext;
+  const filePart = trimmed.replace(/\./g, "/") + ext;
   const matches = suffixIndex.get(filePart);
   return matches ? [...matches] : [];
 }
@@ -1324,7 +1320,7 @@ function resolveDottedFqn(fqn, ext, suffixIndex) {
 // ---------------------------------------------------------------------------
 
 export function resolveJavaImport(rawImport, _file, ctx) {
-  return resolveDottedFqn(rawImport, '.java', ctx.javaIndex);
+  return resolveDottedFqn(rawImport, ".java", ctx.javaIndex);
 }
 
 // ---------------------------------------------------------------------------
@@ -1336,7 +1332,7 @@ export function resolveJavaImport(rawImport, _file, ctx) {
 // ---------------------------------------------------------------------------
 
 export function resolveKotlinImport(rawImport, _file, ctx) {
-  return resolveDottedFqn(rawImport, '.kt', ctx.kotlinIndex);
+  return resolveDottedFqn(rawImport, ".kt", ctx.kotlinIndex);
 }
 
 // ---------------------------------------------------------------------------
@@ -1362,12 +1358,9 @@ export function resolveScalaImport(rawImport, specifiers, _file, ctx) {
   const out = new Set();
   const specs = Array.isArray(specifiers) ? specifiers : [];
   const isPlain =
-    specs.length === 1 &&
-    specs[0] &&
-    specs[0] !== '*' &&
-    rawImport.endsWith(`.${specs[0]}`);
+    specs.length === 1 && specs[0] && specs[0] !== "*" && rawImport.endsWith(`.${specs[0]}`);
 
-  if (specs.includes('*')) {
+  if (specs.includes("*")) {
     for (const m of resolveScalaPackage(rawImport, ctx)) out.add(m);
     return [...out].sort(comparePaths);
   }
@@ -1398,14 +1391,14 @@ export function resolveScalaImport(rawImport, specifiers, _file, ctx) {
 
 function resolveScalaDottedFqn(fqn, ctx) {
   return [
-    ...resolveDottedFqn(fqn, '.scala', ctx.scalaIndex),
-    ...resolveDottedFqn(fqn, '.sc', ctx.scalaIndex),
+    ...resolveDottedFqn(fqn, ".scala", ctx.scalaIndex),
+    ...resolveDottedFqn(fqn, ".sc", ctx.scalaIndex),
   ];
 }
 
 function resolveScalaPackage(pkg, ctx) {
-  if (!pkg || typeof pkg !== 'string') return [];
-  const dirPart = pkg.replace(/\.\*$/, '').replace(/\./g, '/');
+  if (!pkg || typeof pkg !== "string") return [];
+  const dirPart = pkg.replace(/\.\*$/, "").replace(/\./g, "/");
   const matches = ctx.scalaPackageIndex.get(dirPart);
   return matches ? [...matches].sort(compareScalaPackageMembers) : [];
 }
@@ -1427,7 +1420,7 @@ function compareScalaPackageMembers(a, b) {
 // ---------------------------------------------------------------------------
 
 export function resolveCSharpImport(rawImport, _file, ctx) {
-  return resolveDottedFqn(rawImport, '.cs', ctx.csIndex);
+  return resolveDottedFqn(rawImport, ".cs", ctx.csIndex);
 }
 
 // ---------------------------------------------------------------------------
@@ -1440,8 +1433,8 @@ export function resolveCSharpImport(rawImport, _file, ctx) {
 // ---------------------------------------------------------------------------
 
 function normalizeSwiftModuleName(rawImport) {
-  if (!rawImport || typeof rawImport !== 'string') return null;
-  const moduleName = rawImport.trim().split('.')[0];
+  if (!rawImport || typeof rawImport !== "string") return null;
+  const moduleName = rawImport.trim().split(".")[0];
   return /^[A-Za-z_][A-Za-z0-9_]*$/.test(moduleName) ? moduleName : null;
 }
 
@@ -1451,7 +1444,7 @@ export function resolveSwiftImport(rawImport, file, ctx) {
   const matches = ctx.swiftModuleIndex.get(moduleName);
   if (!matches) return [];
   const importer = toPosix(file.path);
-  return matches.filter(p => p !== importer);
+  return matches.filter((p) => p !== importer);
 }
 
 // ---------------------------------------------------------------------------
@@ -1473,8 +1466,7 @@ export function resolveSwiftImport(rawImport, file, ctx) {
 // followed by a quoted argument — so a focused regex is reliable.
 // ---------------------------------------------------------------------------
 
-const RUBY_REQUIRE_RE =
-  /\b(require_relative|require)\s*\(?\s*(['"])([^'"`\n]+?)\2/g;
+const RUBY_REQUIRE_RE = /\b(require_relative|require)\s*\(?\s*(['"])([^'"`\n]+?)\2/g;
 
 /**
  * Strip Ruby line comments (`# ...` to end of line) before running the
@@ -1483,7 +1475,7 @@ const RUBY_REQUIRE_RE =
  * stripper, this doesn't try to honor string contents — it's a heuristic.
  */
 function stripRubyComments(content) {
-  return content.replace(/#[^\n]*/g, '');
+  return content.replace(/#[^\n]*/g, "");
 }
 
 /**
@@ -1497,7 +1489,7 @@ function parseRubyImports(content) {
   RUBY_REQUIRE_RE.lastIndex = 0;
   while ((m = RUBY_REQUIRE_RE.exec(stripped)) !== null) {
     out.push({
-      kind: m[1] === 'require_relative' ? 'relative' : 'absolute',
+      kind: m[1] === "require_relative" ? "relative" : "absolute",
       source: m[3],
     });
   }
@@ -1513,9 +1505,9 @@ function parseRubyImports(content) {
 export function resolveRubyImport({ kind, source }, file, ctx) {
   if (!source) return [];
   const importerDir = dirOf(toPosix(file.path));
-  const withExt = source.endsWith('.rb') ? source : source + '.rb';
+  const withExt = source.endsWith(".rb") ? source : source + ".rb";
 
-  if (kind === 'relative') {
+  if (kind === "relative") {
     const base = resolveRelative(importerDir, withExt);
     return ctx.fileSet.has(base) ? [base] : [];
   }
@@ -1564,21 +1556,21 @@ function parseComposerAutoloadText(raw) {
     return null;
   }
   const out = new Map();
-  const psr4 = parsed?.autoload?.['psr-4'];
-  if (!psr4 || typeof psr4 !== 'object') return out;
+  const psr4 = parsed?.autoload?.["psr-4"];
+  if (!psr4 || typeof psr4 !== "object") return out;
   for (const [prefix, target] of Object.entries(psr4)) {
     const targets = Array.isArray(target) ? target : [target];
     // Normalize each dir to posix, strip leading `./`, strip trailing `/`
     const normalized = targets
-      .filter(t => typeof t === 'string')
-      .map(t => toPosix(t).replace(/\/$/, ''));
+      .filter((t) => typeof t === "string")
+      .map((t) => toPosix(t).replace(/\/$/, ""));
     // Ensure non-empty prefixes end with a backslash so the
     // longest-prefix-match does not accidentally split mid-segment
     // ("App" vs "Application"). Preserve the empty prefix as-is — it's
     // Composer's fallback mapping (`"psr-4": {"": "src/"}`) and means
     // "any namespace resolves under this dir". Appending `\` would
     // convert it into a prefix that matches nothing.
-    const normalizedPrefix = prefix === '' || prefix.endsWith('\\') ? prefix : prefix + '\\';
+    const normalizedPrefix = prefix === "" || prefix.endsWith("\\") ? prefix : prefix + "\\";
     out.set(normalizedPrefix, normalized);
   }
   return out;
@@ -1607,8 +1599,8 @@ async function loadPhpAutoloads(projectRoot, files) {
   const candidates = [];
   for (const f of files) {
     const p = toPosix(f.path);
-    const base = p.includes('/') ? p.slice(p.lastIndexOf('/') + 1) : p;
-    if (base !== 'composer.json') continue;
+    const base = p.includes("/") ? p.slice(p.lastIndexOf("/") + 1) : p;
+    if (base !== "composer.json") continue;
     const absPath = join(projectRoot, p);
     if (!existsSync(absPath)) continue;
     candidates.push({ key: p, absPath });
@@ -1616,12 +1608,12 @@ async function loadPhpAutoloads(projectRoot, files) {
   const reads = await readFilesParallel(candidates);
   for (const { key: p, raw, err } of reads) {
     if (err) {
-      failures.push({ path: p, stage: 'resolver-config-read', message: err.message });
+      failures.push({ path: p, stage: "resolver-config-read", message: err.message });
       warnings.push(
         `Warning: extract-import-map: composer.json at ${join(projectRoot, p)} failed ` +
-        `to read (${err.message}) — PSR-4 namespace mapping from this ` +
-        `composer.json unavailable — PHP imports under this package ` +
-        `will not resolve\n`,
+          `to read (${err.message}) — PSR-4 namespace mapping from this ` +
+          `composer.json unavailable — PHP imports under this package ` +
+          `will not resolve\n`,
       );
       continue;
     }
@@ -1629,13 +1621,13 @@ async function loadPhpAutoloads(projectRoot, files) {
     if (parsed === null) {
       failures.push({
         path: p,
-        stage: 'resolver-config-parse',
-        message: 'invalid composer.json',
+        stage: "resolver-config-parse",
+        message: "invalid composer.json",
       });
       warnings.push(
         `Warning: extract-import-map: composer.json at ${join(projectRoot, p)} failed ` +
-        `to parse — PSR-4 namespace mapping unavailable — PHP imports ` +
-        `under this package will not resolve\n`,
+          `to parse — PSR-4 namespace mapping unavailable — PHP imports ` +
+          `under this package will not resolve\n`,
       );
       continue;
     }
@@ -1655,9 +1647,9 @@ async function loadPhpAutoloads(projectRoot, files) {
  * This is what Composer's autoloader actually does on disk.
  */
 export function resolvePhpImport(rawImport, file, ctx) {
-  if (!rawImport || typeof rawImport !== 'string') return [];
+  if (!rawImport || typeof rawImport !== "string") return [];
   // Strip leading backslash if present (PHP allows `use \Foo\Bar;`)
-  const fqn = rawImport.startsWith('\\') ? rawImport.slice(1) : rawImport;
+  const fqn = rawImport.startsWith("\\") ? rawImport.slice(1) : rawImport;
   if (!fqn) return [];
 
   const importerDir = dirOf(toPosix(file.path));
@@ -1684,17 +1676,13 @@ export function resolvePhpImport(rawImport, file, ctx) {
   if (bestDirs === null) return [];
 
   // Drop the prefix (it covers the directory), translate `\` to `/`.
-  const relative = fqn.slice(bestPrefix.length).replace(/\\/g, '/');
+  const relative = fqn.slice(bestPrefix.length).replace(/\\/g, "/");
   if (!relative) return [];
   for (const dir of bestDirs) {
     // Anchor at the composer.json's own directory — PSR-4 paths are
     // composer-relative, not project-relative.
-    const dirUnderComposer = dir
-      ? (composerDir ? `${composerDir}/${dir}` : dir)
-      : composerDir;
-    const candidate = dirUnderComposer
-      ? `${dirUnderComposer}/${relative}.php`
-      : `${relative}.php`;
+    const dirUnderComposer = dir ? (composerDir ? `${composerDir}/${dir}` : dir) : composerDir;
+    const candidate = dirUnderComposer ? `${dirUnderComposer}/${relative}.php` : `${relative}.php`;
     if (ctx.fileSet.has(candidate)) return [candidate];
   }
   return [];
@@ -1749,10 +1737,10 @@ function probeRustModule(base, fileSet) {
  * `<package>/src/lib.rs` probe catches it.
  */
 function findRustCrateSrc(importerDir, fileSet) {
-  const parts = importerDir.split('/').filter(Boolean);
+  const parts = importerDir.split("/").filter(Boolean);
   for (let i = parts.length; i >= 0; i--) {
-    const ancestor = parts.slice(0, i).join('/');
-    const childSrc = ancestor ? `${ancestor}/src` : 'src';
+    const ancestor = parts.slice(0, i).join("/");
+    const childSrc = ancestor ? `${ancestor}/src` : "src";
     if (fileSet.has(`${childSrc}/lib.rs`) || fileSet.has(`${childSrc}/main.rs`)) {
       return childSrc;
     }
@@ -1761,24 +1749,24 @@ function findRustCrateSrc(importerDir, fileSet) {
 }
 
 export function resolveRustImport(rawImport, file, ctx) {
-  if (!rawImport || typeof rawImport !== 'string') return [];
+  if (!rawImport || typeof rawImport !== "string") return [];
   const src = rawImport.trim();
   if (!src) return [];
 
   const importerDir = dirOf(toPosix(file.path));
-  const segments = src.split('::').filter(Boolean);
+  const segments = src.split("::").filter(Boolean);
   if (segments.length === 0) return [];
   const head = segments[0];
 
   // External crates: anything not rooted at crate/super/self.
-  if (head !== 'crate' && head !== 'super' && head !== 'self') return [];
+  if (head !== "crate" && head !== "super" && head !== "self") return [];
 
   // Walk segments after the head to a base file path. We probe each
   // successive prefix from longest to shortest so that `crate::a::b::Item`
   // matches `a/b.rs` (with `Item` being a re-export inside) rather than
   // failing because `a/b/Item.rs` doesn't exist.
   let baseDir;
-  if (head === 'crate') {
+  if (head === "crate") {
     const crateSrc = findRustCrateSrc(importerDir, ctx.fileSet);
     if (!crateSrc) {
       // Warn once per importer file (a single .rs file can have many
@@ -1788,18 +1776,18 @@ export function resolveRustImport(rawImport, file, ctx) {
         ctx._warnedNoRustCrateRoot.add(importerPath);
         process.stderr.write(
           `Warning: extract-import-map: Rust file ${importerPath} has ` +
-          `'use crate::' but no crate root (src/lib.rs or src/main.rs) ` +
-          `found — crate-relative imports unresolved\n`,
+            `'use crate::' but no crate root (src/lib.rs or src/main.rs) ` +
+            `found — crate-relative imports unresolved\n`,
         );
       }
       return [];
     }
     baseDir = crateSrc;
-  } else if (head === 'super') {
+  } else if (head === "super") {
     // Walk up one directory from the importer
-    const parts = importerDir.split('/').filter(Boolean);
+    const parts = importerDir.split("/").filter(Boolean);
     if (parts.length === 0) return [];
-    baseDir = parts.slice(0, -1).join('/');
+    baseDir = parts.slice(0, -1).join("/");
   } else {
     // self::
     baseDir = importerDir;
@@ -1810,9 +1798,7 @@ export function resolveRustImport(rawImport, file, ctx) {
   // (e.g. bare `use crate;`) is unresolvable.
   for (let i = rest.length; i > 0; i--) {
     const prefix = rest.slice(0, i);
-    const base = baseDir
-      ? `${baseDir}/${prefix.join('/')}`
-      : prefix.join('/');
+    const base = baseDir ? `${baseDir}/${prefix.join("/")}` : prefix.join("/");
     const match = probeRustModule(base, ctx.fileSet);
     if (match) return [match];
   }
@@ -1862,17 +1848,12 @@ function extractRustModSources(content) {
 // ---------------------------------------------------------------------------
 
 export function resolveCppImport(rawImport, file, ctx) {
-  if (!rawImport || typeof rawImport !== 'string') return [];
+  if (!rawImport || typeof rawImport !== "string") return [];
   const src = toPosix(rawImport.trim());
   if (!src) return [];
   const importerDir = dirOf(toPosix(file.path));
 
-  const candidates = [
-    resolveRelative(importerDir, src),
-    `include/${src}`,
-    `src/${src}`,
-    src,
-  ];
+  const candidates = [resolveRelative(importerDir, src), `include/${src}`, `src/${src}`, src];
   for (const c of candidates) {
     if (c && ctx.fileSet.has(c)) return [c];
   }
@@ -1888,9 +1869,7 @@ export function resolveCppImport(rawImport, file, ctx) {
  * these via the corresponding extractor; the dispatcher routes the import
  * source through the matching resolver.
  */
-const TS_JS_LANGS = new Set([
-  'typescript', 'javascript', 'tsx', 'jsx', 'vue',
-]);
+const TS_JS_LANGS = new Set(["typescript", "javascript", "tsx", "jsx", "vue"]);
 
 /**
  * Dispatch a raw import to the language-specific resolver. Returns an array
@@ -1908,34 +1887,34 @@ function resolveImport(imp, file, ctx) {
     const out = resolveTsJsImport(src, file, ctx);
     return out ? [out] : [];
   }
-  if (lang === 'python') {
+  if (lang === "python") {
     return resolvePythonImport(src, imp.specifiers, file, ctx);
   }
-  if (lang === 'go') {
+  if (lang === "go") {
     return resolveGoImport(src, file, ctx);
   }
-  if (lang === 'java') {
+  if (lang === "java") {
     return resolveJavaImport(src, file, ctx);
   }
-  if (lang === 'kotlin') {
+  if (lang === "kotlin") {
     return resolveKotlinImport(src, file, ctx);
   }
-  if (lang === 'scala') {
+  if (lang === "scala") {
     return resolveScalaImport(src, imp.specifiers, file, ctx);
   }
-  if (lang === 'csharp') {
+  if (lang === "csharp") {
     return resolveCSharpImport(src, file, ctx);
   }
-  if (lang === 'swift') {
+  if (lang === "swift") {
     return resolveSwiftImport(src, file, ctx);
   }
-  if (lang === 'php') {
+  if (lang === "php") {
     return resolvePhpImport(src, file, ctx);
   }
-  if (lang === 'rust') {
+  if (lang === "rust") {
     return resolveRustImport(src, file, ctx);
   }
-  if (lang === 'c' || lang === 'cpp') {
+  if (lang === "c" || lang === "cpp") {
     return resolveCppImport(src, file, ctx);
   }
   // Ruby is handled via a dedicated pathway because its tree-sitter
@@ -1953,10 +1932,10 @@ function extractExtraImportSources(file, content) {
   if (TS_JS_LANGS.has(file.language)) {
     return extractRequireSources(content);
   }
-  if (file.language === 'kotlin') {
+  if (file.language === "kotlin") {
     return extractKotlinSources(content);
   }
-  if (file.language === 'rust') {
+  if (file.language === "rust") {
     // `mod x;` declarations aren't in tree-sitter's `imports` field, but they
     // declare submodules on disk that the rust resolver knows how to find.
     return extractRustModSources(content);
@@ -1968,18 +1947,18 @@ function extractExtraImportSources(file, content) {
 // Main
 // ---------------------------------------------------------------------------
 async function main() {
-  const [,, inputPath, outputPath] = process.argv;
+  const [, , inputPath, outputPath] = process.argv;
   if (!inputPath || !outputPath) {
-    process.stderr.write('Usage: node extract-import-map.mjs <input.json> <output.json>\n');
+    process.stderr.write("Usage: node extract-import-map.mjs <input.json> <output.json>\n");
     process.exit(1);
   }
 
-  const inputRaw = readFileSync(inputPath, 'utf-8');
+  const inputRaw = readFileSync(inputPath, "utf-8");
   const input = JSON.parse(inputRaw);
   const { projectRoot, files, analysisPaths } = input;
 
   if (!projectRoot || !Array.isArray(files)) {
-    throw new Error('Invalid input: must contain projectRoot and files array');
+    throw new Error("Invalid input: must contain projectRoot and files array");
   }
 
   const analysisFiles = selectAnalysisFiles(files, analysisPaths);
@@ -1991,10 +1970,8 @@ async function main() {
       failures: [],
       importMap: {},
     };
-    writeFileSync(outputPath, JSON.stringify(output, null, 2), 'utf-8');
-    process.stderr.write(
-      'extract-import-map: filesScanned=0 filesWithImports=0 totalEdges=0\n',
-    );
+    writeFileSync(outputPath, JSON.stringify(output, null, 2), "utf-8");
+    process.stderr.write("extract-import-map: filesScanned=0 filesWithImports=0 totalEdges=0\n");
     return;
   }
 
@@ -2011,7 +1988,7 @@ async function main() {
   let treeSitterReady = false;
   const failures = [];
   try {
-    const tsConfigs = builtinLanguageConfigs.filter(c => c.treeSitter);
+    const tsConfigs = builtinLanguageConfigs.filter((c) => c.treeSitter);
     const tsPlugin = new TreeSitterPlugin(tsConfigs);
     await tsPlugin.init();
     registry = new PluginRegistry();
@@ -2019,11 +1996,11 @@ async function main() {
     registerAllParsers(registry);
     treeSitterReady = true;
   } catch (err) {
-    failures.push({ path: null, stage: 'tree-sitter-init', message: err.message });
+    failures.push({ path: null, stage: "tree-sitter-init", message: err.message });
     process.stderr.write(
       `Warning: extract-import-map: tree-sitter init failed ` +
-      `(${err.message}) — all importMap entries will be empty — ` +
-      `structural graph will have no import edges\n`,
+        `(${err.message}) — all importMap entries will be empty — ` +
+        `structural graph will have no import edges\n`,
     );
   }
 
@@ -2041,7 +2018,7 @@ async function main() {
     const path = toPosix(file.path);
 
     // Non-code files always get an empty array
-    if (file.fileCategory !== 'code') {
+    if (file.fileCategory !== "code") {
       importMap[path] = [];
       continue;
     }
@@ -2059,12 +2036,12 @@ async function main() {
     // Read file content (per-file resilience)
     let content;
     try {
-      content = readFileSync(absolutePath, 'utf-8');
+      content = readFileSync(absolutePath, "utf-8");
     } catch (err) {
-      failures.push({ path, stage: 'file-read', message: err.message });
+      failures.push({ path, stage: "file-read", message: err.message });
       process.stderr.write(
         `Warning: extract-import-map: import resolution failed for ${path} ` +
-        `(read error: ${err.message}) — importMap[${path}]=[]\n`,
+          `(read error: ${err.message}) — importMap[${path}]=[]\n`,
       );
       importMap[path] = [];
       continue;
@@ -2079,7 +2056,7 @@ async function main() {
       // preserve the require vs require_relative discriminator, so the
       // resolver needs the regex-parsed shape directly. All other tree-sitter
       // languages get analyzed once and dispatched normally.
-      if (file.language === 'ruby') {
+      if (file.language === "ruby") {
         for (const imp of parseRubyImports(content)) {
           for (const out of resolveRubyImport(imp, file, ctx)) {
             if (out && ctx.fileSet.has(out)) resolvedSet.add(out);
@@ -2108,15 +2085,13 @@ async function main() {
         }
       }
       resolved = [...resolvedSet].sort((a, b) =>
-        file.language === 'scala'
-          ? compareScalaPackageMembers(a, b)
-          : comparePaths(a, b),
+        file.language === "scala" ? compareScalaPackageMembers(a, b) : comparePaths(a, b),
       );
     } catch (err) {
-      failures.push({ path, stage: 'file-analyze', message: err.message });
+      failures.push({ path, stage: "file-analyze", message: err.message });
       process.stderr.write(
         `Warning: extract-import-map: import resolution failed for ${path} ` +
-        `(analyze error: ${err.message}) — importMap[${path}]=[]\n`,
+          `(analyze error: ${err.message}) — importMap[${path}]=[]\n`,
       );
       importMap[path] = [];
       continue;
@@ -2140,7 +2115,7 @@ async function main() {
     importMap,
   };
 
-  writeFileSync(outputPath, JSON.stringify(output, null, 2), 'utf-8');
+  writeFileSync(outputPath, JSON.stringify(output, null, 2), "utf-8");
 
   if (!existsSync(outputPath)) {
     throw new Error(`output file missing after write: ${outputPath}`);
@@ -2148,7 +2123,7 @@ async function main() {
 
   process.stderr.write(
     `extract-import-map: filesScanned=${analysisFiles.length} ` +
-    `filesWithImports=${filesWithImports} totalEdges=${totalEdges}\n`,
+      `filesWithImports=${filesWithImports} totalEdges=${totalEdges}\n`,
   );
 }
 

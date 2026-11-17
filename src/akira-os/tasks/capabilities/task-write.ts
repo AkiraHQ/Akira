@@ -27,10 +27,7 @@ export type TaskCreateOutput = { id: string };
  * Owner: AKIRA OS · workspace
  * Activation Tier: Tier 1 (Warm at boot)
  */
-export const taskCreateDescriptor: CapabilityDescriptor<
-  TaskCreateInput,
-  TaskCreateOutput
-> = {
+export const taskCreateDescriptor: CapabilityDescriptor<TaskCreateInput, TaskCreateOutput> = {
   name: "task.create",
   version: "1.0.0",
   owner: "AKIRA OS · workspace",
@@ -106,10 +103,7 @@ export type TaskUpdateOutput = { updated: boolean };
  * Owner: AKIRA OS · workspace
  * Activation Tier: Tier 1 (Warm at boot)
  */
-export const taskUpdateDescriptor: CapabilityDescriptor<
-  TaskUpdateInput,
-  TaskUpdateOutput
-> = {
+export const taskUpdateDescriptor: CapabilityDescriptor<TaskUpdateInput, TaskUpdateOutput> = {
   name: "task.update",
   version: "1.0.0",
   owner: "AKIRA OS · workspace",

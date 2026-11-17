@@ -2,10 +2,10 @@
  * Current operational mode of VAJRA.
  */
 export type OperationalMode =
-  | "REQUEST_DRIVEN"     // Reacting directly to explicit human commands
-  | "PROACTIVE_MONITOR"   // Background monitoring and gentle initiative
-  | "RECOVERY"            // Reconciling state after reboot, crash, or error
-  | "PAUSED";             // Operational execution suspended by user or safety gate
+  | "REQUEST_DRIVEN" // Reacting directly to explicit human commands
+  | "PROACTIVE_MONITOR" // Background monitoring and gentle initiative
+  | "RECOVERY" // Reconciling state after reboot, crash, or error
+  | "PAUSED"; // Operational execution suspended by user or safety gate
 
 /**
  * Observed human presence status.

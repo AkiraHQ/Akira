@@ -41,9 +41,7 @@ export const projectReadDescriptor: CapabilityDescriptor<ProjectReadInput, Proje
  * Handler for project.read capability.
  * Adapts existing SqliteProjectRepository without modifying repository internals.
  */
-export async function projectReadHandler(
-  input: ProjectReadInput,
-): Promise<Project | null> {
+export async function projectReadHandler(input: ProjectReadInput): Promise<Project | null> {
   const { projectRepository } = await import("../../../persistence/repositories");
   const project = projectRepository.getById(input.id);
   return project ?? null;

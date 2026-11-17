@@ -4,11 +4,11 @@ import { CorrelationMetadata } from "../../contracts/results/result";
  * Stimulus kind classifying the origin and nature of an incoming cognitive stimulus.
  */
 export type StimulusKind =
-  | "human_prompt"          // Direct conversational input from the human user
-  | "system_event"          // Platform or environment event from AKIRA OS
-  | "subsystem_discovery"   // Discovery, insight, or pattern from GENESIS
-  | "scheduled_timer"       // Timer or recurring tick (proactive wakeup)
-  | "step_result";          // Completion signal of an executed capability step
+  | "human_prompt" // Direct conversational input from the human user
+  | "system_event" // Platform or environment event from AKIRA OS
+  | "subsystem_discovery" // Discovery, insight, or pattern from GENESIS
+  | "scheduled_timer" // Timer or recurring tick (proactive wakeup)
+  | "step_result"; // Completion signal of an executed capability step
 
 /**
  * Pure data contract representing an external or internal stimulus entering the VAJRA brain.

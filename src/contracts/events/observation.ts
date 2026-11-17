@@ -114,9 +114,7 @@ export function createObservation<TPayload>(opts: {
   isRecommendation?: boolean;
 }): Observation<TPayload> {
   if (opts.confidence !== undefined && (opts.confidence < 0 || opts.confidence > 1)) {
-    throw new RangeError(
-      `Observation confidence must be in [0, 1]; received ${opts.confidence}`,
-    );
+    throw new RangeError(`Observation confidence must be in [0, 1]; received ${opts.confidence}`);
   }
 
   const id =

@@ -5,7 +5,10 @@ import { mergeDesignGraph } from "@understand-anything/core/figma";
 
 // Mirror core's resolveUaDir: the legacy `.understand-anything/` dir wins for
 // both reads and writes when it already exists; otherwise use `.ua/`.
-const uaDir = (root) => { const legacy = join(root, ".understand-anything"); return existsSync(legacy) ? legacy : join(root, ".ua"); };
+const uaDir = (root) => {
+  const legacy = join(root, ".understand-anything");
+  return existsSync(legacy) ? legacy : join(root, ".ua");
+};
 
 const [, , projectRoot] = process.argv;
 const interDir = join(uaDir(projectRoot), "intermediate");
@@ -26,17 +29,24 @@ if (!result.success || !result.data) {
 
 const outDir = uaDir(projectRoot);
 writeFileSync(join(outDir, "knowledge-graph.json"), JSON.stringify(result.data, null, 2));
-writeFileSync(join(outDir, "meta.json"), JSON.stringify({
-  lastAnalyzedAt: new Date().toISOString(),
-  gitCommitHash: "",
-  figmaVersion: manifest.figmaVersion ?? "",
-  version: "1.0.0",
-  analyzedFiles: result.data.nodes.length,
-}, null, 2));
+writeFileSync(
+  join(outDir, "meta.json"),
+  JSON.stringify(
+    {
+      lastAnalyzedAt: new Date().toISOString(),
+      gitCommitHash: "",
+      figmaVersion: manifest.figmaVersion ?? "",
+      version: "1.0.0",
+      analyzedFiles: result.data.nodes.length,
+    },
+    null,
+    2,
+  ),
+);
 
 console.error(
   `Design graph: ${result.data.nodes.length} nodes, ${result.data.edges.length} edges, ` +
-  `${result.data.layers.length} layers, ${result.data.tour.length} tour steps`,
+    `${result.data.layers.length} layers, ${result.data.tour.length} tour steps`,
 );
 for (const issue of result.issues) {
   if (issue.level !== "auto-corrected") console.error(`[${issue.level}] ${issue.message}`);

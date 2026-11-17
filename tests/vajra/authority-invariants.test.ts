@@ -68,7 +68,9 @@ describe("VAJRA Authority Invariants (Target Architecture §1, §3, §22)", () =
     expect(identity.name).toBe("VAJRA");
     expect(identity.role).toBe("Central Cognitive Authority");
     expect(identity.authorityLevel).toBe(1);
-    expect(identity.coreInvariant).toBe("I am the central brain; I cannot execute commands directly.");
+    expect(identity.coreInvariant).toBe(
+      "I am the central brain; I cannot execute commands directly.",
+    );
     expect(identity.hierarchy).toEqual(["Human", "VAJRA", "SpecializedDomains", "Reality"]);
   });
 
@@ -79,14 +81,16 @@ describe("VAJRA Authority Invariants (Target Architecture §1, §3, §22)", () =
 
     expect(vajraBoundary).toBeDefined();
     expect(vajraBoundary?.prohibitions).toContain("Direct file or filesystem mutation");
-    expect(vajraBoundary?.prohibitions).toContain("Direct SQLite database connection or schema mutation");
+    expect(vajraBoundary?.prohibitions).toContain(
+      "Direct SQLite database connection or schema mutation",
+    );
     expect(vajraBoundary?.prohibitions).toContain("Direct subprocess spawning or OS execution");
     expect(vajraBoundary?.prohibitions).toContain("Direct actuation or control of HANDS");
   });
 
   it("MUST route capability calls through CapabilityRegistry with { isVajra: true }", async () => {
     const registry = new CapabilityRegistry();
-    let receivedCallerContext: any = null;
+    const receivedCallerContext: any = null;
 
     const dummyDescriptor: CapabilityDescriptor<{ msg: string }, { echo: string }> = {
       name: "test.echo",

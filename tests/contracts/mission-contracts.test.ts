@@ -23,14 +23,8 @@ import {
   createMissionDefinition,
   createMissionStep,
 } from "../../src/contracts/mission/mission-definition";
-import {
-  MissionState,
-  createMissionState,
-} from "../../src/contracts/mission/mission-state";
-import {
-  createMissionResult,
-  MissionResult,
-} from "../../src/contracts/capabilities/verification";
+import { MissionState, createMissionState } from "../../src/contracts/mission/mission-state";
+import { createMissionResult, MissionResult } from "../../src/contracts/capabilities/verification";
 import { CorrelationMetadata } from "../../src/contracts/results/result";
 
 // ---------------------------------------------------------------------------
@@ -244,7 +238,9 @@ describe("Mission Contracts — No Executable Methods", () => {
 
   it("verifies MissionConstraint contains only parameters, no policy evaluation functions", () => {
     for (const [key, val] of Object.entries(sampleConstraints)) {
-      expect(typeof val, `Constraint property '${key}' must not be a function`).not.toBe("function");
+      expect(typeof val, `Constraint property '${key}' must not be a function`).not.toBe(
+        "function",
+      );
     }
     expect("evaluate" in sampleConstraints).toBe(false);
     expect("check" in sampleConstraints).toBe(false);

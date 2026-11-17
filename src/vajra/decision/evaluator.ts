@@ -1,11 +1,7 @@
 import { PolicyEnvelope } from "../types/policy";
 import { ReasoningResult } from "../reasoning/types";
 import { SelfModel } from "../self-model/self-model";
-import {
-  DecisionOption,
-  OptionEvaluationResult,
-  EvaluationDisqualificationReason,
-} from "./types";
+import { DecisionOption, OptionEvaluationResult, EvaluationDisqualificationReason } from "./types";
 
 /**
  * Context required for evaluating a decision option.
@@ -25,10 +21,7 @@ export interface EvaluationContext {
  * Invariant: Never collapses evaluation into a single scalar score.
  */
 export class DecisionEvaluator {
-  evaluateOption(
-    option: DecisionOption,
-    ctx: EvaluationContext,
-  ): OptionEvaluationResult {
+  evaluateOption(option: DecisionOption, ctx: EvaluationContext): OptionEvaluationResult {
     const notes: string[] = [];
     let isDisqualified = false;
     let disqualificationReason: EvaluationDisqualificationReason | undefined;
@@ -138,10 +131,7 @@ export class DecisionEvaluator {
       const highMsg = "High-impact actions require explicit human confirmation.";
       approvalReason = approvalReason ? `${approvalReason}; ${highMsg}` : highMsg;
       notes.push(highMsg);
-    } else if (
-      option.reversibility === "IRREVERSIBLE" &&
-      option.impactClass !== "LOW"
-    ) {
+    } else if (option.reversibility === "IRREVERSIBLE" && option.impactClass !== "LOW") {
       requiresApproval = true;
       const irrMsg = "Medium-impact irreversible actions require human approval.";
       approvalReason = approvalReason ? `${approvalReason}; ${irrMsg}` : irrMsg;
@@ -154,14 +144,14 @@ export class DecisionEvaluator {
 
     const minConfidence = ctx.policy.minAutonomousConfidence ?? 0.85;
     // Base confidence from reasoning hypotheses or default to nominal
-    let confidence = 0.90;
+    let confidence = 0.9;
     if (ctx.reasoning.hypotheses.length > 0) {
       confidence = Math.max(...ctx.reasoning.hypotheses.map((h) => h.confidence));
     }
     if (ctx.reasoning.uncertaintyLevel === "HIGH") {
-      confidence = Math.min(confidence, 0.70);
+      confidence = Math.min(confidence, 0.7);
     } else if (ctx.reasoning.uncertaintyLevel === "CRITICAL") {
-      confidence = Math.min(confidence, 0.40);
+      confidence = Math.min(confidence, 0.4);
     }
 
     if (
@@ -174,7 +164,8 @@ export class DecisionEvaluator {
       notes.push(confMsg);
     }
 
-    const policyCompliant = !isDisqualified && (!requiresApproval || option.kind === "escalate_to_human");
+    const policyCompliant =
+      !isDisqualified && (!requiresApproval || option.kind === "escalate_to_human");
 
     return Object.freeze({
       option,

@@ -37,7 +37,11 @@ describe("MissionAdmissionGateway (Phase 6 Admission Gating)", () => {
     updatedAt: new Date().toISOString(),
   };
 
-  const createTestCapability = (name: string, allowVajra: boolean = true, isAvailable: boolean = true): CapabilityDescriptor => ({
+  const createTestCapability = (
+    name: string,
+    allowVajra: boolean = true,
+    isAvailable: boolean = true,
+  ): CapabilityDescriptor => ({
     name,
     version: "1.0.0",
     description: `Test capability ${name}`,
@@ -93,7 +97,9 @@ describe("MissionAdmissionGateway (Phase 6 Admission Gating)", () => {
     db.close();
   });
 
-  const createBaseAction = (overrides?: Partial<Parameters<typeof createExecutiveAction>[0]>): ExecutiveAction => {
+  const createBaseAction = (
+    overrides?: Partial<Parameters<typeof createExecutiveAction>[0]>,
+  ): ExecutiveAction => {
     return createExecutiveAction({
       id: "act-adm-01",
       kind: "start_mission",
@@ -123,7 +129,10 @@ describe("MissionAdmissionGateway (Phase 6 Admission Gating)", () => {
       ...createBaseAction(),
       correlation: {} as unknown as CorrelationMetadata,
     };
-    const resCorr = await gateway.admitAction(malformedCorrelationAction as unknown as ExecutiveAction, validContext);
+    const resCorr = await gateway.admitAction(
+      malformedCorrelationAction as unknown as ExecutiveAction,
+      validContext,
+    );
     expect(resCorr.status).toBe("REJECTED");
     expect(resCorr.reason).toContain("CorrelationMetadata");
 

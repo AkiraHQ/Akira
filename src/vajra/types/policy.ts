@@ -7,9 +7,9 @@ export type ImpactClass = "LOW" | "MEDIUM" | "HIGH";
  * Reversibility classification for potential actions.
  */
 export type ReversibilityClass =
-  | "FULLY_REVERSIBLE"      // Can be completely undone without residue (e.g. read, cache write)
-  | "PARTIALLY_REVERSIBLE"  // Can be compensated, but side effects remain (e.g. modified task status)
-  | "IRREVERSIBLE";         // Cannot be undone (e.g. external network send, database drop, force push)
+  | "FULLY_REVERSIBLE" // Can be completely undone without residue (e.g. read, cache write)
+  | "PARTIALLY_REVERSIBLE" // Can be compensated, but side effects remain (e.g. modified task status)
+  | "IRREVERSIBLE"; // Cannot be undone (e.g. external network send, database drop, force push)
 
 /**
  * Bounded Operational Policy Envelope.

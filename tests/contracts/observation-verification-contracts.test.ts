@@ -15,10 +15,7 @@
  */
 
 import { describe, it, expect } from "vitest";
-import {
-  Observation,
-  createObservation,
-} from "../../src/contracts/events/observation";
+import { Observation, createObservation } from "../../src/contracts/events/observation";
 import {
   VerificationOutcome,
   VerificationRecord,
@@ -636,9 +633,7 @@ describe("Contract K6 — MissionResult", () => {
       expect(missionResult.correlation.verificationRecordId).toBe(verif.id);
 
       // K19 correlation flows through
-      expect(verif.correlation.correlationId).toBe(
-        missionResult.correlation.correlationId,
-      );
+      expect(verif.correlation.correlationId).toBe(missionResult.correlation.correlationId);
     });
   });
 

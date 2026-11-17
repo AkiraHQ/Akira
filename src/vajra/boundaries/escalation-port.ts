@@ -129,7 +129,10 @@ export class LiveEscalationAdapter implements IEscalationPort {
             version: "1.0.0",
           });
         } catch (eventErr) {
-          console.warn("[LiveEscalationAdapter] Failed to publish escalation request event:", eventErr);
+          console.warn(
+            "[LiveEscalationAdapter] Failed to publish escalation request event:",
+            eventErr,
+          );
         }
       }
 
@@ -139,8 +142,13 @@ export class LiveEscalationAdapter implements IEscalationPort {
         resolvedAt: now,
       };
     } catch (err: any) {
-      console.error(`[LiveEscalationAdapter] Failed to persist escalation request '${request.id}':`, err);
-      throw new Error(`Failed to persist escalation request '${request.id}' to SQLite: ${err?.message ?? String(err)}`);
+      console.error(
+        `[LiveEscalationAdapter] Failed to persist escalation request '${request.id}':`,
+        err,
+      );
+      throw new Error(
+        `Failed to persist escalation request '${request.id}' to SQLite: ${err?.message ?? String(err)}`,
+      );
     }
   }
 
@@ -165,7 +173,10 @@ export class LiveEscalationAdapter implements IEscalationPort {
             version: "1.0.0",
           });
         } catch (eventErr) {
-          console.warn("[LiveEscalationAdapter] Failed to publish escalation resolution event:", eventErr);
+          console.warn(
+            "[LiveEscalationAdapter] Failed to publish escalation resolution event:",
+            eventErr,
+          );
         }
       }
     } catch (err: any) {
@@ -250,7 +261,9 @@ export class InMemoryEscalationAdapter implements IEscalationPort {
     this.pendingRequests.push(request);
     return {
       approved: this.autoApprove,
-      humanComment: this.autoApprove ? "Approved automatically by test adapter" : "Rejected by default in test adapter",
+      humanComment: this.autoApprove
+        ? "Approved automatically by test adapter"
+        : "Rejected by default in test adapter",
       resolvedAt: new Date().toISOString(),
     };
   }

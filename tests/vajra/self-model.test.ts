@@ -9,7 +9,9 @@ describe("VAJRA Self-Model Subsystem", () => {
 
     expect(identity.name).toBe("VAJRA");
     expect(identity.authorityLevel).toBe(1);
-    expect(identity.coreInvariant).toBe("I am the central brain; I cannot execute commands directly.");
+    expect(identity.coreInvariant).toBe(
+      "I am the central brain; I cannot execute commands directly.",
+    );
 
     const policy = selfModel.getPolicy();
     expect(policy.maxAutonomousSteps).toBe(3);
@@ -133,7 +135,9 @@ describe("VAJRA Self-Model Subsystem", () => {
       capabilityName: "task.delete",
     });
     expect(irreversibleCheck.allowed).toBe(false);
-    expect(irreversibleCheck.reason).toContain("High-impact irreversible actions require explicit human escalation");
+    expect(irreversibleCheck.reason).toContain(
+      "High-impact irreversible actions require explicit human escalation",
+    );
 
     // 4. Exceeds budget
     const expensiveCheck = selfModel.canExecuteAutonomousAction({

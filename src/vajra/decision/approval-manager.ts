@@ -8,11 +8,7 @@ import {
   createVajraEscalationRecord,
   EscalationStatus,
 } from "../types/escalation-record";
-import {
-  DecisionOption,
-  ApprovalGateDescriptor,
-  DecisionApprovalState,
-} from "./types";
+import { DecisionOption, ApprovalGateDescriptor, DecisionApprovalState } from "./types";
 
 /**
  * Manages human approval escalations per Contract K1.
@@ -57,7 +53,12 @@ export class ApprovalManager {
       id: `esc-${opts.decisionId}`,
       status: "PENDING_APPROVAL",
       actionProposed: JSON.stringify(descriptor),
-      impactClass: opts.option.impactClass === "HIGH" ? "HIGH" : opts.option.impactClass === "MEDIUM" ? "MEDIUM" : "LOW",
+      impactClass:
+        opts.option.impactClass === "HIGH"
+          ? "HIGH"
+          : opts.option.impactClass === "MEDIUM"
+            ? "MEDIUM"
+            : "LOW",
       riskExplanation: opts.rationale,
       requestId: opts.correlation.requestId,
       correlationId: opts.correlation.correlationId,

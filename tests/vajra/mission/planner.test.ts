@@ -6,11 +6,21 @@ import path from "path";
 import { PlanningEngine } from "../../../src/vajra/mission/planner";
 import { CapabilityRegistry } from "../../../src/contracts/capabilities/registry";
 import { CapabilityDescriptor } from "../../../src/contracts/capabilities/descriptor";
-import { IModelCoprocessorPort, ModelCoprocessorRequest, ModelCoprocessorResponse } from "../../../src/vajra/boundaries/model-coprocessor-port";
+import {
+  IModelCoprocessorPort,
+  ModelCoprocessorRequest,
+  ModelCoprocessorResponse,
+} from "../../../src/vajra/boundaries/model-coprocessor-port";
 import { SqliteOperationalStateStore } from "../../../src/persistence/vajra/sqlite-operational-state-store";
 import { CorrelationMetadata, Result } from "../../../src/contracts/results/result";
-import { createVajraMissionRecord, createVajraStepRecord } from "../../../src/vajra/types/mission-record";
-import { createMissionDefinition, createMissionStep } from "../../../src/contracts/mission/mission-definition";
+import {
+  createVajraMissionRecord,
+  createVajraStepRecord,
+} from "../../../src/vajra/types/mission-record";
+import {
+  createMissionDefinition,
+  createMissionStep,
+} from "../../../src/contracts/mission/mission-definition";
 import { createMissionState } from "../../../src/contracts/mission/mission-state";
 import { PlanProposal } from "../../../src/vajra/mission/types";
 
@@ -110,15 +120,10 @@ describe("PlanningEngine (Phase 6 Planning & Replan Safety)", () => {
 
     it("rejects unregistered capability with PLANNING_FAILED", async () => {
       const planner = new PlanningEngine(capabilityRegistry, undefined, stateStore);
-      const planResult = await planner.createPlan(
-        "Perform unknown capability",
-        {},
-        correlation,
-        {
-          targetCapability: "nonexistent.capability",
-          input: {},
-        },
-      );
+      const planResult = await planner.createPlan("Perform unknown capability", {}, correlation, {
+        targetCapability: "nonexistent.capability",
+        input: {},
+      });
 
       expect(planResult.ok).toBe(false);
       if (!planResult.ok) {
@@ -129,15 +134,10 @@ describe("PlanningEngine (Phase 6 Planning & Replan Safety)", () => {
 
     it("rejects capability schema violation with PLANNING_FAILED", async () => {
       const planner = new PlanningEngine(capabilityRegistry, undefined, stateStore);
-      const planResult = await planner.createPlan(
-        "Invalid payload",
-        {},
-        correlation,
-        {
-          targetCapability: "system.echo",
-          input: { message: 12345 }, // schema expects string
-        },
-      );
+      const planResult = await planner.createPlan("Invalid payload", {}, correlation, {
+        targetCapability: "system.echo",
+        input: { message: 12345 }, // schema expects string
+      });
 
       expect(planResult.ok).toBe(false);
       if (!planResult.ok) {
@@ -193,9 +193,24 @@ describe("PlanningEngine (Phase 6 Planning & Replan Safety)", () => {
           const proposal: PlanProposal = {
             objective: "Too many steps",
             steps: [
-              { description: "s1", targetCapability: "system.echo", input: { message: "1" }, expectedEvidence: "e1" },
-              { description: "s2", targetCapability: "system.echo", input: { message: "2" }, expectedEvidence: "e2" },
-              { description: "s3", targetCapability: "system.echo", input: { message: "3" }, expectedEvidence: "e3" },
+              {
+                description: "s1",
+                targetCapability: "system.echo",
+                input: { message: "1" },
+                expectedEvidence: "e1",
+              },
+              {
+                description: "s2",
+                targetCapability: "system.echo",
+                input: { message: "2" },
+                expectedEvidence: "e2",
+              },
+              {
+                description: "s3",
+                targetCapability: "system.echo",
+                input: { message: "3" },
+                expectedEvidence: "e3",
+              },
             ],
           };
           return Result.success({ parsed: proposal as unknown as T, rawOutput: "{}" }, correlation);
@@ -256,7 +271,10 @@ describe("PlanningEngine (Phase 6 Planning & Replan Safety)", () => {
         objective: "Immutable Mission Objective",
         steps: [step1],
         constraints: { maxSteps: 3, timeoutMs: 30_000 },
-        completionCriteria: { description: "Format files", requiredEvidence: ["evidence.format.done"] },
+        completionCriteria: {
+          description: "Format files",
+          requiredEvidence: ["evidence.format.done"],
+        },
         goalId: "goal-orig-123",
         correlation,
       });
@@ -340,23 +358,17 @@ describe("PlanningEngine (Phase 6 Planning & Replan Safety)", () => {
 
       const planner = new PlanningEngine(capabilityRegistry, undefined, stateStore);
       // First replan succeeds
-      const firstReplan = await planner.replan(
-        "m-replan-02",
-        1,
-        [],
-        correlation,
-        { targetCapability: "system.echo", input: { message: "replan 1" } },
-      );
+      const firstReplan = await planner.replan("m-replan-02", 1, [], correlation, {
+        targetCapability: "system.echo",
+        input: { message: "replan 1" },
+      });
       expect(firstReplan.ok).toBe(true);
 
       // Attempt second replan on same mission -> Must be rejected by replan budget guard
-      const secondReplan = await planner.replan(
-        "m-replan-02",
-        1,
-        [],
-        correlation,
-        { targetCapability: "system.echo", input: { message: "replan 2" } },
-      );
+      const secondReplan = await planner.replan("m-replan-02", 1, [], correlation, {
+        targetCapability: "system.echo",
+        input: { message: "replan 2" },
+      });
       expect(secondReplan.ok).toBe(false);
       if (!secondReplan.ok) {
         expect(secondReplan.error).toContain("REPLAN_REJECTED");

@@ -67,9 +67,10 @@ export class DecisionOptionFormulator {
       }
 
       case "REQUEST_CLARIFICATION": {
-        const questions = reasoning.unresolvedQuestions.length > 0
-          ? reasoning.unresolvedQuestions
-          : ["Could you clarify the desired operational scope?"];
+        const questions =
+          reasoning.unresolvedQuestions.length > 0
+            ? reasoning.unresolvedQuestions
+            : ["Could you clarify the desired operational scope?"];
 
         options.push(
           Object.freeze({
@@ -90,9 +91,10 @@ export class DecisionOptionFormulator {
       }
 
       case "REQUEST_VERIFICATION": {
-        const suggestions = reasoning.verificationSuggestions.length > 0
-          ? reasoning.verificationSuggestions
-          : ["Inspect recent environment observations"];
+        const suggestions =
+          reasoning.verificationSuggestions.length > 0
+            ? reasoning.verificationSuggestions
+            : ["Inspect recent environment observations"];
 
         options.push(
           Object.freeze({
@@ -132,8 +134,12 @@ export class DecisionOptionFormulator {
 
       case "START_MISSION": {
         // Find best matching capability from SelfModel
-        const availableCaps = selfModel.listCapabilities().filter((c: KnownCapabilityInfo) => c.isAvailable && c.allowVajra);
-        const taskCreateCap = availableCaps.find((c: KnownCapabilityInfo) => c.name === "task.create");
+        const availableCaps = selfModel
+          .listCapabilities()
+          .filter((c: KnownCapabilityInfo) => c.isAvailable && c.allowVajra);
+        const taskCreateCap = availableCaps.find(
+          (c: KnownCapabilityInfo) => c.name === "task.create",
+        );
         const defaultCap = taskCreateCap ? "task.create" : availableCaps[0]?.name;
 
         // Primary candidate: initiate multi-step mission
@@ -248,7 +254,9 @@ export class DecisionOptionFormulator {
       estimatedSteps: typeof p.estimatedSteps === "number" ? p.estimatedSteps : 1,
       impactClass: p.impactClass ?? "LOW",
       reversibility: p.reversibility ?? "PARTIALLY_REVERSIBLE",
-      requiredEvidence: Array.isArray(p.requiredEvidence) ? Object.freeze([...p.requiredEvidence]) : Object.freeze([]),
+      requiredEvidence: Array.isArray(p.requiredEvidence)
+        ? Object.freeze([...p.requiredEvidence])
+        : Object.freeze([]),
       rationale: String(p.rationale ?? "Sanitized proposal from coprocessor"),
       payload: p.payload,
     });

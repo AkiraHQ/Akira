@@ -10,11 +10,7 @@ import { DecisionEvaluator } from "./evaluator";
 import { DecisionOptionFormulator } from "./option-formulator";
 import { DisagreementHandler } from "./disagreement";
 import { ApprovalManager } from "./approval-manager";
-import {
-  DecisionNecessityClass,
-  DecisionOption,
-  OptionEvaluationResult,
-} from "./types";
+import { DecisionNecessityClass, DecisionOption, OptionEvaluationResult } from "./types";
 
 /**
  * Core Implementation of VAJRA Decision Arbiter (Phase 5).
@@ -100,13 +96,15 @@ export class DecisionArbiter implements IDecisionArbiter {
       chosenOption = Object.freeze({
         id: `opt-fallback-${turnSuffix}`,
         kind: "request_clarification",
-        intent: "Request human guidance after candidate options were disqualified by policy or health gates.",
+        intent:
+          "Request human guidance after candidate options were disqualified by policy or health gates.",
         estimatedCostCents: 0,
         estimatedSteps: 1,
         impactClass: "LOW",
         reversibility: "FULLY_REVERSIBLE",
         requiredEvidence: Object.freeze([]),
-        rationale: "All proposed operational candidates were disqualified by hard safety or health gates.",
+        rationale:
+          "All proposed operational candidates were disqualified by hard safety or health gates.",
         payload: {
           disqualifiedReasons: evalResults.map(
             (r) => `${r.option.id}: ${r.disqualificationReason ?? "disqualified"}`,
@@ -256,8 +254,8 @@ export class DecisionArbiter implements IDecisionArbiter {
 
     // 2. Prohibited Directives / Safety Breaches
     if (
-      reasoning.possibleConsequences.some((c) =>
-        c.toLowerCase().includes("prohibited") || c.toLowerCase().includes("violation"),
+      reasoning.possibleConsequences.some(
+        (c) => c.toLowerCase().includes("prohibited") || c.toLowerCase().includes("violation"),
       )
     ) {
       return "REJECT_SAFETY_VIOLATION";
@@ -269,15 +267,15 @@ export class DecisionArbiter implements IDecisionArbiter {
     }
 
     // 4. Critical Uncertainty or Inconclusive Reasoning
-    if (
-      reasoning.uncertaintyLevel === "CRITICAL" ||
-      reasoning.status === "INCONCLUSIVE"
-    ) {
+    if (reasoning.uncertaintyLevel === "CRITICAL" || reasoning.status === "INCONCLUSIVE") {
       return "REQUEST_CLARIFICATION";
     }
 
     // 5. Explicit Disagreement with User Directive
-    if (reasoning.problemClass === "OBSERVATION_CONSISTENCY" && reasoning.unresolvedQuestions.length > 0) {
+    if (
+      reasoning.problemClass === "OBSERVATION_CONSISTENCY" &&
+      reasoning.unresolvedQuestions.length > 0
+    ) {
       return "DISAGREE_AND_COUNTERPROPOSE";
     }
 

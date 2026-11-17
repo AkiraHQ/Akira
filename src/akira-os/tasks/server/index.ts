@@ -44,12 +44,7 @@ export const persistAddTask = createServerFn({ method: "POST" })
         projectId?: string | null;
       },
       { id: string }
-    >(
-      "task.create",
-      input,
-      correlation,
-      { isInternal: true, isVajra: false },
-    );
+    >("task.create", input, correlation, { isInternal: true, isVajra: false });
 
     if (!result.ok) {
       throw new Error(`Failed to create task via capability: ${result.error.message}`);
@@ -58,10 +53,7 @@ export const persistAddTask = createServerFn({ method: "POST" })
     return result.value.id;
   });
 
-export async function updateTaskViaCapability(
-  id: string,
-  patch: Partial<Task>,
-): Promise<boolean> {
+export async function updateTaskViaCapability(id: string, patch: Partial<Task>): Promise<boolean> {
   const { getCapabilityRegistry } = await import("../../capabilities/host");
   const registry = getCapabilityRegistry();
 
@@ -83,10 +75,7 @@ export async function updateTaskViaCapability(
   // 3. Outside any Mission: Ad-hoc workspace task, not part of a VAJRA mission plan.
   // 4. Permitted by capability permissions: allowInternal === true.
   // 5. Not HANDS or GENESIS: Target owner is AKIRA OS · workspace.
-  const result = await registry.invoke<
-    { id: string; patch: Partial<Task> },
-    { updated: boolean }
-  >(
+  const result = await registry.invoke<{ id: string; patch: Partial<Task> }, { updated: boolean }>(
     "task.update",
     { id, patch },
     correlation,
@@ -105,7 +94,6 @@ export const persistUpdateTask = createServerFn({ method: "POST" })
   .handler(async ({ data: { id, patch } }): Promise<void> => {
     await updateTaskViaCapability(id, patch);
   });
-
 
 export const persistDeleteTask = createServerFn({ method: "POST" })
   .validator((id: string) => id)
@@ -171,11 +159,14 @@ export async function listTasksViaCapability(): Promise<Task[]> {
     invocationId: `inv_${corrId}`,
   };
 
-  const result = await registry.invoke<{}, Task[]>(
+  const result = await registry.invoke<Record<string, never>, Task[]>(
     "task.list",
     {},
     correlation,
-    { isInternal: true, isVajra: false },
+    {
+      isInternal: true,
+      isVajra: false,
+    },
   );
 
   if (!result.ok) {
@@ -185,10 +176,8 @@ export async function listTasksViaCapability(): Promise<Task[]> {
   return result.value;
 }
 
-export const persistListTasks = createServerFn({ method: "GET" })
-  .handler(async (): Promise<Task[]> => {
+export const persistListTasks = createServerFn({ method: "GET" }).handler(
+  async (): Promise<Task[]> => {
     return listTasksViaCapability();
-  });
-
-
-
+  },
+);

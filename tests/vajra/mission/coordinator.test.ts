@@ -2,7 +2,11 @@ import { describe, it, expect, vi } from "vitest";
 import { CoordinationDispatcher } from "../../../src/vajra/mission/coordinator";
 import { IAkiraOSPort } from "../../../src/vajra/boundaries/akira-os-port";
 import { createMissionStep } from "../../../src/contracts/mission/mission-definition";
-import { CorrelationMetadata, Result, CapabilityFailure } from "../../../src/contracts/results/result";
+import {
+  CorrelationMetadata,
+  Result,
+  CapabilityFailure,
+} from "../../../src/contracts/results/result";
 
 describe("CoordinationDispatcher (Phase 6 IAkiraOSPort Boundary)", () => {
   const correlation: CorrelationMetadata = {
@@ -17,16 +21,18 @@ describe("CoordinationDispatcher (Phase 6 IAkiraOSPort Boundary)", () => {
     let capturedCorrelation: CorrelationMetadata | null = null;
 
     const mockAkiraOSPort: IAkiraOSPort = {
-      executeCapability: vi.fn(async <TInput, TOutput>(
-        capabilityName: string,
-        input: TInput,
-        corr: CorrelationMetadata,
-      ) => {
-        capturedCapability = capabilityName;
-        capturedInput = input;
-        capturedCorrelation = corr;
-        return Result.success({ executed: true } as unknown as TOutput, corr);
-      }),
+      executeCapability: vi.fn(
+        async <TInput, TOutput>(
+          capabilityName: string,
+          input: TInput,
+          corr: CorrelationMetadata,
+        ) => {
+          capturedCapability = capabilityName;
+          capturedInput = input;
+          capturedCorrelation = corr;
+          return Result.success({ executed: true } as unknown as TOutput, corr);
+        },
+      ),
     };
 
     const coordinator = new CoordinationDispatcher(mockAkiraOSPort);

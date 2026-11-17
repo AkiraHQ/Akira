@@ -97,12 +97,9 @@ describe("Task Write Command Capabilities Vertical Slice (task.create / task.upd
 
   it("returns Result.failure with category 'invalid_request' when task.create input fails schema validation", async () => {
     // Empty title fails z.string().trim().min(1)
-    const res = await registry.invoke(
-      "task.create",
-      { title: "   " },
-      sampleCorrelation,
-      { isInternal: true },
-    );
+    const res = await registry.invoke("task.create", { title: "   " }, sampleCorrelation, {
+      isInternal: true,
+    });
 
     expect(res.ok).toBe(false);
     if (!res.ok) {
@@ -186,12 +183,9 @@ describe("Task Write Command Capabilities Vertical Slice (task.create / task.upd
     const taskId = taskRepository.add({ title: "Base Task" });
 
     // Empty patch object fails refine
-    const res = await registry.invoke(
-      "task.update",
-      { id: taskId, patch: {} },
-      sampleCorrelation,
-      { isInternal: true },
-    );
+    const res = await registry.invoke("task.update", { id: taskId, patch: {} }, sampleCorrelation, {
+      isInternal: true,
+    });
 
     expect(res.ok).toBe(false);
     if (!res.ok) {

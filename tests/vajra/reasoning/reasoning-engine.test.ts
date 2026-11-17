@@ -210,7 +210,12 @@ describe("ReasoningEngine (Phase 4 Domain)", () => {
     mockCoprocessor.setResponseGenerator<ModelReasoningPayload>(() => ({
       interpretedSituation: "User requested automated release verification",
       hypotheses: [
-        { id: "h-1", description: "Project is ready for clean build", confidence: 0.85, supportingEvidenceIds: [] },
+        {
+          id: "h-1",
+          description: "Project is ready for clean build",
+          confidence: 0.85,
+          supportingEvidenceIds: [],
+        },
       ],
       possibleConsequences: ["Temporary build artifacts will be generated"],
       uncertaintyLevel: "LOW",
@@ -223,7 +228,8 @@ describe("ReasoningEngine (Phase 4 Domain)", () => {
       stimulus: {
         id: "stim-ambiguous",
         kind: "human_prompt",
-        payload: "I need to completely reorganize our architectural database schemas and review tests",
+        payload:
+          "I need to completely reorganize our architectural database schemas and review tests",
         correlation,
         timestamp: new Date().toISOString(),
       },

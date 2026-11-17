@@ -73,7 +73,7 @@ describe("DeterministicPolicyStrategy (Tier 1)", () => {
     expect(result.ok).toBe(true);
     if (result.ok) {
       expect(result.value.uncertaintyLevel).toBe("CRITICAL");
-      expect(result.value.hypotheses.some(h => h.id === "hyp-crit-health")).toBe(true);
+      expect(result.value.hypotheses.some((h) => h.id === "hyp-crit-health")).toBe(true);
     }
   });
 
@@ -91,7 +91,7 @@ describe("DeterministicPolicyStrategy (Tier 1)", () => {
     expect(result.ok).toBe(true);
     if (result.ok) {
       expect(result.value.uncertaintyLevel).toBe("MEDIUM");
-      expect(result.value.hypotheses.some(h => h.id === "hyp-degraded-state")).toBe(true);
+      expect(result.value.hypotheses.some((h) => h.id === "hyp-degraded-state")).toBe(true);
     }
   });
 
